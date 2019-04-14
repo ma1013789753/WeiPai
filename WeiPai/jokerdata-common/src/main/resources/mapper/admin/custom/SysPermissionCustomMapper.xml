@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jokerdata.mapper.admin.custom.SysPermissionCustomMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jokerdata.entity.admin.generator.SysPermission">
+        <id column="pid" property="pid"/>
+        <result column="father" property="father"/>
+        <result column="resources" property="resources"/>
+        <result column="title" property="title"/>
+        <result column="icon" property="icon"/>
+        <result column="type" property="type"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="memo" property="memo"/>
+        <result column="state" property="state"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        pid, father, resources, title, icon, type, create_time, update_time, memo, state
+    </sql>
+
+    <select id="selectPageVo" resultType="com.jokerdata.entity.admin.generator.SysPermission">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_sys_permission
+        WHERE
+        1 = 1
+        and t_sys_permission.type = 'menu'
+        <if test=" page.search1 != ''">
+            AND t_sys_permission.title LIKE CONCAT('%',#{page.search1},'%')
+        </if>
+    </select>
+
+</mapper>

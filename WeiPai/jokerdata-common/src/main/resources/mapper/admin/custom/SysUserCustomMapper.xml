@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jokerdata.mapper.admin.custom.SysUserCustomMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jokerdata.entity.admin.custom.SysUserCustom">
+        <id column="uid" property="uid"/>
+        <result column="avatar" property="avatar"/>
+        <result column="username" property="username"/>
+        <result column="nickname" property="nickname"/>
+        <result column="password" property="password"/>
+        <result column="phone" property="phone"/>
+        <result column="mail" property="mail"/>
+        <result column="state" property="state"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="dept_id" property="deptId"/>
+        <result column="role_id" property="roleId"/>
+        <collection property="role" ofType="com.jokerdata.entity.admin.generator.SysRole">
+            <id column="rid" property="rid"/>
+            <result column="name" property="name"/>
+        </collection>
+        <collection property="dept" ofType="com.jokerdata.entity.admin.generator.SysDept">
+            <id column="tid" property="tid"/>
+            <result column="dname" property="name"/>
+        </collection>
+    </resultMap>
+
+    <!-- SysUser selectByUserName(String username) -->
+    <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT tsu.uid,tsu.avatar,tsu.nickname,tsu.password,tsu.username
+        ,tsu.phone,tsu.mail,tsu.state,tsu.create_time,tsu.update_time,tsu.dept_id,
+        tsr.rid,tsr.name,tsr.memo
+        FROM t_sys_user AS tsu
+        LEFT JOIN t_sys_role AS tsr ON tsr.rid = tsu.`role_id`
+        where tsu.username = #{username,jdbcType=VARCHAR}
+    </select>
+
+    <!-- SysUser selectByUserName(String username) -->
+    <select id="selectUserById" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT tsu.uid,tsu.avatar,tsu.nickname,tsu.password,tsu.username
+        ,tsu.phone,tsu.mail,tsu.state,tsu.create_time,tsu.update_time,tsu.dept_id,
+        tsr.rid,tsr.name,tsr.memo
+        FROM t_sys_user AS tsu
+        LEFT JOIN t_sys_role AS tsr ON tsr.rid = tsu.`role_id`
+        where tsu.uid = #{uid,jdbcType=VARCHAR}
+    </select>
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        uid, avatar, username, nickname, password, phone, mail, state, create_time, update_time, dept_id,role_id
+    </sql>
+
+
+    <select id="selectPageVo" resultMap="BaseResultMap">
+        SELECT
+        tsu.`uid`,tsu.`avatar`,tsu.`mail`,tsu.`nickname`,tsu.`phone`,tsu.`username`,
+        tsu.`phone`,dep.`name` AS dname,dep.`tid`,tsu.`role_id`,tsr.`name`,tsu.`create_time`
+        FROM t_sys_user AS tsu
+        LEFT JOIN t_sys_dept AS dep
+        ON tsu.`dept_id` = dep.`tid`
+        LEFT JOIN
+        t_sys_role tsr ON tsr.`rid` = tsu.`role_id`
+        WHERE tsu.state = 1
+        <if test=" page.search1 != ''">
+            AND tsu.username LIKE CONCAT('%',#{page.search1},'%')
+        </if>
+        <if test=" page.search2 != ''">
+            AND tsu.nickname LIKE CONCAT('%',#{page.search2},'%')
+        </if>
+    </select>
+
+</mapper>

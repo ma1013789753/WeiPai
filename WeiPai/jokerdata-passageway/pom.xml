@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.jokerdata</groupId>
+        <artifactId>jokerdata</artifactId>
+        <version>1.0.0</version>
+    </parent>
+    <groupId>com.jokerdata</groupId>
+    <artifactId>jokerdata-passageway</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>jokerdata-passageway</name>
+    <description>屏蔽微博头条接口</description>
+
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
+
+</project>

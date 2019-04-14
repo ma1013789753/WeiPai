@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jokerdata.mapper.admin.custom.SysRoleCustomMapper">
+
+    <resultMap id="BaseResultMap" type="com.jokerdata.entity.admin.custom.SysRoleCustom">
+        <id column="rid" property="rid"/>
+        <result column="memo" property="memo"/>
+        <result column="name" property="name"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="state" property="state"/>
+        <collection property="permissions" ofType="com.jokerdata.entity.admin.generator.SysPermission">
+            <id column="pid" property="pid"/>
+            <result column="father" property="father"/>
+            <result column="resources" property="resources"/>
+            <result column="title" property="title"/>
+            <result column="icon" property="icon"/>
+            <result column="type" property="type"/>
+            <result column="create_time" property="createTime"/>
+            <result column="update_time" property="updateTime"/>
+            <result column="memo" property="memo"/>
+            <result column="state" property="state"/>
+        </collection>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        rid, memo, name, create_time, update_time, state
+    </sql>
+
+    <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT tsr.rid,tsr.memo,tsr.name,tsr.state,
+        tsp.pid,tsp.resources,tsp.title, tsp.father, tsp.icon, tsp.type, tsp.memo AS pmemo
+        FROM t_sys_user AS tsu
+        LEFT JOIN t_sys_role AS tsr ON tsr.rid = tsu.`role_id`
+        LEFT JOIN t_sys_role_permission AS tsrp ON tsrp.role_rid = tsr.rid
+        LEFT JOIN t_sys_permission AS tsp ON tsp.pid = tsrp.per_pid
+        WHERE tsu.username =#{username}
+    </select>
+
+    <select id="selectPage" resultMap="BaseResultMap">
+        SELECT tsr.rid,tsr.memo,tsr.name,tsr.state,tsr.create_time,
+        tsp.pid,tsp.`father`,tsp.`title`
+        FROM (SELECT * FROM t_sys_role LIMIT #{param.start},#{param.end} ) AS tsr
+        LEFT JOIN t_sys_role_permission srp
+        ON tsr.`rid` = srp.`role_rid`
+        LEFT JOIN (SELECT * FROM t_sys_permission WHERE t_sys_permission.`type` = 'menu') tsp ON
+        tsp.`pid` = srp.`per_pid`
+        WHERE tsp.pid != ''
+        <if test=" param.search1 != ''">
+            and tsr.name LIKE CONCAT('%',#{param.search1},'%')
+        </if>
+    </select>
+
+
+</mapper>
