@@ -7,11 +7,11 @@ import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
- *  Mapper 接口
- * </p>
+    *  Mapper 接口
+    * </p>
  *
  * @author oldMa
- * @since 2019-04-14
+ * @since 2019-04-15
  */
 public interface AdCustomMapper extends BaseMapper<Ad> {
 

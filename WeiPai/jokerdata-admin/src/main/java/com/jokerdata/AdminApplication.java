@@ -3,12 +3,16 @@ package com.jokerdata;
 import com.jokerdata.common.config.LoginUserArgumentResolver;
 import com.jokerdata.common.config.LoginInterceptor;
 import com.jokerdata.common.config.WebAppConfigurer;
+import com.jokerdata.service.app.SpareService;
+import com.jokerdata.service.app.impl.SpareImpl;
+import com.jokerdata.service.common.impl.AliSmsServiceImpl;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -26,6 +30,7 @@ public class AdminApplication extends WebAppConfigurer {
 
     public static void main(String[] args) {
         SpringApplication.run(AdminApplication.class, args);
+
     }
 
 

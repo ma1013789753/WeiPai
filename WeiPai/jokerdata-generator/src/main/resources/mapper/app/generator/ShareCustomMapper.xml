@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jokerdata.mapper.app.generator.ShareCustomMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jokerdata.entity.app.generator.Share">
+        <id column="share_id" property="shareId"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="account_id" property="accountId"/>
+        <result column="share_content" property="shareContent"/>
+        <result column="share_image" property="shareImage"/>
+        <result column="share_type" property="shareType"/>
+        <result column="share_url" property="shareUrl"/>
+        <result column="share_coin" property="shareCoin"/>
+        <result column="share_num" property="shareNum"/>
+        <result column="have_shared_num" property="haveSharedNum"/>
+        <result column="total_coin" property="totalCoin"/>
+        <result column="is_original" property="isOriginal"/>
+        <result column="add_time" property="addTime"/>
+        <result column="tag_id" property="tagId"/>
+        <result column="tag_name" property="tagName"/>
+        <result column="share_state" property="shareState"/>
+        <result column="share_extra_coin" property="shareExtraCoin"/>
+        <result column="share_status" property="shareStatus"/>
+        <result column="share_video" property="shareVideo"/>
+        <result column="wb_id" property="wbId"/>
+        <result column="see_num" property="seeNum"/>
+        <result column="share_recommend" property="shareRecommend"/>
+        <result column="share_num_true" property="shareNumTrue"/>
+        <result column="original_coin" property="originalCoin"/>
+        <result column="from_app" property="fromApp"/>
+        <result column="expires" property="expires"/>
+        <result column="json" property="json"/>
+        <result column="cancel_nums" property="cancelNums"/>
+        <result column="background_image" property="backgroundImage"/>
+        <result column="short_url" property="shortUrl"/>
+        <result column="share_img" property="shareImg"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        share_id, user_id, user_name, account_id, share_content, share_image, share_type, share_url, share_coin, share_num, have_shared_num, total_coin, is_original, add_time, tag_id, tag_name, share_state, share_extra_coin, share_status, share_video, wb_id, see_num, share_recommend, share_num_true, original_coin, from_app, expires, json, cancel_nums, background_image, short_url, share_img
+    </sql>
+
+    <select id="selectPage" resultMap="BaseResultMap">
+
+        select
+        <include refid="Base_Column_List"/>
+        from g_share
+        where del = 0
+        <if test=" param.search1 != ''">
+            and g_share.name LIKE CONCAT('%',#{param.search1},'%')
+        </if>
+
+    </select>
+</mapper>

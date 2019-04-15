@@ -14938,3 +14938,11 @@
 2019-04-14 16:43:02,925:TRACE http-nio-8090-exec-8 (BaseJdbcLogger.java:165) - <==        Row: 8, 客服部门, 2, 淘宝网客服部门, 2018-10-23 12:52:59.0, 2018-10-23 12:53:01.0, 1
 2019-04-14 16:43:02,925:TRACE http-nio-8090-exec-8 (BaseJdbcLogger.java:165) - <==        Row: 9, 测试部门, 0, 这是个个是部门, 2018-11-26 11:34:42.0, 2018-11-26 11:34:42.0, 1
 2019-04-14 16:43:02,925:DEBUG http-nio-8090-exec-8 (BaseJdbcLogger.java:159) - <==      Total: 8
+2019-04-15 22:25:16,332:DEBUG http-nio-8090-exec-2 (BaseJdbcLogger.java:159) - ==>  Preparing: INSERT INTO g_sms ( sms_mobi, sms_content, sms_type, add_time ) VALUES ( ?, ?, ?, ? ) 
+2019-04-15 22:25:16,532:DEBUG http-nio-8090-exec-2 (BaseJdbcLogger.java:159) - ==> Parameters: 15501699126(String), 123456(String), 1(Integer), 1555338316160(String)
+2019-04-15 22:30:08,743:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==>  Preparing: INSERT INTO g_sms ( sms_mobi, sms_content, sms_type, add_time ) VALUES ( ?, ?, ?, ? ) 
+2019-04-15 22:30:08,847:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==> Parameters: 15501699126(String), 123456(String), 1(Integer), 8(String)
+2019-04-15 22:30:09,337:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - <==    Updates: 1
+2019-04-15 22:31:48,809:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==>  Preparing: INSERT INTO g_sms ( sms_mobi, sms_content, sms_type, add_time ) VALUES ( ?, ?, ?, ? ) 
+2019-04-15 22:31:48,913:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==> Parameters: 15501699126(String), 123456(String), 1(Integer), 757(String)
+2019-04-15 22:31:49,332:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - <==    Updates: 1

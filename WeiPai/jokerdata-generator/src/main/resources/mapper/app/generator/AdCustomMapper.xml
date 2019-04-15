@@ -4,14 +4,14 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.jokerdata.entity.app.generator.Ad">
-        <id column="ad_id" property="adId" />
-        <result column="ad_type" property="adType" />
-        <result column="ad_img" property="adImg" />
-        <result column="ad_state" property="adState" />
-        <result column="ad_data_id" property="adDataId" />
-        <result column="ad_data_type" property="adDataType" />
-        <result column="add_time" property="addTime" />
-        <result column="ad_sort" property="adSort" />
+        <id column="ad_id" property="adId"/>
+        <result column="ad_type" property="adType"/>
+        <result column="ad_img" property="adImg"/>
+        <result column="ad_state" property="adState"/>
+        <result column="ad_data_id" property="adDataId"/>
+        <result column="ad_data_type" property="adDataType"/>
+        <result column="add_time" property="addTime"/>
+        <result column="ad_sort" property="adSort"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -21,7 +21,8 @@
 
     <select id="selectPage" resultMap="BaseResultMap">
 
-        select <include refid="Base_Column_List"/>
+        select
+        <include refid="Base_Column_List"/>
         from g_ad
         where del = 0
         <if test=" param.search1 != ''">
