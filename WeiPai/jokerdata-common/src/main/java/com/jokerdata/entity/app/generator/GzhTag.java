@@ -16,7 +16,7 @@ import java.io.Serializable;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-15
+ * @since 2019-04-17
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -26,22 +26,22 @@ public class GzhTag extends Model<GzhTag> {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "tag_id", type = IdType.AUTO)
-    private Integer tagId;
+    private Integer tag_id;
 
     /**
      * 公众号标签名称
      */
-    private String tagName;
+    private String tag_name;
 
     /**
      * 大数在前  小数在后
      */
-    private Integer tagSort;
+    private Integer tag_sort;
 
 
     @Override
     protected Serializable pkVal() {
-        return this.tagId;
+        return this.tag_id;
     }
 
 }

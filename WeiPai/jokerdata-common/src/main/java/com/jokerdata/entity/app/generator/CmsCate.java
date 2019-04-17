@@ -16,7 +16,7 @@ import java.io.Serializable;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-15
+ * @since 2019-04-17
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -26,24 +26,24 @@ public class CmsCate extends Model<CmsCate> {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "cate_id", type = IdType.AUTO)
-    private Integer cateId;
+    private Integer cate_id;
 
     /**
      * 分类名
      */
-    private String cateName;
+    private String cate_name;
 
-    private Integer cateSort;
+    private Integer cate_sort;
 
     /**
      * 默认0，1禁用
      */
-    private Boolean cateState;
+    private Boolean cate_state;
 
 
     @Override
     protected Serializable pkVal() {
-        return this.cateId;
+        return this.cate_id;
     }
 
 }

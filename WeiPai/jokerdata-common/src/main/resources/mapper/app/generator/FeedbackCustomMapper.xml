@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jokerdata.mapper.app.generator.FeedbackCustomMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jokerdata.entity.app.generator.Feedback">
+        <id column="feedback_id" property="feedback_id"/>
+        <result column="user_id" property="user_id"/>
+        <result column="user_name" property="user_name"/>
+        <result column="is_read" property="is_read"/>
+        <result column="feedback_content" property="feedback_content"/>
+        <result column="user_mail" property="user_mail"/>
+        <result column="add_time" property="add_time"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        feedback_id, user_id, user_name, is_read, feedback_content, user_mail, add_time
+    </sql>
+
+    <select id="selectPage" resultMap="BaseResultMap">
+
+        select
+        <include refid="Base_Column_List"/>
+        from g_feedback
+        where del = 0
+        <if test=" param.search1 != ''">
+            and g_feedback.name LIKE CONCAT('%',#{param.search1},'%')
+        </if>
+
+    </select>
+</mapper>

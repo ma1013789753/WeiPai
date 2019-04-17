@@ -16,7 +16,7 @@ import java.io.Serializable;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-15
+ * @since 2019-04-17
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -26,47 +26,47 @@ public class Admin extends Model<Admin> {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "admin_id", type = IdType.AUTO)
-    private Integer adminId;
+    private Integer admin_id;
 
     /**
      * 管理员帐号
      */
-    private String adminName;
+    private String admin_name;
 
     /**
      * 帐号密码
      */
-    private String adminPassword;
+    private String admin_password;
 
     /**
      * 最后登陆时间
      */
-    private Integer adminLogintime;
+    private Integer admin_logintime;
 
     /**
      * 登陆次数
      */
-    private Integer adminLoginnum;
+    private Integer admin_loginnum;
 
     /**
      * 管理员头像
      */
-    private String adminAvatar;
+    private String admin_avatar;
 
     /**
      * 0 允许登陆  1禁止登陆
      */
-    private Boolean adminState;
+    private Boolean admin_state;
 
     /**
      * 超级管理员 1是
      */
-    private Boolean adminIsSuper;
+    private Boolean admin_is_super;
 
 
     @Override
     protected Serializable pkVal() {
-        return this.adminId;
+        return this.admin_id;
     }
 
 }

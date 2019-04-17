@@ -16,7 +16,7 @@ import java.io.Serializable;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-15
+ * @since 2019-04-17
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -26,36 +26,36 @@ public class Feedback extends Model<Feedback> {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "feedback_id", type = IdType.AUTO)
-    private Integer feedbackId;
+    private Integer feedback_id;
 
-    private Integer userId;
+    private Integer user_id;
 
-    private String userName;
+    private String user_name;
 
     /**
      * 是否已读 1已读
      */
-    private Integer isRead;
+    private Integer is_read;
 
     /**
      * 反馈内容
      */
-    private String feedbackContent;
+    private String feedback_content;
 
     /**
      * 电子邮箱
      */
-    private String userMail;
+    private String user_mail;
 
     /**
      * 添加时间
      */
-    private String addTime;
+    private String add_time;
 
 
     @Override
     protected Serializable pkVal() {
-        return this.feedbackId;
+        return this.feedback_id;
     }
 
 }

@@ -17,7 +17,7 @@ import java.math.BigDecimal;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-15
+ * @since 2019-04-17
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -27,117 +27,117 @@ public class Share extends Model<Share> {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "share_id", type = IdType.AUTO)
-    private Integer shareId;
+    private Integer share_id;
 
-    private Integer userId;
+    private Integer user_id;
 
-    private String userName;
+    private String user_name;
 
     /**
      * 账号id
      */
-    private Integer accountId;
+    private Integer account_id;
 
     /**
      * 分享内容   {base64}
      */
-    private String shareContent;
+    private String share_content;
 
     /**
      * (json)
      */
-    private String shareImage;
+    private String share_image;
 
     /**
      * 1:微博；2公众号文章
      */
-    private Boolean shareType;
+    private Boolean share_type;
 
-    private String shareUrl;
+    private String share_url;
 
     /**
      * 分享一次多少积分 现金推广为总金额
      */
-    private Integer shareCoin;
+    private Integer share_coin;
 
     /**
      * 分享多少次
      */
-    private Integer shareNum;
+    private Integer share_num;
 
     /**
      * 已经分享的人数
      */
-    private Integer haveSharedNum;
+    private Integer have_shared_num;
 
     /**
      * 总共消耗积分
      */
-    private Integer totalCoin;
+    private Integer total_coin;
 
     /**
      * 是否原创：0否；1是
      */
-    private Boolean isOriginal;
+    private Boolean is_original;
 
     /**
      * 添加时间
      */
-    private String addTime;
+    private String add_time;
 
-    private Integer tagId;
+    private Integer tag_id;
 
-    private String tagName;
+    private String tag_name;
 
     /**
      * 默认进行中0， 审核中1， 审核失败2   结束3     取消4
      */
-    private Boolean shareState;
+    private Boolean share_state;
 
     /**
      * 原创转发奖励积分
      */
-    private Integer shareExtraCoin;
+    private Integer share_extra_coin;
 
     /**
      * 0积分  1现金
      */
-    private String shareStatus;
+    private String share_status;
 
     /**
      * video 信息  json
      */
-    private String shareVideo;
+    private String share_video;
 
     /**
      * 微博id
      */
-    private String wbId;
+    private String wb_id;
 
     /**
      * 查看次数
      */
-    private Integer seeNum;
+    private Integer see_num;
 
     /**
      * 默认0  1推荐
      */
-    private Integer shareRecommend;
+    private Integer share_recommend;
 
     /**
      * 实际分享次数
      */
-    private Integer shareNumTrue;
+    private Integer share_num_true;
 
     /**
      * 最初平均积分
      */
-    private String originalCoin;
+    private String original_coin;
 
     /**
      * 0后台  1app
      */
-    private Integer fromApp;
+    private Integer from_app;
 
     /**
      * 截止时间
@@ -152,27 +152,27 @@ public class Share extends Model<Share> {
     /**
      * 取消数额
      */
-    private BigDecimal cancelNums;
+    private BigDecimal cancel_nums;
 
     /**
      * 背景图
      */
-    private String backgroundImage;
+    private String background_image;
 
     /**
      * 微博短连接
      */
-    private String shortUrl;
+    private String short_url;
 
     /**
      * 微信文章分享封面图
      */
-    private String shareImg;
+    private String share_img;
 
 
     @Override
     protected Serializable pkVal() {
-        return this.shareId;
+        return this.share_id;
     }
 
 }

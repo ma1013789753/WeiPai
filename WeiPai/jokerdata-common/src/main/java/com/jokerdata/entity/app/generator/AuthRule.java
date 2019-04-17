@@ -16,7 +16,7 @@ import java.io.Serializable;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-15
+ * @since 2019-04-17
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -47,7 +47,7 @@ public class AuthRule extends Model<AuthRule> {
     /**
      * 是否菜单
      */
-    private Boolean isMenu;
+    private Boolean is_menu;
 
     /**
      * 图标

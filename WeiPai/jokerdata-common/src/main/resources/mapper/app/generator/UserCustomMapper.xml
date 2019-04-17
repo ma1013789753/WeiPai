@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jokerdata.mapper.app.generator.UserCustomMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jokerdata.entity.app.generator.User">
+        <id column="user_id" property="user_id"/>
+        <result column="user_name" property="user_name"/>
+        <result column="user_mobile" property="user_mobile"/>
+        <result column="user_password" property="user_password"/>
+        <result column="user_gender" property="user_gender"/>
+        <result column="user_state" property="user_state"/>
+        <result column="add_time" property="add_time"/>
+        <result column="user_pay_pwd" property="user_pay_pwd"/>
+        <result column="wechat_openid" property="wechat_openid"/>
+        <result column="alipay_account" property="alipay_account"/>
+        <result column="available_predeposit" property="available_predeposit"/>
+        <result column="freeze_predeposit" property="freeze_predeposit"/>
+        <result column="user_coin" property="user_coin"/>
+        <result column="sign_limit" property="sign_limit"/>
+        <result column="coin_total" property="coin_total"/>
+        <result column="user_qq" property="user_qq"/>
+        <result column="user_email" property="user_email"/>
+        <result column="user_wx" property="user_wx"/>
+        <result column="alipay_name" property="alipay_name"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        user_id, user_name, user_mobile, user_password, user_gender, user_state, add_time, user_pay_pwd, wechat_openid, alipay_account, available_predeposit, freeze_predeposit, user_coin, sign_limit, coin_total, user_qq, user_email, user_wx, alipay_name
+    </sql>
+
+    <select id="selectPage" resultMap="BaseResultMap">
+
+        select
+        <include refid="Base_Column_List"/>
+        from g_user
+        where del = 0
+        <if test=" param.search1 != ''">
+            and g_user.name LIKE CONCAT('%',#{param.search1},'%')
+        </if>
+
+    </select>
+</mapper>

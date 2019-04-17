@@ -16,7 +16,7 @@ import java.io.Serializable;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-15
+ * @since 2019-04-17
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -26,16 +26,16 @@ public class ShareTag extends Model<ShareTag> {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "tag_id", type = IdType.AUTO)
-    private Integer tagId;
+    private Integer tag_id;
 
-    private String tagName;
+    private String tag_name;
 
-    private Integer tagSort;
+    private Integer tag_sort;
 
 
     @Override
     protected Serializable pkVal() {
-        return this.tagId;
+        return this.tag_id;
     }
 
 }

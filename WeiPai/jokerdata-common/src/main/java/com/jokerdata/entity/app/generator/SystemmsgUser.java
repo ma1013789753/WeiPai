@@ -16,7 +16,7 @@ import java.io.Serializable;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-15
+ * @since 2019-04-17
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -31,17 +31,17 @@ public class SystemmsgUser extends Model<SystemmsgUser> {
     /**
      * 用户id
      */
-    private Integer userId;
+    private Integer user_id;
 
     /**
      * 系统消息id
      */
-    private Integer noticeId;
+    private Integer notice_id;
 
     /**
      * 默认 0 未读 , 1 已读
      */
-    private Integer isRead;
+    private Integer is_read;
 
 
     @Override

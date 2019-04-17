@@ -17,7 +17,7 @@ import java.math.BigDecimal;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-15
+ * @since 2019-04-17
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -27,31 +27,31 @@ public class Sign extends Model<Sign> {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "sign_id", type = IdType.AUTO)
-    private Integer signId;
+    private Integer sign_id;
 
-    private Integer userId;
+    private Integer user_id;
 
     /**
      * 奖励金额
      */
-    private BigDecimal signCoin;
+    private BigDecimal sign_coin;
 
     /**
      * 签到日期
      */
-    private String signDate;
+    private String sign_date;
 
-    private Boolean signState;
+    private Boolean sign_state;
 
     /**
      * 添加时间
      */
-    private String addTime;
+    private String add_time;
 
 
     @Override
     protected Serializable pkVal() {
-        return this.signId;
+        return this.sign_id;
     }
 
 }

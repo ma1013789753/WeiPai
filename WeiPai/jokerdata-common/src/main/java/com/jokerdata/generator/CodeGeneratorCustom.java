@@ -160,7 +160,8 @@ public class CodeGeneratorCustom {
 
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();
-        strategy.setColumnNaming(NamingStrategy.underline_to_camel);
+        strategy.setColumnNaming(NamingStrategy.nochange);
+        strategy.setCapitalMode(false);
         strategy.setTablePrefix(new String[]{"yj_", "gy_", "d_", "t", "h_", "g_"});// 此处可以修改为您的表前缀
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setSuperEntityClass(null);

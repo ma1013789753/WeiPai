@@ -17,7 +17,7 @@ import java.math.BigDecimal;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-15
+ * @since 2019-04-17
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -30,67 +30,67 @@ public class PdRecharge extends Model<PdRecharge> {
      * 自增编号
      */
     @TableId(value = "pdr_id", type = IdType.AUTO)
-    private Integer pdrId;
+    private Integer pdr_id;
 
     /**
      * 记录唯一标示
      */
-    private String pdrSn;
+    private String pdr_sn;
 
     /**
      * 会员编号
      */
-    private Integer pdrMemberId;
+    private Integer pdr_member_id;
 
     /**
      * 会员名称
      */
-    private String pdrMemberName;
+    private String pdr_member_name;
 
     /**
      * 充值金额
      */
-    private BigDecimal pdrAmount;
+    private BigDecimal pdr_amount;
 
     /**
      * 支付方式
      */
-    private String pdrPaymentCode;
+    private String pdr_payment_code;
 
     /**
      * 支付方式
      */
-    private String pdrPaymentName;
+    private String pdr_payment_name;
 
     /**
      * 第三方支付接口交易号
      */
-    private String pdrTradeSn;
+    private String pdr_trade_sn;
 
     /**
      * 添加时间
      */
-    private Integer pdrAddTime;
+    private Integer pdr_add_time;
 
     /**
      * 支付状态 0未支付1支付
      */
-    private Boolean pdrPaymentState;
+    private Boolean pdr_payment_state;
 
     /**
      * 支付时间
      */
-    private Integer pdrPaymentTime;
+    private Integer pdr_payment_time;
 
     /**
      * 管理员名
      */
-    private String pdrAdmin;
+    private String pdr_admin;
 
 
     @Override
     protected Serializable pkVal() {
-        return this.pdrId;
+        return this.pdr_id;
     }
 
 }

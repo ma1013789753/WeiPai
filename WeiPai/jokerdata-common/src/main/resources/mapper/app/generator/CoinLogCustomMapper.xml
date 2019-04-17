@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jokerdata.mapper.app.generator.CoinLogCustomMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jokerdata.entity.app.generator.CoinLog">
+        <id column="log_id" property="log_id"/>
+        <result column="log_user_id" property="log_user_id"/>
+        <result column="log_user_name" property="log_user_name"/>
+        <result column="log_admin_id" property="log_admin_id"/>
+        <result column="log_admin_name" property="log_admin_name"/>
+        <result column="log_type" property="log_type"/>
+        <result column="log_av_coin" property="log_av_coin"/>
+        <result column="log_freeze_coin" property="log_freeze_coin"/>
+        <result column="log_mark" property="log_mark"/>
+        <result column="add_time" property="add_time"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        log_id, log_user_id, log_user_name, log_admin_id, log_admin_name, log_type, log_av_coin, log_freeze_coin, log_mark, add_time
+    </sql>
+
+    <select id="selectPage" resultMap="BaseResultMap">
+
+        select
+        <include refid="Base_Column_List"/>
+        from g_coin_log
+        where del = 0
+        <if test=" param.search1 != ''">
+            and g_coin_log.name LIKE CONCAT('%',#{param.search1},'%')
+        </if>
+
+    </select>
+</mapper>

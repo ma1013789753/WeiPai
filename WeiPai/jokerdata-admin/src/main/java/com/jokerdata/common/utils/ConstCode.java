@@ -19,6 +19,11 @@ public class ConstCode {
     public static int CODE_500 = 500;
 
     /**
+     * API异常
+     */
+    public static int CODE_400 = 400;
+
+    /**
      * Token失效
      */
     public static int CODE_401 = 401;

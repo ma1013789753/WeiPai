@@ -17,7 +17,7 @@ import java.math.BigDecimal;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-15
+ * @since 2019-04-17
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -27,40 +27,40 @@ public class ShareLog extends Model<ShareLog> {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "sl_id", type = IdType.AUTO)
-    private Integer slId;
+    private Integer sl_id;
 
-    private Integer userId;
+    private Integer user_id;
 
-    private Integer shareId;
+    private Integer share_id;
 
-    private Integer shareCoin;
+    private Integer share_coin;
 
     /**
      * 奖励资金
      */
-    private BigDecimal shareMoney;
+    private BigDecimal share_money;
 
     /**
      * 默认0
      */
-    private Boolean shareState;
+    private Boolean share_state;
 
-    private String addTime;
+    private String add_time;
 
     /**
      * 审核时间
      */
-    private String checkTime;
+    private String check_time;
 
     /**
      * 0待审核 1通过 2未通过 3不用审核
      */
-    private Integer isPass;
+    private Integer is_pass;
 
     /**
      * 0积分  1币
      */
-    private Integer rewardType;
+    private Integer reward_type;
 
     /**
      * 转发词
@@ -70,26 +70,26 @@ public class ShareLog extends Model<ShareLog> {
     /**
      * 转发人账户编号
      */
-    private String accountId;
+    private String account_id;
 
-    private Integer mathId;
+    private Integer math_id;
 
     private String mid;
 
     /**
      * 微博主人user_id
      */
-    private Integer masterId;
+    private Integer master_id;
 
     /**
      * 对应的日志id
      */
-    private String logId;
+    private String log_id;
 
 
     @Override
     protected Serializable pkVal() {
-        return this.slId;
+        return this.sl_id;
     }
 
 }

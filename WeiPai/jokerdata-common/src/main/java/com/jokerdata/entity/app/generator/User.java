@@ -17,7 +17,7 @@ import java.math.BigDecimal;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-15
+ * @since 2019-04-17
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -27,90 +27,90 @@ public class User extends Model<User> {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "user_id", type = IdType.AUTO)
-    private Integer userId;
+    private Integer user_id;
 
     /**
      * 昵称
      */
-    private String userName;
+    private String user_name;
 
     /**
      * 手机号码，账号
      */
-    private String userMobile;
+    private String user_mobile;
 
     /**
      * 密码
      */
-    private String userPassword;
+    private String user_password;
 
     /**
      * 性别:1男，2女
      */
-    private Boolean userGender;
+    private int user_gender;
 
     /**
      * 正常0,1禁用
      */
-    private Boolean userState;
+    private int user_state;
 
-    private String addTime;
+    private String add_time;
 
     /**
      * 支付密码
      */
-    private String userPayPwd;
+    private String user_pay_pwd;
 
     /**
      * 微信openid
      */
-    private String wechatOpenid;
+    private String wechat_openid;
 
     /**
      * 支付宝账号
      */
-    private String alipayAccount;
+    private String alipay_account;
 
     /**
      * 预存款
      */
-    private BigDecimal availablePredeposit;
+    private BigDecimal available_predeposit;
 
     /**
      * 冻结预存款
      */
-    private BigDecimal freezePredeposit;
+    private BigDecimal freeze_predeposit;
 
     /**
      * 积分
      */
-    private Integer userCoin;
+    private Integer user_coin;
 
     /**
      * 连续签到天数
      */
-    private Integer signLimit;
+    private Integer sign_limit;
 
     /**
      * 累计积分
      */
-    private Integer coinTotal;
+    private Integer coin_total;
 
-    private String userQq;
+    private String user_qq;
 
-    private String userEmail;
+    private String user_email;
 
-    private String userWx;
+    private String user_wx;
 
     /**
      * 支付宝账户人
      */
-    private String alipayName;
+    private String alipay_name;
 
 
     @Override
     protected Serializable pkVal() {
-        return this.userId;
+        return this.user_id;
     }
 
 }

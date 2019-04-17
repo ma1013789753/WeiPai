@@ -17,7 +17,7 @@ import java.math.BigDecimal;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-15
+ * @since 2019-04-17
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -30,67 +30,67 @@ public class Coin extends Model<Coin> {
      * 自增编号
      */
     @TableId(value = "coin_id", type = IdType.AUTO)
-    private Integer coinId;
+    private Integer coin_id;
 
     /**
      * 记录唯一标示
      */
-    private String orderSn;
+    private String order_sn;
 
     /**
      * 会员编号
      */
-    private Integer userId;
+    private Integer user_id;
 
     /**
      * 会员名称
      */
-    private String userName;
+    private String user_name;
 
     /**
      * 充值金额
      */
-    private Integer coinAmount;
+    private Integer coin_amount;
 
     /**
      * 订单金额
      */
-    private BigDecimal orderAmount;
+    private BigDecimal order_amount;
 
     /**
      * 支付方式1支付宝，2微信，3钱包
      */
-    private String payType;
+    private String pay_type;
 
     /**
      * 第三方支付接口交易号
      */
-    private String payOutSn;
+    private String pay_out_sn;
 
     /**
      * 添加时间
      */
-    private Integer addTime;
+    private Integer add_time;
 
     /**
      * 支付状态 0未支付1支付
      */
-    private Boolean payState;
+    private Boolean pay_state;
 
     /**
      * 支付时间
      */
-    private Integer payTime;
+    private Integer pay_time;
 
     /**
      * 管理员名
      */
-    private String pdrAdmin;
+    private String pdr_admin;
 
 
     @Override
     protected Serializable pkVal() {
-        return this.coinId;
+        return this.coin_id;
     }
 
 }

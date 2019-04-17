@@ -16,7 +16,7 @@ import java.io.Serializable;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-15
+ * @since 2019-04-17
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -29,21 +29,21 @@ public class Config extends Model<Config> {
      * 配置项主键
      */
     @TableId(value = "config_id", type = IdType.AUTO)
-    private Integer configId;
+    private Integer config_id;
 
-    private String configName;
+    private String config_name;
 
     /**
      * 编码，此参数不在管理后台显示，此参数不为空，后台不能删除该记录
      */
-    private String configCode;
+    private String config_code;
 
-    private String configContent;
+    private String config_content;
 
 
     @Override
     protected Serializable pkVal() {
-        return this.configId;
+        return this.config_id;
     }
 
 }
