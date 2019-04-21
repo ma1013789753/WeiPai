@@ -16276,3 +16276,159 @@
 2019-04-21 12:07:57,663:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==>  Preparing: SELECT share_id,a.user_id,user_name,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time, share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image FROM g_share a RIGHT JOIN g_user_account b ON a.`account_id` = b.account_id WHERE a.share_state = 0 AND a.share_recommend = 1 
 2019-04-21 12:07:57,663:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==> Parameters: 
 2019-04-21 12:07:57,679:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - <==      Total: 0
+2019-04-21 12:13:48,566:DEBUG http-nio-8090-exec-2 (BaseJdbcLogger.java:159) - ==>  Preparing: SELECT COUNT(1) FROM g_ad WHERE ad_type = ? 
+2019-04-21 12:13:48,733:DEBUG http-nio-8090-exec-2 (BaseJdbcLogger.java:159) - ==> Parameters: index(String)
+2019-04-21 12:13:49,550:TRACE http-nio-8090-exec-2 (BaseJdbcLogger.java:165) - <==    Columns: COUNT(1)
+2019-04-21 12:13:49,550:TRACE http-nio-8090-exec-2 (BaseJdbcLogger.java:165) - <==        Row: 6
+2019-04-21 12:13:49,550:DEBUG http-nio-8090-exec-2 (BaseJdbcLogger.java:159) - ==>  Preparing: SELECT ad_id,ad_type,ad_img,ad_state,ad_data_id,ad_data_type,add_time,ad_sort FROM g_ad WHERE ad_type = ? LIMIT 0,10 
+2019-04-21 12:13:49,550:DEBUG http-nio-8090-exec-2 (BaseJdbcLogger.java:159) - ==> Parameters: index(String)
+2019-04-21 12:13:49,581:TRACE http-nio-8090-exec-2 (BaseJdbcLogger.java:165) - <==    Columns: ad_id, ad_type, ad_img, ad_state, ad_data_id, ad_data_type, add_time, ad_sort
+2019-04-21 12:13:49,581:TRACE http-nio-8090-exec-2 (BaseJdbcLogger.java:165) - <==        Row: 11, index, ./Upload/Pictures/2018-12-21/5c1c4fa630da0.jpg, 0, 43, cms, 1538211710, 5
+2019-04-21 12:13:49,581:TRACE http-nio-8090-exec-2 (BaseJdbcLogger.java:165) - <==        Row: 13, index, ./Upload/Pictures/2018-10-25/5bd1adda35ea2.jpg, 1, 8, cms, 1538229660, 9
+2019-04-21 12:13:49,581:TRACE http-nio-8090-exec-2 (BaseJdbcLogger.java:165) - <==        Row: 14, index, ./Upload/Pictures/2019-03-05/5c7e491f7d9a1.jpg, 0, 50, cms, 1538229741, 10
+2019-04-21 12:13:49,581:TRACE http-nio-8090-exec-2 (BaseJdbcLogger.java:165) - <==        Row: 15, index, ./Upload/Pictures/2018-11-21/5bf56b81e161d.jpg, 1, 31, cms, 1542810061, 20
+2019-04-21 12:13:49,581:TRACE http-nio-8090-exec-2 (BaseJdbcLogger.java:165) - <==        Row: 17, index, ./Upload/Pictures/2018-12-07/5c0a2f70f16ac.jpg, 1, 36, cms, 1544171386, 6
+2019-04-21 12:13:49,581:TRACE http-nio-8090-exec-2 (BaseJdbcLogger.java:165) - <==        Row: 18, index, ./Upload/Pictures/2019-01-09/5c359f33d1e4b.jpg, 0, 46, cms, 1547017596, 46
+2019-04-21 12:13:49,581:DEBUG http-nio-8090-exec-2 (BaseJdbcLogger.java:159) - <==      Total: 6
+2019-04-21 12:13:49,581:DEBUG http-nio-8090-exec-2 (BaseJdbcLogger.java:159) - ==>  Preparing: SELECT COUNT(1) FROM g_share a RIGHT JOIN g_user_account b ON a.`account_id` = b.account_id WHERE a.share_state = 0 AND a.share_status = 1 
+2019-04-21 12:13:49,596:DEBUG http-nio-8090-exec-2 (BaseJdbcLogger.java:159) - ==> Parameters: 
+2019-04-21 12:13:49,612:TRACE http-nio-8090-exec-2 (BaseJdbcLogger.java:165) - <==    Columns: COUNT(1)
+2019-04-21 12:13:49,612:TRACE http-nio-8090-exec-2 (BaseJdbcLogger.java:165) - <==        Row: 1
+2019-04-21 12:13:49,612:DEBUG http-nio-8090-exec-2 (BaseJdbcLogger.java:159) - ==>  Preparing: SELECT share_id,a.user_id,user_name,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time, share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image FROM g_share a RIGHT JOIN g_user_account b ON a.`account_id` = b.account_id WHERE a.share_state = 0 AND a.share_status = 1 LIMIT 0,10 
+2019-04-21 12:13:49,612:DEBUG http-nio-8090-exec-2 (BaseJdbcLogger.java:159) - ==> Parameters: 
+2019-04-21 12:13:49,628:TRACE http-nio-8090-exec-2 (BaseJdbcLogger.java:165) - <==    Columns: share_id, user_id, user_name, account_id, share_content, share_image, share_state, share_video, wb_id, account_avatar, avatar_hd, add_time, share_coin, share_num, have_shared_num, total_coin, is_original, share_num_true, share_status, share_type, json, background_image
+2019-04-21 12:13:49,643:TRACE http-nio-8090-exec-2 (BaseJdbcLogger.java:165) - <==        Row: 2998, 12, 总裁语录, 179, <<BLOB>>, <<BLOB>>, 0, <<BLOB>>, 4359847773877023, http://tvax2.sinaimg.cn/crop.0.0.1080.1080.180/73ae3ca8ly8g0umajduc0j20u00u0ach.jpg, http://tvax2.sinaimg.cn/crop.0.0.1080.1080.1024/73ae3ca8ly8g0umajduc0j20u00u0ach.jpg, 1554954378, 50, 100, 50, 50, 0, 50, 1, 1, <<BLOB>>, 
+2019-04-21 12:13:49,643:DEBUG http-nio-8090-exec-2 (BaseJdbcLogger.java:159) - <==      Total: 1
+2019-04-21 12:13:49,643:DEBUG http-nio-8090-exec-2 (BaseJdbcLogger.java:159) - ==>  Preparing: SELECT a.user_id,a.share_id,a.account_id,c.avatar_hd , a.`sl_id` FROM g_share_log AS a LEFT JOIN g_user_account AS c ON c.account_id = a.account_id LEFT JOIN g_share_log g ON g.share_id = a.share_id WHERE a.`share_id` = ? AND a.sl_id < g.sl_id GROUP BY a.user_id,a.share_id,a.account_id,c.avatar_hd,sl_id ORDER BY `sl_id` DESC LIMIT 0,4 
+2019-04-21 12:13:49,643:DEBUG http-nio-8090-exec-2 (BaseJdbcLogger.java:159) - ==> Parameters: 2998(Integer)
+2019-04-21 12:13:49,675:TRACE http-nio-8090-exec-2 (BaseJdbcLogger.java:165) - <==    Columns: user_id, share_id, account_id, avatar_hd, sl_id
+2019-04-21 12:13:49,675:TRACE http-nio-8090-exec-2 (BaseJdbcLogger.java:165) - <==        Row: 14, 2998, 194, http://tvax3.sinaimg.cn/crop.0.0.996.996.1024/a8409920ly8ft73fmmyjbj20ro0roq4y.jpg, 28747
+2019-04-21 12:13:49,675:TRACE http-nio-8090-exec-2 (BaseJdbcLogger.java:165) - <==        Row: 45, 2998, 271, http://tva1.sinaimg.cn/crop.0.0.720.720.1024/539ffdf2jw8ewacwtne0nj20k00k0taz.jpg, 28746
+2019-04-21 12:13:49,675:TRACE http-nio-8090-exec-2 (BaseJdbcLogger.java:165) - <==        Row: 376, 2998, 758, http://tvax3.sinaimg.cn/crop.0.18.925.925.1024/a0a75739ly8fn4b9f0kegj20pp0qpgoe.jpg, 28745
+2019-04-21 12:13:49,675:TRACE http-nio-8090-exec-2 (BaseJdbcLogger.java:165) - <==        Row: 82, 2998, 301, http://tvax2.sinaimg.cn/crop.0.0.512.512.1024/77d943a3ly8fyuaecpsidj20e80e8t90.jpg, 28743
+2019-04-21 12:13:49,675:DEBUG http-nio-8090-exec-2 (BaseJdbcLogger.java:159) - <==      Total: 4
+2019-04-21 12:13:49,675:DEBUG http-nio-8090-exec-2 (BaseJdbcLogger.java:159) - ==>  Preparing: SELECT COUNT(1) FROM g_share a RIGHT JOIN g_user_account b ON a.`account_id` = b.account_id WHERE a.share_state = 0 AND a.share_recommend = 1 
+2019-04-21 12:13:49,690:DEBUG http-nio-8090-exec-2 (BaseJdbcLogger.java:159) - ==> Parameters: 
+2019-04-21 12:13:49,706:TRACE http-nio-8090-exec-2 (BaseJdbcLogger.java:165) - <==    Columns: COUNT(1)
+2019-04-21 12:13:49,706:TRACE http-nio-8090-exec-2 (BaseJdbcLogger.java:165) - <==        Row: 0
+2019-04-21 12:13:49,706:DEBUG http-nio-8090-exec-2 (BaseJdbcLogger.java:159) - ==>  Preparing: SELECT share_id,a.user_id,user_name,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time, share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image FROM g_share a RIGHT JOIN g_user_account b ON a.`account_id` = b.account_id WHERE a.share_state = 0 AND a.share_recommend = 1 
+2019-04-21 12:13:49,721:DEBUG http-nio-8090-exec-2 (BaseJdbcLogger.java:159) - ==> Parameters: 
+2019-04-21 12:13:50,534:DEBUG http-nio-8090-exec-2 (BaseJdbcLogger.java:159) - <==      Total: 0
+2019-04-21 12:15:37,574:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==>  Preparing: SELECT COUNT(1) FROM g_ad WHERE ad_type = ? 
+2019-04-21 12:15:37,728:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==> Parameters: index(String)
+2019-04-21 12:15:38,542:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==    Columns: COUNT(1)
+2019-04-21 12:15:38,542:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 6
+2019-04-21 12:15:38,542:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==>  Preparing: SELECT ad_id,ad_type,ad_img,ad_state,ad_data_id,ad_data_type,add_time,ad_sort FROM g_ad WHERE ad_type = ? LIMIT 0,10 
+2019-04-21 12:15:38,542:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==> Parameters: index(String)
+2019-04-21 12:15:38,574:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==    Columns: ad_id, ad_type, ad_img, ad_state, ad_data_id, ad_data_type, add_time, ad_sort
+2019-04-21 12:15:38,574:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 11, index, ./Upload/Pictures/2018-12-21/5c1c4fa630da0.jpg, 0, 43, cms, 1538211710, 5
+2019-04-21 12:15:38,574:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 13, index, ./Upload/Pictures/2018-10-25/5bd1adda35ea2.jpg, 1, 8, cms, 1538229660, 9
+2019-04-21 12:15:38,574:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 14, index, ./Upload/Pictures/2019-03-05/5c7e491f7d9a1.jpg, 0, 50, cms, 1538229741, 10
+2019-04-21 12:15:38,574:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 15, index, ./Upload/Pictures/2018-11-21/5bf56b81e161d.jpg, 1, 31, cms, 1542810061, 20
+2019-04-21 12:15:38,574:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 17, index, ./Upload/Pictures/2018-12-07/5c0a2f70f16ac.jpg, 1, 36, cms, 1544171386, 6
+2019-04-21 12:15:38,574:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 18, index, ./Upload/Pictures/2019-01-09/5c359f33d1e4b.jpg, 0, 46, cms, 1547017596, 46
+2019-04-21 12:15:38,574:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - <==      Total: 6
+2019-04-21 12:15:38,574:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==>  Preparing: SELECT COUNT(1) FROM g_share a RIGHT JOIN g_user_account b ON a.`account_id` = b.account_id WHERE a.share_state = 0 AND a.share_status = 1 
+2019-04-21 12:15:38,589:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==> Parameters: 
+2019-04-21 12:15:38,605:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==    Columns: COUNT(1)
+2019-04-21 12:15:38,605:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 1
+2019-04-21 12:15:38,605:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==>  Preparing: SELECT share_id,a.user_id,user_name,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time, share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image FROM g_share a RIGHT JOIN g_user_account b ON a.`account_id` = b.account_id WHERE a.share_state = 0 AND a.share_status = 1 LIMIT 0,10 
+2019-04-21 12:15:38,605:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==> Parameters: 
+2019-04-21 12:15:38,620:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==    Columns: share_id, user_id, user_name, account_id, share_content, share_image, share_state, share_video, wb_id, account_avatar, avatar_hd, add_time, share_coin, share_num, have_shared_num, total_coin, is_original, share_num_true, share_status, share_type, json, background_image
+2019-04-21 12:15:38,620:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 2998, 12, 总裁语录, 179, <<BLOB>>, <<BLOB>>, 0, <<BLOB>>, 4359847773877023, http://tvax2.sinaimg.cn/crop.0.0.1080.1080.180/73ae3ca8ly8g0umajduc0j20u00u0ach.jpg, http://tvax2.sinaimg.cn/crop.0.0.1080.1080.1024/73ae3ca8ly8g0umajduc0j20u00u0ach.jpg, 1554954378, 50, 100, 50, 50, 0, 50, 1, 1, <<BLOB>>, 
+2019-04-21 12:15:38,620:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - <==      Total: 1
+2019-04-21 12:15:38,620:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==>  Preparing: SELECT a.user_id,a.share_id,a.account_id,c.avatar_hd , a.`sl_id` FROM g_share_log AS a LEFT JOIN g_user_account AS c ON c.account_id = a.account_id LEFT JOIN g_share_log g ON g.share_id = a.share_id WHERE a.`share_id` = ? AND a.sl_id < g.sl_id GROUP BY a.user_id,a.share_id,a.account_id,c.avatar_hd,sl_id ORDER BY `sl_id` DESC LIMIT 0,4 
+2019-04-21 12:15:38,636:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==> Parameters: 2998(Integer)
+2019-04-21 12:15:38,652:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==    Columns: user_id, share_id, account_id, avatar_hd, sl_id
+2019-04-21 12:15:38,652:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 14, 2998, 194, http://tvax3.sinaimg.cn/crop.0.0.996.996.1024/a8409920ly8ft73fmmyjbj20ro0roq4y.jpg, 28747
+2019-04-21 12:15:38,652:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 45, 2998, 271, http://tva1.sinaimg.cn/crop.0.0.720.720.1024/539ffdf2jw8ewacwtne0nj20k00k0taz.jpg, 28746
+2019-04-21 12:15:38,652:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 376, 2998, 758, http://tvax3.sinaimg.cn/crop.0.18.925.925.1024/a0a75739ly8fn4b9f0kegj20pp0qpgoe.jpg, 28745
+2019-04-21 12:15:38,652:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 82, 2998, 301, http://tvax2.sinaimg.cn/crop.0.0.512.512.1024/77d943a3ly8fyuaecpsidj20e80e8t90.jpg, 28743
+2019-04-21 12:15:38,652:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - <==      Total: 4
+2019-04-21 12:15:38,652:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==>  Preparing: SELECT COUNT(1) FROM g_share a RIGHT JOIN g_user_account b ON a.`account_id` = b.account_id WHERE a.share_state = 0 AND a.share_recommend = 1 
+2019-04-21 12:15:38,652:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==> Parameters: 
+2019-04-21 12:15:38,667:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==    Columns: COUNT(1)
+2019-04-21 12:15:38,667:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 0
+2019-04-21 12:15:38,667:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==>  Preparing: SELECT share_id,a.user_id,user_name,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time, share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image FROM g_share a RIGHT JOIN g_user_account b ON a.`account_id` = b.account_id WHERE a.share_state = 0 AND a.share_recommend = 1 
+2019-04-21 12:15:38,683:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==> Parameters: 
+2019-04-21 12:15:38,699:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - <==      Total: 0
+2019-04-21 12:15:42,671:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==>  Preparing: SELECT cms_id,cms_title,cms_author,cate_id,cate_name,cms_image,cms_content,cms_sort,add_time,see_num FROM g_cms WHERE cms_author = ? 
+2019-04-21 12:15:42,687:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==> Parameters: admin(String)
+2019-04-21 12:15:43,656:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==    Columns: cms_id, cms_title, cms_author, cate_id, cate_name, cms_image, cms_content, cms_sort, add_time, see_num
+2019-04-21 12:15:43,671:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 9, 总裁语录MCN蝉联微职场6月冠军, admin, 3, 自媒体, ./Upload/Pictures/2018-10-25/5bd1af99abf1a.jpg, <<BLOB>>, 4, 1536547093, 52
+2019-04-21 12:15:43,718:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 10, 如果打造新媒体的个人IP?, admin, 3, 自媒体, ./Upload/Pictures/2018-10-25/5bd1afc2afadb.jpg, <<BLOB>>, 1, 1536547106, 99
+2019-04-21 12:15:43,718:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 12, 百万大V齐聚武夷山：献策自媒体全景式生态圈发展, admin, 3, 自媒体, ./Upload/Pictures/2018-10-25/5bd1b039131e0.jpg, <<BLOB>>, 3, 1536557612, 68
+2019-04-21 12:15:43,734:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 18, 有点分享—新媒体运营管家, admin, 1, 微技能, ./Upload/Pictures/2018-10-25/5bd1b05c9df0b.jpg, <<BLOB>>, 8, 1538211525, 388
+2019-04-21 12:15:43,734:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 19, 成功人懂得选择，失败人懂的放弃！, admin, 1, 知识技能, ./Upload/Pictures/2018-09-29/5baf4b09251c6.jpg, <<BLOB>>, 10, 1538216365, 41
+2019-04-21 12:15:43,765:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 22, 女性职场潜规则 读懂上司的N种肢体语言, admin, 1, 知识技能, ./Upload/Pictures/2018-10-05/5bb743368c5bb.jpg, <<BLOB>>, 11, 1538737047, 43
+2019-04-21 12:15:43,796:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 23, 自媒体运营相关工具汇总, admin, 1, 微技能, ./Upload/Pictures/2018-10-06/5bb85158181e6.jpeg, <<BLOB>>, 12, 1538806180, 77
+2019-04-21 12:15:43,859:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 24, 【梦想计划】脚步丈量梦想计划, admin, 3, 自媒体, ./Upload/Pictures/2018-10-08/5bbb46046ed70.jpg, <<BLOB>>, 13, 1538999835, 71
+2019-04-21 12:15:43,859:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 25, 2018年9月微博职场MCN合作机构秀,最具影响力TOP10 机构榜单, admin, 3, 自媒体, ./Upload/Pictures/2018-10-25/5bd1b0d7dfcce.jpg, <<BLOB>>, 14, 1539441095, 125
+2019-04-21 12:15:43,874:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 27, 总裁语录新作《微媒主义》预售, admin, 3, 自媒体, ./Upload/Pictures/2018-10-27/5bd43389dd9be.jpg, <<BLOB>>, 16, 1540633483, 125
+2019-04-21 12:15:43,921:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 28, 2018年10月MCN机构秀, admin, 3, 自媒体, ./Upload/Pictures/2018-11-12/5be852017bb09.jpg, <<BLOB>>, 17, 1541951711, 69
+2019-04-21 12:15:43,921:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 29, 新华社时评：向自媒体乱象亮出法治利剑, admin, 3, 自媒体, ./Upload/Pictures/2018-11-14/5bebd827ef4c0.jpg, <<BLOB>>, 18, 1542183049, 51
+2019-04-21 12:15:43,937:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 30, 转发优质内容即送红包现金, admin, 3, 自媒体, ./Upload/Pictures/2018-11-17/5beffc68b976c.jpg, <<BLOB>>, 19, 1542454437, 184
+2019-04-21 12:15:43,953:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 31, 新手指引, admin, 3, 自媒体, ./Upload/Pictures/2018-11-21/5bf568d93a27c.jpg, <<BLOB>>, 20, 1542809902, 240
+2019-04-21 12:15:43,968:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 32, 热点赋能头部大V, admin, 3, 自媒体, ./Upload/Pictures/2018-11-25/5bfa9d8f8f684.jpeg, <<BLOB>>, 21, 1543151031, 122
+2019-04-21 12:15:43,968:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 33, 关于商业广告投放事宜, admin, 3, 自媒体, ./Upload/Pictures/2018-11-25/5bfac30fbb73e.jpg, <<BLOB>>, 22, 1543160729, 214
+2019-04-21 12:15:44,031:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 34, #全民阅读#话题激励活动, admin, 3, 自媒体, ./Upload/Pictures/2018-12-07/5c0a224a5e117.jpg, <<BLOB>>, 24, 1543887778, 515
+2019-04-21 12:15:44,031:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 35, 十一月平台奖励名单, admin, 3, 自媒体, ./Upload/Pictures/2018-12-06/5c092b139f2b2.png, <<BLOB>>, 23, 1544104778, 214
+2019-04-21 12:15:44,046:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 36, 职场思维导图精选课, admin, 4, 微优品, ./Upload/Pictures/2018-12-07/5c0a2d6a95ba1.jpg, <<BLOB>>, 25, 1544171118, 351
+2019-04-21 12:15:44,046:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 37, 恭喜总裁语录荣获职场V影响力排行榜第一名, admin, 3, 自媒体, ./Upload/Pictures/2018-12-07/5c0a7996ea6d9.jpg, <<BLOB>>, 26, 1544190126, 232
+2019-04-21 12:15:44,062:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 40, 11月#微博职场MCN# 合作机构秀 · 最具影响力TOP10 机构榜单, admin, 3, 自媒体, ./Upload/Pictures/2018-12-10/5c0e82eda1d51.jpg, <<BLOB>>, 27, 1544454972, 70
+2019-04-21 12:15:44,062:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 41, 【优品推荐】好米知时节, admin, 4, 微优品, ./Upload/Pictures/2018-12-11/5c0f8b170c646.jpg, <<BLOB>>, 28, 1544522989, 106
+2019-04-21 12:15:44,078:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 42, 11月10万+粉丝包奖励名单出炉, admin, 3, 自媒体, ./Upload/Pictures/2018-12-12/5c111f50a59d3.png, <<BLOB>>, 29, 1544626063, 355
+2019-04-21 12:15:44,093:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 43, WeiPro-MCN招募新媒体达人, admin, 1, 微技能, ./Upload/Pictures/2018-12-13/5c1250d8b3f2e.png, <<BLOB>>, 30, 1544704243, 681
+2019-04-21 12:15:44,093:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 44, weipro平台12月话题活动奖励名单, admin, 3, 自媒体, ./Upload/Pictures/2019-01-05/5c3040ba04555.png, <<BLOB>>, 31, 1546666247, 115
+2019-04-21 12:15:44,109:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 45, 《微媒主义》-新媒体流量IP-总裁语录作品, admin, 1, 微技能, ./Upload/Pictures/2019-01-05/5c3080bfb4875.png, <<BLOB>>, 45, 1546682508, 96
+2019-04-21 12:15:44,109:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 46, weipro签约用户，实现轻松变现！, admin, 3, 自媒体, ./Upload/Pictures/2019-01-09/5c35912f018e7.jpg, <<BLOB>>, 46, 1547016650, 236
+2019-04-21 12:15:44,124:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 47, 1月份5万+粉丝包奖励名单—情感领域, admin, 3, 自媒体, ./Upload/Pictures/2019-01-16/5c3f39deaea7c.png, <<BLOB>>, 47, 1547648651, 185
+2019-04-21 12:15:44,124:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 48, 新媒体变现我们是认真的：万元奖金等你拿, admin, 3, 自媒体, ./Upload/Pictures/2019-01-16/5c3f4c8528660.png, <<BLOB>>, 48, 1547652254, 267
+2019-04-21 12:15:44,140:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 49, 总裁语录MCN荣登榜首, admin, 3, 自媒体, ./Upload/Pictures/2019-02-13/5c6432e016a64.jpg, <<BLOB>>, 49, 1550070723, 105
+2019-04-21 12:15:44,140:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 50, 第七届总裁微友会火热报名中, admin, 3, 自媒体, ./Upload/Pictures/2019-03-05/5c7e498a94d18.jpg, <<BLOB>>, 50, 1551780412, 142
+2019-04-21 12:15:44,156:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 51, MCN机构变革通知, admin, 3, 自媒体, ./Upload/Pictures/2019-03-07/5c80cbbe6e437.jpg, <<BLOB>>, 51, 1551944644, 94
+2019-04-21 12:15:44,156:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 52, 关于微博恢复实时号的建议, admin, 3, 自媒体, ./Upload/Pictures/2019-03-15/5c8b06d117c9b.jpg, <<BLOB>>, 52, 1552615126, 117
+2019-04-21 12:15:44,171:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 53, 微博运营技巧：三个方法100%帮你增加互动量, admin, 3, 自媒体, ./Upload/Pictures/2019-03-15/5c8b072e4dede.jpg, <<BLOB>>, 53, 1552615242, 101
+2019-04-21 12:15:44,171:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 55, 恭喜总裁语录MCN荣获微博情感领域TOP20, admin, 3, 自媒体, ./Upload/Pictures/2019-03-29/5c9dc696db899.jpg, <<BLOB>>, 56, 1553843867, 57
+2019-04-21 12:15:44,187:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 56, 燃爆了！“大V看气象”总裁语录走进中国气象局，围观网友超千万！, admin, 3, 自媒体, ./Upload/Pictures/2019-03-29/5c9dc784d9c5a.jpg, <<BLOB>>, 55, 1553844324, 31
+2019-04-21 12:15:44,281:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 57, 2019年3月微博职场最具影响力TOP10大V榜单, admin, 1, 微技能, ./Upload/Pictures/2019-04-09/5cac9689a6ad0.png, <<BLOB>>, 56, 1554814609, 6
+2019-04-21 12:15:44,296:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - <==      Total: 37
+2019-04-21 12:15:53,187:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==>  Preparing: SELECT a.user_id,a.share_id,a.share_money,a.check_time,a.account_id,b.user_name FROM g_share_log a LEFT JOIN g_user b ON a.`user_id` = b.`user_id` WHERE a.check_time lt UNIX_TIMESTAMP(NOW()) AND a.check_time gt UNIX_TIMESTAMP(DATE_SUB(NOW(),INTERVAL 1 DAY)) AND a.reward_type = 1 AND a.is_pass = 1 ORDER BY a.sl_id DESC 
+2019-04-21 12:19:24,252:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==>  Preparing: SELECT COUNT(1) FROM g_ad WHERE ad_type = ? 
+2019-04-21 12:19:24,462:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==> Parameters: index(String)
+2019-04-21 12:19:24,528:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==    Columns: COUNT(1)
+2019-04-21 12:19:24,528:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 6
+2019-04-21 12:19:24,534:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==>  Preparing: SELECT ad_id,ad_type,ad_img,ad_state,ad_data_id,ad_data_type,add_time,ad_sort FROM g_ad WHERE ad_type = ? LIMIT 0,10 
+2019-04-21 12:19:24,538:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==> Parameters: index(String)
+2019-04-21 12:19:24,556:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==    Columns: ad_id, ad_type, ad_img, ad_state, ad_data_id, ad_data_type, add_time, ad_sort
+2019-04-21 12:19:24,557:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 11, index, ./Upload/Pictures/2018-12-21/5c1c4fa630da0.jpg, 0, 43, cms, 1538211710, 5
+2019-04-21 12:19:24,560:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 13, index, ./Upload/Pictures/2018-10-25/5bd1adda35ea2.jpg, 1, 8, cms, 1538229660, 9
+2019-04-21 12:19:24,561:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 14, index, ./Upload/Pictures/2019-03-05/5c7e491f7d9a1.jpg, 0, 50, cms, 1538229741, 10
+2019-04-21 12:19:24,561:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 15, index, ./Upload/Pictures/2018-11-21/5bf56b81e161d.jpg, 1, 31, cms, 1542810061, 20
+2019-04-21 12:19:24,563:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 17, index, ./Upload/Pictures/2018-12-07/5c0a2f70f16ac.jpg, 1, 36, cms, 1544171386, 6
+2019-04-21 12:19:24,564:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 18, index, ./Upload/Pictures/2019-01-09/5c359f33d1e4b.jpg, 0, 46, cms, 1547017596, 46
+2019-04-21 12:19:24,565:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - <==      Total: 6
+2019-04-21 12:19:24,573:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==>  Preparing: SELECT COUNT(1) FROM g_share a RIGHT JOIN g_user_account b ON a.`account_id` = b.account_id WHERE a.share_state = 0 AND a.share_status = 1 
+2019-04-21 12:19:24,578:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==> Parameters: 
+2019-04-21 12:19:24,594:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==    Columns: COUNT(1)
+2019-04-21 12:19:24,595:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 1
+2019-04-21 12:19:24,595:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==>  Preparing: SELECT share_id,a.user_id,user_name,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time, share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image FROM g_share a RIGHT JOIN g_user_account b ON a.`account_id` = b.account_id WHERE a.share_state = 0 AND a.share_status = 1 LIMIT 0,10 
+2019-04-21 12:19:24,599:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==> Parameters: 
+2019-04-21 12:19:24,617:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==    Columns: share_id, user_id, user_name, account_id, share_content, share_image, share_state, share_video, wb_id, account_avatar, avatar_hd, add_time, share_coin, share_num, have_shared_num, total_coin, is_original, share_num_true, share_status, share_type, json, background_image
+2019-04-21 12:19:24,617:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 2998, 12, 总裁语录, 179, <<BLOB>>, <<BLOB>>, 0, <<BLOB>>, 4359847773877023, http://tvax2.sinaimg.cn/crop.0.0.1080.1080.180/73ae3ca8ly8g0umajduc0j20u00u0ach.jpg, http://tvax2.sinaimg.cn/crop.0.0.1080.1080.1024/73ae3ca8ly8g0umajduc0j20u00u0ach.jpg, 1554954378, 50, 100, 50, 50, 0, 50, 1, 1, <<BLOB>>, 
+2019-04-21 12:19:24,619:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - <==      Total: 1
+2019-04-21 12:19:24,621:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==>  Preparing: SELECT a.user_id,a.share_id,a.account_id,c.avatar_hd , a.`sl_id` FROM g_share_log AS a LEFT JOIN g_user_account AS c ON c.account_id = a.account_id LEFT JOIN g_share_log g ON g.share_id = a.share_id WHERE a.`share_id` = ? AND a.sl_id < g.sl_id GROUP BY a.user_id,a.share_id,a.account_id,c.avatar_hd,sl_id ORDER BY `sl_id` DESC LIMIT 0,4 
+2019-04-21 12:19:24,628:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==> Parameters: 2998(Integer)
+2019-04-21 12:19:24,645:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==    Columns: user_id, share_id, account_id, avatar_hd, sl_id
+2019-04-21 12:19:24,645:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 14, 2998, 194, http://tvax3.sinaimg.cn/crop.0.0.996.996.1024/a8409920ly8ft73fmmyjbj20ro0roq4y.jpg, 28747
+2019-04-21 12:19:24,646:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 45, 2998, 271, http://tva1.sinaimg.cn/crop.0.0.720.720.1024/539ffdf2jw8ewacwtne0nj20k00k0taz.jpg, 28746
+2019-04-21 12:19:24,647:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 376, 2998, 758, http://tvax3.sinaimg.cn/crop.0.18.925.925.1024/a0a75739ly8fn4b9f0kegj20pp0qpgoe.jpg, 28745
+2019-04-21 12:19:24,647:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 82, 2998, 301, http://tvax2.sinaimg.cn/crop.0.0.512.512.1024/77d943a3ly8fyuaecpsidj20e80e8t90.jpg, 28743
+2019-04-21 12:19:24,649:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - <==      Total: 4
+2019-04-21 12:19:24,652:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==>  Preparing: SELECT COUNT(1) FROM g_share a RIGHT JOIN g_user_account b ON a.`account_id` = b.account_id WHERE a.share_state = 0 AND a.share_recommend = 1 
+2019-04-21 12:19:24,654:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==> Parameters: 
+2019-04-21 12:19:24,670:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==    Columns: COUNT(1)
+2019-04-21 12:19:24,670:TRACE http-nio-8090-exec-1 (BaseJdbcLogger.java:165) - <==        Row: 0
+2019-04-21 12:19:24,671:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==>  Preparing: SELECT share_id,a.user_id,user_name,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time, share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image FROM g_share a RIGHT JOIN g_user_account b ON a.`account_id` = b.account_id WHERE a.share_state = 0 AND a.share_recommend = 1 
+2019-04-21 12:19:24,674:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - ==> Parameters: 
+2019-04-21 12:19:24,692:DEBUG http-nio-8090-exec-1 (BaseJdbcLogger.java:159) - <==      Total: 0

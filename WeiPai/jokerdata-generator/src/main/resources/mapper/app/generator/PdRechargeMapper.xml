@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jokerdata.mapper.app.generator.PdRechargeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jokerdata.entity.app.generator.PdRecharge">
+        <id column="pdr_id" property="pdrId"/>
+        <result column="pdr_sn" property="pdrSn"/>
+        <result column="pdr_member_id" property="pdrMemberId"/>
+        <result column="pdr_member_name" property="pdrMemberName"/>
+        <result column="pdr_amount" property="pdrAmount"/>
+        <result column="pdr_payment_code" property="pdrPaymentCode"/>
+        <result column="pdr_payment_name" property="pdrPaymentName"/>
+        <result column="pdr_trade_sn" property="pdrTradeSn"/>
+        <result column="pdr_add_time" property="pdrAddTime"/>
+        <result column="pdr_payment_state" property="pdrPaymentState"/>
+        <result column="pdr_payment_time" property="pdrPaymentTime"/>
+        <result column="pdr_admin" property="pdrAdmin"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        pdr_id, pdr_sn, pdr_member_id, pdr_member_name, pdr_amount, pdr_payment_code, pdr_payment_name, pdr_trade_sn, pdr_add_time, pdr_payment_state, pdr_payment_time, pdr_admin
+    </sql>
+
+    <select id="selectPage" resultMap="BaseResultMap">
+
+        select
+        <include refid="Base_Column_List"/>
+        from g_pd_recharge
+        where del = 0
+        <if test=" param.search1 != ''">
+            and g_pd_recharge.name LIKE CONCAT('%',#{param.search1},'%')
+        </if>
+
+    </select>
+</mapper>

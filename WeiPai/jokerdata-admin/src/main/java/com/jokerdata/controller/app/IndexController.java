@@ -60,11 +60,11 @@ public class IndexController {
         recPage.setSize(10);
         recPage = shareService.tuiJianList(recPage,true);
 
-        IPage<Cms> page = new Page<>();
-        page.setCurrent(0);
-        page.setSize(10);
-        page = cmsService.page(page,new QueryWrapper<Cms>());
-        List<Cms> cms_list = page.getRecords();
+        IPage<Cms> cmsPage = new Page<>();
+        cmsPage.setCurrent(0);
+        cmsPage.setSize(10);
+//        cmsPage = cmsService.page(cmsPage,new QueryWrapper<Cms>().eq("cms_author","admin"));
+        cmsPage = cmsService.page(cmsPage,new QueryWrapper<Cms>().eq("cms_author","admin"));
 
         //最近收益
         List<ShareIndexVo> shareIndexVos = shareLogService.getshareInfo();
@@ -88,8 +88,8 @@ public class IndexController {
         map.put("money_list",ClassUtil.toLowBeanList(sharePage.getRecords()));
         map.put("rec_more",recPage.getPages()>1?true:false);
         map.put("rec_list",ClassUtil.toLowBeanList(recPage.getRecords()));
-        map.put("cms_more",page.getPages()>1?true:false);
-        map.put("cms_list",ClassUtil.toLowBeanList(page.getRecords()));
+        map.put("cms_more",cmsPage.getPages()>1?true:false);
+        map.put("cms_list",ClassUtil.toLowBeanList(cmsPage.getRecords()));
         map.put("get_money_list",ClassUtil.toLowBeanList(shareIndexVos));
 
         return ApiResult.success(map);
