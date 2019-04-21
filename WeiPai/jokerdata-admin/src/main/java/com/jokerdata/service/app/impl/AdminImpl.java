@@ -2,7 +2,7 @@ package com.jokerdata.service.app.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jokerdata.entity.app.generator.Admin;
-import com.jokerdata.mapper.app.generator.AdminCustomMapper;
+import com.jokerdata.mapper.app.generator.AdminMapper;
 import com.jokerdata.service.app.AdminService;
 import com.jokerdata.vo.MyPage;
 import org.springframework.stereotype.Service;
@@ -15,12 +15,12 @@ import javax.annotation.Resource;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-15
+ * @since 2019-04-20
  */
 @Service
-public class AdminImpl extends ServiceImpl<AdminCustomMapper, Admin> implements AdminService {
+public class AdminImpl extends ServiceImpl<AdminMapper, Admin> implements AdminService {
     @Resource
-    AdminCustomMapper targetMapper;
+    AdminMapper targetMapper;
 
     @Override
     public MyPage<Admin> selectPage(MyPage page) {

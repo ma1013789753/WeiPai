@@ -17,7 +17,7 @@ import java.math.BigDecimal;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-17
+ * @since 2019-04-19
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -27,12 +27,12 @@ public class Math extends Model<Math> {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "math_id", type = IdType.AUTO)
-    private Integer math_id;
+    private Integer mathId;
 
     /**
      * 分享编号
      */
-    private Integer share_id;
+    private Integer shareId;
 
     /**
      * 次序
@@ -52,12 +52,12 @@ public class Math extends Model<Math> {
     /**
      * 对应的分享logid
      */
-    private Integer log_id;
+    private Integer logId;
 
 
     @Override
     protected Serializable pkVal() {
-        return this.math_id;
+        return this.mathId;
     }
 
 }

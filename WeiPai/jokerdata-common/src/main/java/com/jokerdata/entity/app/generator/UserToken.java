@@ -16,7 +16,7 @@ import java.io.Serializable;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-17
+ * @since 2019-04-19
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -26,20 +26,20 @@ public class UserToken extends Model<UserToken> {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "ut_id", type = IdType.AUTO)
-    private Integer ut_id;
+    private Integer utId;
 
-    private Integer user_id;
+    private Integer userId;
 
-    private String user_name;
+    private String userName;
 
-    private String user_token;
+    private String userToken;
 
-    private String add_time;
+    private String addTime;
 
 
     @Override
     protected Serializable pkVal() {
-        return this.ut_id;
+        return this.utId;
     }
 
 }

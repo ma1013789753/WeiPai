@@ -16,7 +16,7 @@ import java.io.Serializable;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-17
+ * @since 2019-04-19
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -26,54 +26,54 @@ public class Cms extends Model<Cms> {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "cms_id", type = IdType.AUTO)
-    private Integer cms_id;
+    private Integer cmsId;
 
     /**
      * 标题
      */
-    private String cms_title;
+    private String cmsTitle;
 
     /**
      * 作者
      */
-    private String cms_author;
+    private String cmsAuthor;
 
     /**
      * 分类id
      */
-    private Integer cate_id;
+    private Integer cateId;
 
     /**
      * 分类名
      */
-    private String cate_name;
+    private String cateName;
 
     /**
      * 封面图
      */
-    private String cms_image;
+    private String cmsImage;
 
     /**
      * 内容
      */
-    private String cms_content;
+    private String cmsContent;
 
     /**
      * 排序
      */
-    private Integer cms_sort;
+    private Integer cmsSort;
 
     /**
      * 添加时间
      */
-    private String add_time;
+    private String addTime;
 
-    private Integer see_num;
+    private Integer seeNum;
 
 
     @Override
     protected Serializable pkVal() {
-        return this.cms_id;
+        return this.cmsId;
     }
 
 }

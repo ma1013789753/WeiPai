@@ -2,7 +2,7 @@ package com.jokerdata.service.app.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jokerdata.entity.app.generator.AuthGroup;
-import com.jokerdata.mapper.app.generator.AuthGroupCustomMapper;
+import com.jokerdata.mapper.app.generator.AuthGroupMapper;
 import com.jokerdata.service.app.AuthGroupService;
 import com.jokerdata.vo.MyPage;
 import org.springframework.stereotype.Service;
@@ -15,12 +15,12 @@ import javax.annotation.Resource;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-15
+ * @since 2019-04-20
  */
 @Service
-public class AuthGroupImpl extends ServiceImpl<AuthGroupCustomMapper, AuthGroup> implements AuthGroupService {
+public class AuthGroupImpl extends ServiceImpl<AuthGroupMapper, AuthGroup> implements AuthGroupService {
     @Resource
-    AuthGroupCustomMapper targetMapper;
+    AuthGroupMapper targetMapper;
 
     @Override
     public MyPage<AuthGroup> selectPage(MyPage page) {

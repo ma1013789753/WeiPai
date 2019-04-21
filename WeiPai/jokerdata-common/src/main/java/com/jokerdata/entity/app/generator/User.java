@@ -17,7 +17,7 @@ import java.math.BigDecimal;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-17
+ * @since 2019-04-19
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -27,90 +27,244 @@ public class User extends Model<User> {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "user_id", type = IdType.AUTO)
-    private Integer user_id;
+    private Integer userId;
 
     /**
      * 昵称
      */
-    private String user_name;
+    private String userName;
 
     /**
      * 手机号码，账号
      */
-    private String user_mobile;
+    private String userMobile;
 
     /**
      * 密码
      */
-    private String user_password;
+    private String userPassword;
 
     /**
      * 性别:1男，2女
      */
-    private int user_gender;
+    private Boolean userGender;
 
     /**
      * 正常0,1禁用
      */
-    private int user_state;
+    private Boolean userState;
 
-    private String add_time;
+    private String addTime;
 
     /**
      * 支付密码
      */
-    private String user_pay_pwd;
+    private String userPayPwd;
 
     /**
      * 微信openid
      */
-    private String wechat_openid;
+    private String wechatOpenid;
 
     /**
      * 支付宝账号
      */
-    private String alipay_account;
+    private String alipayAccount;
 
     /**
      * 预存款
      */
-    private BigDecimal available_predeposit;
+    private BigDecimal availablePredeposit;
 
     /**
      * 冻结预存款
      */
-    private BigDecimal freeze_predeposit;
+    private BigDecimal freezePredeposit;
 
     /**
      * 积分
      */
-    private Integer user_coin;
+    private Integer userCoin;
 
     /**
      * 连续签到天数
      */
-    private Integer sign_limit;
+    private Integer signLimit;
 
     /**
      * 累计积分
      */
-    private Integer coin_total;
+    private Integer coinTotal;
 
-    private String user_qq;
+    private String userQq;
 
-    private String user_email;
+    private String userEmail;
 
-    private String user_wx;
+    private String userWx;
 
     /**
      * 支付宝账户人
      */
-    private String alipay_name;
-
+    private String alipayName;
 
     @Override
     protected Serializable pkVal() {
-        return this.user_id;
+        return this.userId;
     }
 
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserMobile() {
+        return userMobile;
+    }
+
+    public void setUserMobile(String userMobile) {
+        this.userMobile = userMobile;
+    }
+
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
+
+    public Boolean getUserGender() {
+        return userGender;
+    }
+
+    public void setUserGender(Boolean userGender) {
+        this.userGender = userGender;
+    }
+
+    public Boolean getUserState() {
+        return userState;
+    }
+
+    public void setUserState(Boolean userState) {
+        this.userState = userState;
+    }
+
+    public String getAddTime() {
+        return addTime;
+    }
+
+    public void setAddTime(String addTime) {
+        this.addTime = addTime;
+    }
+
+    public String getUserPayPwd() {
+        return userPayPwd;
+    }
+
+    public void setUserPayPwd(String userPayPwd) {
+        this.userPayPwd = userPayPwd;
+    }
+
+    public String getWechatOpenid() {
+        return wechatOpenid;
+    }
+
+    public void setWechatOpenid(String wechatOpenid) {
+        this.wechatOpenid = wechatOpenid;
+    }
+
+    public String getAlipayAccount() {
+        return alipayAccount;
+    }
+
+    public void setAlipayAccount(String alipayAccount) {
+        this.alipayAccount = alipayAccount;
+    }
+
+    public BigDecimal getAvailablePredeposit() {
+        return availablePredeposit;
+    }
+
+    public void setAvailablePredeposit(BigDecimal availablePredeposit) {
+        this.availablePredeposit = availablePredeposit;
+    }
+
+    public BigDecimal getFreezePredeposit() {
+        return freezePredeposit;
+    }
+
+    public void setFreezePredeposit(BigDecimal freezePredeposit) {
+        this.freezePredeposit = freezePredeposit;
+    }
+
+    public Integer getUserCoin() {
+        return userCoin;
+    }
+
+    public void setUserCoin(Integer userCoin) {
+        this.userCoin = userCoin;
+    }
+
+    public Integer getSignLimit() {
+        return signLimit;
+    }
+
+    public void setSignLimit(Integer signLimit) {
+        this.signLimit = signLimit;
+    }
+
+    public Integer getCoinTotal() {
+        return coinTotal;
+    }
+
+    public void setCoinTotal(Integer coinTotal) {
+        this.coinTotal = coinTotal;
+    }
+
+    public String getUserQq() {
+        return userQq;
+    }
+
+    public void setUserQq(String userQq) {
+        this.userQq = userQq;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public String getUserWx() {
+        return userWx;
+    }
+
+    public void setUserWx(String userWx) {
+        this.userWx = userWx;
+    }
+
+    public String getAlipayName() {
+        return alipayName;
+    }
+
+    public void setAlipayName(String alipayName) {
+        this.alipayName = alipayName;
+    }
 }

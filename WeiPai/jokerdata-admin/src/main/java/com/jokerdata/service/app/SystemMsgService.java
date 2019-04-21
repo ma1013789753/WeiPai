@@ -1,5 +1,6 @@
 package com.jokerdata.service.app;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jokerdata.entity.app.generator.SystemMsg;
 import com.jokerdata.vo.MyPage;
@@ -15,4 +16,6 @@ import com.jokerdata.vo.MyPage;
 public interface SystemMsgService extends IService<SystemMsg> {
 
      MyPage<SystemMsg> selectPage(MyPage page);
+
+     Page<SystemMsg> getMsgList(Integer userId, Integer curpage);
 }

@@ -16,7 +16,7 @@ import java.io.Serializable;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-17
+ * @since 2019-04-19
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -26,22 +26,22 @@ public class SignCoin extends Model<SignCoin> {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "g_id", type = IdType.AUTO)
-    private Integer g_id;
+    private Integer gId;
 
     /**
      * 连续签到天数
      */
-    private Integer limit_num;
+    private Integer limitNum;
 
     /**
      * 奖励金币数
      */
-    private Integer sign_coin;
+    private Integer signCoin;
 
 
     @Override
     protected Serializable pkVal() {
-        return this.g_id;
+        return this.gId;
     }
 
 }

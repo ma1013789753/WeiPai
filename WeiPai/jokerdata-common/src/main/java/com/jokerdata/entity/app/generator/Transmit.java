@@ -16,7 +16,7 @@ import java.io.Serializable;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-17
+ * @since 2019-04-19
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -26,12 +26,12 @@ public class Transmit extends Model<Transmit> {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "transmit_id", type = IdType.AUTO)
-    private Integer transmit_id;
+    private Integer transmitId;
 
 
     @Override
     protected Serializable pkVal() {
-        return this.transmit_id;
+        return this.transmitId;
     }
 
 }

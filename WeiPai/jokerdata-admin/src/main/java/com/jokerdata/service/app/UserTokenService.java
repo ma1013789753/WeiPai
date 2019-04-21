@@ -15,4 +15,6 @@ import com.jokerdata.vo.MyPage;
 public interface UserTokenService extends IService<UserToken> {
 
      MyPage<UserToken> selectPage(MyPage page);
+
+     UserToken getUserByToken(String token);
 }

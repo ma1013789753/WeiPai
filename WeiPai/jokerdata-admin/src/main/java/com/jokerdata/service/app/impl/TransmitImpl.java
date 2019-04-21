@@ -2,7 +2,7 @@ package com.jokerdata.service.app.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jokerdata.entity.app.generator.Transmit;
-import com.jokerdata.mapper.app.generator.TransmitCustomMapper;
+import com.jokerdata.mapper.app.generator.TransmitMapper;
 import com.jokerdata.service.app.TransmitService;
 import com.jokerdata.vo.MyPage;
 import org.springframework.stereotype.Service;
@@ -15,12 +15,12 @@ import javax.annotation.Resource;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-15
+ * @since 2019-04-20
  */
 @Service
-public class TransmitImpl extends ServiceImpl<TransmitCustomMapper, Transmit> implements TransmitService {
+public class TransmitImpl extends ServiceImpl<TransmitMapper, Transmit> implements TransmitService {
     @Resource
-    TransmitCustomMapper targetMapper;
+    TransmitMapper targetMapper;
 
     @Override
     public MyPage<Transmit> selectPage(MyPage page) {

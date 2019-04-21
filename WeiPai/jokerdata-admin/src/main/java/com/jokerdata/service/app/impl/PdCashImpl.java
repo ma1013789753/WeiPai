@@ -2,7 +2,7 @@ package com.jokerdata.service.app.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jokerdata.entity.app.generator.PdCash;
-import com.jokerdata.mapper.app.generator.PdCashCustomMapper;
+import com.jokerdata.mapper.app.generator.PdCashMapper;
 import com.jokerdata.service.app.PdCashService;
 import com.jokerdata.vo.MyPage;
 import org.springframework.stereotype.Service;
@@ -15,12 +15,12 @@ import javax.annotation.Resource;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-15
+ * @since 2019-04-20
  */
 @Service
-public class PdCashImpl extends ServiceImpl<PdCashCustomMapper, PdCash> implements PdCashService {
+public class PdCashImpl extends ServiceImpl<PdCashMapper, PdCash> implements PdCashService {
     @Resource
-    PdCashCustomMapper targetMapper;
+    PdCashMapper targetMapper;
 
     @Override
     public MyPage<PdCash> selectPage(MyPage page) {

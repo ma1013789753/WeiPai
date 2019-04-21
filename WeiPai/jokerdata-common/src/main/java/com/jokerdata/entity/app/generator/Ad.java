@@ -16,7 +16,7 @@ import java.io.Serializable;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-17
+ * @since 2019-04-19
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -26,41 +26,41 @@ public class Ad extends Model<Ad> {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "ad_id", type = IdType.AUTO)
-    private Integer ad_id;
+    private Integer adId;
 
     /**
      * 显示位置
      */
-    private String ad_type;
+    private String adType;
 
     /**
      * 封面
      */
-    private String ad_img;
+    private String adImg;
 
     /**
      * 1 禁用
      */
-    private Boolean ad_state;
+    private Boolean adState;
 
     /**
      * 广告内容id等
      */
-    private String ad_data_id;
+    private String adDataId;
 
     /**
      * 广告内容类型 默认cms资讯
      */
-    private String ad_data_type;
+    private String adDataType;
 
-    private String add_time;
+    private String addTime;
 
-    private Integer ad_sort;
+    private Integer adSort;
 
 
     @Override
     protected Serializable pkVal() {
-        return this.ad_id;
+        return this.adId;
     }
 
 }

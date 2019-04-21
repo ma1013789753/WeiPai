@@ -16,41 +16,42 @@ import java.io.Serializable;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-17
+ * @since 2019-04-19
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
 @TableName("g_sms")
 public class Sms extends Model<Sms> {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "sms_id", type = IdType.AUTO)
-    private Integer sms_id;
-
     private Integer smsId;
+
     /**
      * 验证号码
      */
-    private String sms_mobi;
+    private String smsMobi;
 
     /**
      * 验证码内容
      */
-    private String sms_content;
+    private String smsContent;
 
     /**
      * 验证类型,1注册，2忘记密码,3短信登录
      */
-    private int sms_type;
+    private Integer smsType;
 
     /**
      * 发送时间
      */
-    private String add_time;
+    private String addTime;
 
 
     @Override
     protected Serializable pkVal() {
-        return this.sms_id;
+        return this.smsId;
     }
 
 }

@@ -16,7 +16,7 @@ import java.io.Serializable;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-17
+ * @since 2019-04-19
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -26,20 +26,20 @@ public class Article extends Model<Article> {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "article_id", type = IdType.AUTO)
-    private Integer article_id;
+    private Integer articleId;
 
-    private Integer cate_id;
+    private Integer cateId;
 
-    private String article_name;
+    private String articleName;
 
-    private String article_content;
+    private String articleContent;
 
-    private String article_code;
+    private String articleCode;
 
 
     @Override
     protected Serializable pkVal() {
-        return this.article_id;
+        return this.articleId;
     }
 
 }

@@ -17,7 +17,7 @@ import java.math.BigDecimal;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-17
+ * @since 2019-04-19
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -27,45 +27,45 @@ public class CoinLog extends Model<CoinLog> {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "log_id", type = IdType.AUTO)
-    private Integer log_id;
+    private Integer logId;
 
-    private String log_user_id;
+    private String logUserId;
 
-    private String log_user_name;
+    private String logUserName;
 
-    private String log_admin_id;
+    private String logAdminId;
 
-    private String log_admin_name;
+    private String logAdminName;
 
     /**
      * admin管理员,admin_change后台变动,task_freeze任务发布冻结,task_cancel取消订单解冻预存款,recharge充值,task_income任务收入,task_income_check收入待审核  check_false失败，task_outcome任务支出,task_back任务未完成, sign 签到 ，refound取消退还
      */
-    private String log_type;
+    private String logType;
 
     /**
      * 可用金额变更0表示未变更
      */
-    private BigDecimal log_av_coin;
+    private BigDecimal logAvCoin;
 
     /**
      * 冻结金额变更0表示未变更
      */
-    private BigDecimal log_freeze_coin;
+    private BigDecimal logFreezeCoin;
 
     /**
      * 备注
      */
-    private String log_mark;
+    private String logMark;
 
     /**
      * 添加时间
      */
-    private Integer add_time;
+    private Integer addTime;
 
 
     @Override
     protected Serializable pkVal() {
-        return this.log_id;
+        return this.logId;
     }
 
 }

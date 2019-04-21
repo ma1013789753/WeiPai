@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jokerdata.mapper.app.custom.ShareLogCustomMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jokerdata.entity.app.generator.ShareLog">
+        <id column="sl_id" property="slId"/>
+        <result column="user_id" property="userId"/>
+        <result column="share_id" property="shareId"/>
+        <result column="share_coin" property="shareCoin"/>
+        <result column="share_money" property="shareMoney"/>
+        <result column="share_state" property="shareState"/>
+        <result column="add_time" property="addTime"/>
+        <result column="check_time" property="checkTime"/>
+        <result column="is_pass" property="isPass"/>
+        <result column="reward_type" property="rewardType"/>
+        <result column="content" property="content"/>
+        <result column="account_id" property="accountId"/>
+        <result column="math_id" property="mathId"/>
+        <result column="mid" property="mid"/>
+        <result column="master_id" property="masterId"/>
+        <result column="log_id" property="logId"/>
+    </resultMap>
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap2" type="com.jokerdata.parames.vo.ShareIndexVo">
+        <id column="user_id" property="user_id"/>
+        <result column="share_id" property="share_id"/>
+        <result column="share_money" property="share_money"/>
+        <result column="check_time" property="check_time"/>
+        <result column="account_id" property="account_id"/>
+        <result column="user_name" property="user_name"/>
+    </resultMap>
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap3" type="com.jokerdata.parames.vo.UserListVo">
+        <id column="user_id" property="user_id"/>
+        <result column="share_id" property="share_id"/>
+        <result column="account_id" property="account_id"/>
+        <result column="avatar_hd" property="avatar_hd"/>
+        <result column="sl_id" property="sl_id"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        sl_id, user_id, share_id, share_coin, share_money, share_state, add_time, check_time, is_pass, reward_type, content, account_id, math_id, mid, master_id, log_id
+    </sql>
+
+    <select id="selectPage" resultMap="BaseResultMap">
+
+        select
+        <include refid="Base_Column_List"/>
+        from g_share_log
+        where del = 0
+        <if test=" param.search1 != ''">
+            and g_share_log.name LIKE CONCAT('%',#{param.search1},'%')
+        </if>
+
+    </select>
+
+    <select id="getshareInfo" resultMap="BaseResultMap2">
+
+        SELECT a.user_id,a.share_id,a.share_money,a.check_time,a.account_id,b.user_name
+        FROM g_share_log a
+        LEFT JOIN g_user b ON a.`user_id` = b.`user_id`
+        WHERE a.check_time lt UNIX_TIMESTAMP(NOW())
+        AND  a.check_time gt UNIX_TIMESTAMP(DATE_SUB(NOW(),INTERVAL 1 DAY))
+        AND a.reward_type = 1
+        AND a.is_pass = 1
+        ORDER BY a.sl_id DESC
+    </select>
+
+    <select id="getshareInfoLimit" resultMap="BaseResultMap2">
+
+        SELECT a.user_id,a.share_id,a.share_money,a.check_time,a.account_id,b.user_name
+        FROM g_share_log a
+        LEFT JOIN g_user b ON a.`user_id` = b.`user_id`
+        WHERE  a.reward_type = 1
+        AND a.is_pass = 1
+        ORDER BY a.sl_id DESC
+        limit 0,20
+    </select>
+
+    <select id="selectUserListVo" resultMap="BaseResultMap3">
+
+        SELECT
+        a.user_id,a.share_id,a.account_id,c.avatar_hd , a.`sl_id`
+        FROM g_share_log AS a
+        LEFT JOIN g_user_account AS c ON c.account_id =  a.account_id
+        LEFT JOIN g_share_log g ON g.share_id = a.share_id
+        WHERE a.`share_id` = #{i} AND a.sl_id &lt; g.sl_id
+        GROUP BY a.user_id,a.share_id,a.account_id,c.avatar_hd,sl_id
+        ORDER BY `sl_id`  DESC
+        LIMIT 0,4
+    </select>
+</mapper>

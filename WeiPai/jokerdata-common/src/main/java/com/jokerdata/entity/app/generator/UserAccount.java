@@ -16,7 +16,7 @@ import java.io.Serializable;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-17
+ * @since 2019-04-19
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -26,19 +26,19 @@ public class UserAccount extends Model<UserAccount> {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "account_id", type = IdType.AUTO)
-    private Integer account_id;
+    private Integer accountId;
 
-    private Integer user_id;
+    private Integer userId;
 
     /**
      * 账号名
      */
-    private String account_name;
+    private String accountName;
 
     /**
      * 账号头像
      */
-    private String account_avatar;
+    private String accountAvatar;
 
     /**
      * 微博uid   公众号id    微信号
@@ -48,64 +48,64 @@ public class UserAccount extends Model<UserAccount> {
     /**
      * 微博OAuth授权    用户id与公众号编号的MD5     微信openid
      */
-    private String access_token;
+    private String accessToken;
 
     /**
      * 小头像
      */
-    private String avatar_hd;
+    private String avatarHd;
 
     /**
      * 等待审核0,审核通过1,审核失败2,账号禁用中-1 ，永久禁用-2
      */
-    private Boolean account_state;
+    private Boolean accountState;
 
-    private String add_time;
+    private String addTime;
 
     /**
      * 禁用解除日期
      */
-    private String account_limit;
+    private String accountLimit;
 
     /**
      * 禁用原因
      */
-    private String disable_reason;
+    private String disableReason;
 
     /**
      * 审核失败原因
      */
-    private String nopass_reason;
+    private String nopassReason;
 
     /**
      * 0微博   1公众号    2微信
      */
-    private Integer acc_type;
+    private Integer accType;
 
     /**
      * 粉丝数
      */
-    private Integer follow_num;
+    private Integer followNum;
 
     /**
      * 粉丝数截图
      */
-    private String num_screen;
+    private String numScreen;
 
     /**
      * 公众号二维码
      */
-    private String wechat_pic;
+    private String wechatPic;
 
     /**
      * 微博账号V认证 0未认证 ,1已认证
      */
-    private Boolean v_legalize;
+    private Boolean vLegalize;
 
     /**
      * 公众号标签id
      */
-    private Integer gzh_tag_id;
+    private Integer gzhTagId;
 
     /**
      * 公众号备注
@@ -125,22 +125,22 @@ public class UserAccount extends Model<UserAccount> {
     /**
      * 微博关注数
      */
-    private Integer friends_count;
+    private Integer friendsCount;
 
     /**
      * 微博数
      */
-    private Integer statuses_count;
+    private Integer statusesCount;
 
     /**
      * 微博账号注册时间
      */
-    private String created_at;
+    private String createdAt;
 
 
     @Override
     protected Serializable pkVal() {
-        return this.account_id;
+        return this.accountId;
     }
 
 }

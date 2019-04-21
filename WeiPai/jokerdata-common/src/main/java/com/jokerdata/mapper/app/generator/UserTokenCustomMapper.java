@@ -16,4 +16,6 @@ import org.apache.ibatis.annotations.Param;
 public interface UserTokenCustomMapper extends BaseMapper<UserToken> {
 
     MyPage<UserToken> selectPage(@Param("param") MyPage page);
+
+    UserToken getUserByToken(String token);
 }

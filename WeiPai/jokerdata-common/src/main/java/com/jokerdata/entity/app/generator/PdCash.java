@@ -17,7 +17,7 @@ import java.math.BigDecimal;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-17
+ * @since 2019-04-19
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -30,72 +30,72 @@ public class PdCash extends Model<PdCash> {
      * 自增编号
      */
     @TableId(value = "pdc_id", type = IdType.AUTO)
-    private Integer pdc_id;
+    private Integer pdcId;
 
     /**
      * 记录唯一标示
      */
-    private String pdc_sn;
+    private String pdcSn;
 
     /**
      * 会员编号
      */
-    private Integer pdc_member_id;
+    private Integer pdcMemberId;
 
     /**
      * 会员名称
      */
-    private String pdc_member_name;
+    private String pdcMemberName;
 
     /**
      * 金额
      */
-    private BigDecimal pdc_amount;
+    private BigDecimal pdcAmount;
 
     /**
      * 收款银行
      */
-    private String pdc_bank_name;
+    private String pdcBankName;
 
     /**
      * 收款账号
      */
-    private String pdc_bank_no;
+    private String pdcBankNo;
 
     /**
      * 开户人姓名
      */
-    private String pdc_bank_user;
+    private String pdcBankUser;
 
     /**
      * 添加时间
      */
-    private Integer pdc_add_time;
+    private Integer pdcAddTime;
 
     /**
      * 付款时间
      */
-    private Integer pdc_payment_time;
+    private Integer pdcPaymentTime;
 
     /**
      * 提现支付状态 0默认1支付完成 2拒绝
      */
-    private Boolean pdc_payment_state;
+    private Boolean pdcPaymentState;
 
     /**
      * 支付管理员
      */
-    private String pdc_payment_admin;
+    private String pdcPaymentAdmin;
 
     /**
      * 拒绝提现原因
      */
-    private String refuse_reason;
+    private String refuseReason;
 
 
     @Override
     protected Serializable pkVal() {
-        return this.pdc_id;
+        return this.pdcId;
     }
 
 }

@@ -30,8 +30,8 @@ public class CodeGeneratorCustom {
         gc.setBaseColumnList(true);// XML columList
         gc.setAuthor("oldMa");
         //生成文件名:
-        gc.setXmlName("%sCustomMapper");
-        gc.setMapperName("%sCustomMapper");
+        gc.setXmlName("%sMapper");
+        gc.setMapperName("%sMapper");
         gc.setServiceName("%sService");
         gc.setServiceImplName("%sImpl");
         gc.setControllerName("%sController");
@@ -160,8 +160,8 @@ public class CodeGeneratorCustom {
 
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();
-        strategy.setColumnNaming(NamingStrategy.nochange);
-        strategy.setCapitalMode(false);
+        strategy.setColumnNaming(NamingStrategy.underline_to_camel);
+        strategy.setCapitalMode(true);
         strategy.setTablePrefix(new String[]{"yj_", "gy_", "d_", "t", "h_", "g_"});// 此处可以修改为您的表前缀
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setSuperEntityClass(null);

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jokerdata.mapper.app.generator.SignCoinMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jokerdata.entity.app.generator.SignCoin">
+        <id column="g_id" property="gId"/>
+        <result column="limit_num" property="limitNum"/>
+        <result column="sign_coin" property="signCoin"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        g_id, limit_num, sign_coin
+    </sql>
+
+    <select id="selectPage" resultMap="BaseResultMap">
+
+        select
+        <include refid="Base_Column_List"/>
+        from g_sign_coin
+        where del = 0
+        <if test=" param.search1 != ''">
+            and g_sign_coin.name LIKE CONCAT('%',#{param.search1},'%')
+        </if>
+
+    </select>
+</mapper>

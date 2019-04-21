@@ -7,9 +7,11 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * <p>
@@ -17,7 +19,7 @@ import java.math.BigDecimal;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-17
+ * @since 2019-04-19
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -27,32 +29,33 @@ public class SystemMsg extends Model<SystemMsg> {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "notice_id", type = IdType.AUTO)
-    private Integer notice_id;
+    private Integer noticeId;
 
     /**
      * 通知类型 系统消息 : system , 商机推送 : shop , 互推进行中 : push   互推成功（发起人）:succ_master  互推成功（转发人）：succ_user      互推失败push_false
      */
-    private String notice_type;
+    private String noticeType;
 
     /**
      * 通知内容
      */
-    private String notice_content;
+    private String noticeContent;
 
     /**
      * 是否是新消息 1已读
      */
-    private Integer is_new;
+    private Integer isNew;
 
     /**
      * 发布人姓名
      */
-    private String author_name;
+    private String authorName;
 
     /**
      * 通知时间
      */
-    private String add_time;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    private String addTime;
 
     /**
      * 1积分  2 现金  0 无
@@ -67,17 +70,17 @@ public class SystemMsg extends Model<SystemMsg> {
     /**
      * 默认 0 所有人 , 1 个人 ( user_id=data相互关联 )
      */
-    private Integer is_all;
+    private Integer isAll;
 
     /**
      * 默认0 通知内容没有base64加密 , 1 通知内容有base64加密
      */
-    private Integer is_base64;
+    private Integer isBase64;
 
 
     @Override
     protected Serializable pkVal() {
-        return this.notice_id;
+        return this.noticeId;
     }
 
 }
