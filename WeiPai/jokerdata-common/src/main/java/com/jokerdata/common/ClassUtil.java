@@ -12,9 +12,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ClassUtil {
+
+    public static String URL = "http://youdianshare.com/";
 
     public static <T2> T2 beanToBean( Object beanObj,Class<T2> class2){
 
@@ -162,5 +165,24 @@ public class ClassUtil {
         return "http://youdianshare.com/Upload/avatar/default.png";
 
     }
+
+    //获取头像
+    public static String getTaxt(String timeTamp){
+        Long time = Long.parseLong(timeTamp)*1000;
+        Date date = new Date(time);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        return  sdf.format(date);
+
+
+    }
+
+    //获取头像
+    public static String getTaxtLater(String timeTamp){
+        Long time = Long.parseLong(timeTamp)*1000;
+        Date date = new Date(time);
+
+        return RelativeDateFormat.format(date);
+    }
+
 
 }

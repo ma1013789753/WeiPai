@@ -47,10 +47,10 @@ public class ApiExceptionHandler {
         return Result.error500("数据库中已存在该记录");
     }
 
-    @ExceptionHandler(Exception.class)
-    public Result handleException(Exception e) {
-        return Result.error500(e.getMessage());
-    }
+//    @ExceptionHandler(Exception.class)
+//    public Result handleException(Exception e) {
+//        return Result.error500(e.getMessage());
+//    }
 
     /**
      * 验证异常

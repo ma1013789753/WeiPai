@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/jokerdata?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://39.105.97.119:3306/share?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
     username: root
-    password: 1234
+    password: weipai
     driver-class-name: com.mysql.jdbc.Driver
     ###################以下为druid增加的配置###########################
     type: com.alibaba.druid.pool.DruidDataSource
@@ -35,8 +35,8 @@ spring:
     useGlobalDataSourceStat: true
     ###############以上为配置druid添加的配置########################################
   redis:
-    host: localhost
-    password: 12345
+    host: 121.43.186.222
+    password:
     port: 6379
     jedis:
       pool:

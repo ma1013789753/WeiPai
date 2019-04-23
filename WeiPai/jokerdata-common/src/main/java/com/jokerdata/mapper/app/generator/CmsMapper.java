@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Param;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-20
+ * @since 2019-04-23
  */
 public interface CmsMapper extends BaseMapper<Cms> {
 

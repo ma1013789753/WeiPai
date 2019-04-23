@@ -68,4 +68,17 @@ public class ShareImpl extends ServiceImpl<ShareCustomMapper, Share> implements 
         }
         return page;
     }
+
+    @Override
+    public IPage<MonetListVo> moneyMore(IPage<MonetListVo> sharePage, boolean b) {
+        IPage<MonetListVo> page = shareCustomMapper.moneyMore(sharePage);
+        if(b){
+            page.getRecords().forEach(monetListVo -> {
+                List<UserListVo> shareLogList = shareLogCustomMapper.selectUserListVo(monetListVo.getShareId());
+                monetListVo.setUser_list(shareLogList);
+            });
+
+        }
+        return page;
+    }
 }

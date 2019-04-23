@@ -169,13 +169,16 @@ public class CodeGeneratorCustom {
         strategy.setRestControllerStyle(true);
         strategy.setSuperControllerClass(null);
         strategy.setLogicDeleteFieldName("del");
+//        strategy.setInclude(new String[]{
+//                "g_ad","g_admin","g_article","g_article_cate","g_auth_group","g_auth_group_access"
+//                ,"g_auth_rule","g_cms","g_cms_cate","g_coin","g_coin_log","g_config","g_feedback",
+//                "g_gzh_tag","g_math","g_pd_cash","g_pd_log","g_pd_recharge","g_share","g_share_log",
+//                "g_share_tag","g_sign","g_sign_coin","g_sms","g_system_msg","g_systemmsg_user",
+//                "g_transmit","g_user","g_user_account","g_user_token"
+//
+//        });
         strategy.setInclude(new String[]{
-                "g_ad","g_admin","g_article","g_article_cate","g_auth_group","g_auth_group_access"
-                ,"g_auth_rule","g_cms","g_cms_cate","g_coin","g_coin_log","g_config","g_feedback",
-                "g_gzh_tag","g_math","g_pd_cash","g_pd_log","g_pd_recharge","g_share","g_share_log",
-                "g_share_tag","g_sign","g_sign_coin","g_sms","g_system_msg","g_systemmsg_user",
-                "g_transmit","g_user","g_user_account","g_user_token"
-
+                "g_cms"
         });
 //        strategy.setSuperEntityColumns("tid");
         strategy.setControllerMappingHyphenStyle(true);

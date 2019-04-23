@@ -59,12 +59,11 @@
     </select>
 
     <select id="getshareInfo" resultMap="BaseResultMap2">
-
         SELECT a.user_id,a.share_id,a.share_money,a.check_time,a.account_id,b.user_name
         FROM g_share_log a
         LEFT JOIN g_user b ON a.`user_id` = b.`user_id`
-        WHERE a.check_time lt UNIX_TIMESTAMP(NOW())
-        AND  a.check_time gt UNIX_TIMESTAMP(DATE_SUB(NOW(),INTERVAL 1 DAY))
+        WHERE <![CDATA[ a.check_time < UNIX_TIMESTAMP(NOW())  ]]>
+        AND  <![CDATA[ a.check_time > UNIX_TIMESTAMP(DATE_SUB(NOW(),INTERVAL 1 DAY))  ]]>
         AND a.reward_type = 1
         AND a.is_pass = 1
         ORDER BY a.sl_id DESC
