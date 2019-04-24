@@ -11,9 +11,8 @@ import org.apache.ibatis.annotations.Param;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-20
+ * @since 2019-04-24
  */
 public interface ShareLogMapper extends BaseMapper<ShareLog> {
 
-    MyPage<ShareLog> selectPage(@Param("param") MyPage page);
 }

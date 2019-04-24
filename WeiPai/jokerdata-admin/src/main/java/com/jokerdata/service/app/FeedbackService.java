@@ -14,5 +14,4 @@ import com.jokerdata.vo.MyPage;
  */
 public interface FeedbackService extends IService<Feedback> {
 
-     MyPage<Feedback> selectPage(MyPage page);
 }

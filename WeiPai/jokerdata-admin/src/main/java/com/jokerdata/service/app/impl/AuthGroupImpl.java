@@ -22,8 +22,4 @@ public class AuthGroupImpl extends ServiceImpl<AuthGroupMapper, AuthGroup> imple
     @Resource
     AuthGroupMapper targetMapper;
 
-    @Override
-    public MyPage<AuthGroup> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 }

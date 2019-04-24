@@ -14,5 +14,4 @@ import com.jokerdata.vo.MyPage;
  */
 public interface PdCashService extends IService<PdCash> {
 
-     MyPage<PdCash> selectPage(MyPage page);
 }

@@ -2,7 +2,6 @@ package com.jokerdata.controller.app;
 
 import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -11,10 +10,7 @@ import com.jokerdata.entity.app.generator.*;
 import com.jokerdata.parames.vo.MonetListVo;
 import com.jokerdata.parames.vo.PageResule;
 import com.jokerdata.parames.vo.ShareIndexVo;
-import com.jokerdata.service.app.AdService;
-import com.jokerdata.service.app.CmsService;
-import com.jokerdata.service.app.ShareLogService;
-import com.jokerdata.service.app.ShareService;
+import com.jokerdata.service.app.*;
 import com.jokerdata.vo.ApiResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,7 +32,11 @@ public class IndexController {
     ShareLogService shareLogService;
 
     @Autowired
-    CmsService cmsService;
+    CmsService ddService;
+
+
+    @Autowired
+    CmsCateService cmsCateService;
 
 
     @GetMapping(value = "/index",produces = "application/json;charset=UTF-8")
@@ -93,7 +93,7 @@ public class IndexController {
             }
         });
 
-        List<Cms> cmsdata = cmsService.list(new QueryWrapper<Cms>().orderByDesc("cms_sort","add_time").last("limit 11"));
+        List<Cms> cmsdata = ddService.list(new QueryWrapper<Cms>().orderByDesc("cms_sort","add_time").last("limit 11"));
         List<Map<String,Object>> cmsList = ClassUtil.toLowBeanList(cmsdata);
         cmsList.forEach(stringObjectMap -> {
             stringObjectMap.put("add_time_text",ClassUtil.getTaxt(stringObjectMap.get("add_time").toString()));
@@ -179,12 +179,10 @@ public class IndexController {
 
     @GetMapping(value = "/cms_more",produces = "application/json;charset=UTF-8")
     public PageResule cms_more() {
-        Page<Cms> recPage = new Page<>();
-        recPage.setCurrent(1);
-        recPage.setSize(10);
-                cmsService.page(recPage,new QueryWrapper<>());
-
-//        List<Cms> cmsdata = cmsService.list(new QueryWrapper<Cms>().orderByDesc("cms_sort","add_time").last("limit 11"));
+        Page<Cms> param = new Page<>();
+        ddService.list(new QueryWrapper<>());
+        ddService.page(param,new QueryWrapper<>());
+//        List<Cms> cmsdata = ddService.list(new QueryWrapper<Cms>().orderByDesc("cms_sort","add_time").last("limit 11"));
 //        List<Map<String,Object>> cmsList = ClassUtil.toLowBeanList(cmsdata);
 //        cmsList.forEach(stringObjectMap -> {
 //            stringObjectMap.put("add_time_text",ClassUtil.getTaxt(stringObjectMap.get("add_time").toString()));
@@ -193,6 +191,6 @@ public class IndexController {
 
 //        Map<String,List<Map<String,Object>>>  data = new HashMap<>();
 //        data.put("list",tuiList);
-        return  PageResule.success("").setPage((Page) recPage);
+        return  PageResule.success("").setPage((Page) param);
     }
 }

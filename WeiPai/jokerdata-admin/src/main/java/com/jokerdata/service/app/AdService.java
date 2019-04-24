@@ -14,5 +14,4 @@ import com.jokerdata.vo.MyPage;
  */
 public interface AdService extends IService<Ad> {
 
-     MyPage<Ad> selectPage(MyPage page);
 }

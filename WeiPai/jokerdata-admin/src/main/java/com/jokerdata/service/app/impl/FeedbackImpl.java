@@ -22,8 +22,4 @@ public class FeedbackImpl extends ServiceImpl<FeedbackMapper, Feedback> implemen
     @Resource
     FeedbackMapper targetMapper;
 
-    @Override
-    public MyPage<Feedback> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 }

@@ -22,8 +22,4 @@ public class AdminImpl extends ServiceImpl<AdminMapper, Admin> implements AdminS
     @Resource
     AdminMapper targetMapper;
 
-    @Override
-    public MyPage<Admin> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 }

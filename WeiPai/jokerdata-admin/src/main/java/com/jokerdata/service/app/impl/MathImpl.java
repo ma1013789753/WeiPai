@@ -22,8 +22,4 @@ public class MathImpl extends ServiceImpl<MathMapper, Math> implements MathServi
     @Resource
     MathMapper targetMapper;
 
-    @Override
-    public MyPage<Math> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 }

@@ -13,15 +13,4 @@
         cate_id, cate_name
     </sql>
 
-    <select id="selectPage" resultMap="BaseResultMap">
-
-        select
-        <include refid="Base_Column_List"/>
-        from g_article_cate
-        where del = 0
-        <if test=" param.search1 != ''">
-            and g_article_cate.name LIKE CONCAT('%',#{param.search1},'%')
-        </if>
-
-    </select>
 </mapper>

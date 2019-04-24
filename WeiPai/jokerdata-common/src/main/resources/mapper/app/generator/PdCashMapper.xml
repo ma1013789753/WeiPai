@@ -24,15 +24,4 @@
         pdc_id, pdc_sn, pdc_member_id, pdc_member_name, pdc_amount, pdc_bank_name, pdc_bank_no, pdc_bank_user, pdc_add_time, pdc_payment_time, pdc_payment_state, pdc_payment_admin, refuse_reason
     </sql>
 
-    <select id="selectPage" resultMap="BaseResultMap">
-
-        select
-        <include refid="Base_Column_List"/>
-        from g_pd_cash
-        where del = 0
-        <if test=" param.search1 != ''">
-            and g_pd_cash.name LIKE CONCAT('%',#{param.search1},'%')
-        </if>
-
-    </select>
 </mapper>

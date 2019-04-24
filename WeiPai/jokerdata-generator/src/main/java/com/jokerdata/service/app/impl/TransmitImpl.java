@@ -14,7 +14,7 @@ import com.jokerdata.vo.MyPage;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-20
+ * @since 2019-04-24
  */
 @Service
 public class TransmitImpl extends ServiceImpl<TransmitMapper, Transmit> implements TransmitService {

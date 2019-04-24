@@ -19,11 +19,5 @@ import com.jokerdata.vo.MyPage;
  */
 @Service
 public class CmsImpl extends ServiceImpl<CmsCustomMapper, Cms> implements CmsService {
-    @Resource
-    CmsCustomMapper targetMapper;
 
-    @Override
-    public MyPage<Cms> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 }

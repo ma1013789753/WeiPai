@@ -22,8 +22,4 @@ public class UserAccountImpl extends ServiceImpl<UserAccountMapper, UserAccount>
     @Resource
     UserAccountMapper targetMapper;
 
-    @Override
-    public MyPage<UserAccount> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 }

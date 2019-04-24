@@ -21,15 +21,4 @@
         lg_id, lg_member_id, lg_member_name, lg_admin_name, lg_type, lg_av_amount, lg_freeze_amount, lg_add_time, lg_desc, lg_from_data
     </sql>
 
-    <select id="selectPage" resultMap="BaseResultMap">
-
-        select
-        <include refid="Base_Column_List"/>
-        from g_pd_log
-        where del = 0
-        <if test=" param.search1 != ''">
-            and g_pd_log.name LIKE CONCAT('%',#{param.search1},'%')
-        </if>
-
-    </select>
 </mapper>

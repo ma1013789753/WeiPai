@@ -14,5 +14,4 @@ import com.jokerdata.vo.MyPage;
  */
 public interface SignCoinService extends IService<SignCoin> {
 
-     MyPage<SignCoin> selectPage(MyPage page);
 }

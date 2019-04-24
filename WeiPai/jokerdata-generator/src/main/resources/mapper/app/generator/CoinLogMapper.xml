@@ -21,15 +21,4 @@
         log_id, log_user_id, log_user_name, log_admin_id, log_admin_name, log_type, log_av_coin, log_freeze_coin, log_mark, add_time
     </sql>
 
-    <select id="selectPage" resultMap="BaseResultMap">
-
-        select
-        <include refid="Base_Column_List"/>
-        from g_coin_log
-        where del = 0
-        <if test=" param.search1 != ''">
-            and g_coin_log.name LIKE CONCAT('%',#{param.search1},'%')
-        </if>
-
-    </select>
 </mapper>

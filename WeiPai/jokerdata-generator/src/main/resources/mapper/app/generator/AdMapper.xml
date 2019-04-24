@@ -19,15 +19,4 @@
         ad_id, ad_type, ad_img, ad_state, ad_data_id, ad_data_type, add_time, ad_sort
     </sql>
 
-    <select id="selectPage" resultMap="BaseResultMap">
-
-        select
-        <include refid="Base_Column_List"/>
-        from g_ad
-        where del = 0
-        <if test=" param.search1 != ''">
-            and g_ad.name LIKE CONCAT('%',#{param.search1},'%')
-        </if>
-
-    </select>
 </mapper>

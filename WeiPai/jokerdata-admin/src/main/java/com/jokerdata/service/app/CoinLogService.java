@@ -14,5 +14,4 @@ import com.jokerdata.vo.MyPage;
  */
 public interface CoinLogService extends IService<CoinLog> {
 
-     MyPage<CoinLog> selectPage(MyPage page);
 }

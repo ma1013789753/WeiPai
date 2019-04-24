@@ -22,8 +22,4 @@ public class PdLogImpl extends ServiceImpl<PdLogMapper, PdLog> implements PdLogS
     @Resource
     PdLogMapper targetMapper;
 
-    @Override
-    public MyPage<PdLog> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 }

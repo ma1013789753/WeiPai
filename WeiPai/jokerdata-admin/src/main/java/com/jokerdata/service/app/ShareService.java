@@ -16,7 +16,6 @@ import com.jokerdata.vo.MyPage;
  */
 public interface ShareService extends IService<Share> {
 
-     MyPage<Share> selectPage(MyPage page);
 
     IPage<MonetListVo> moneyList(IPage<MonetListVo> sharePage, boolean b);
 

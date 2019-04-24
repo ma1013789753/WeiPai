@@ -23,10 +23,6 @@ public class UserTokenImpl extends ServiceImpl<UserTokenMapper, UserToken> imple
     @Resource
     UserTokenMapper targetMapper;
 
-    @Override
-    public MyPage<UserToken> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 
     @Override
     public UserToken getUserByToken(String token) {

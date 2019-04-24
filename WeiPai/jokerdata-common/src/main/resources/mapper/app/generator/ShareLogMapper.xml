@@ -27,15 +27,4 @@
         sl_id, user_id, share_id, share_coin, share_money, share_state, add_time, check_time, is_pass, reward_type, content, account_id, math_id, mid, master_id, log_id
     </sql>
 
-    <select id="selectPage" resultMap="BaseResultMap">
-
-        select
-        <include refid="Base_Column_List"/>
-        from g_share_log
-        where del = 0
-        <if test=" param.search1 != ''">
-            and g_share_log.name LIKE CONCAT('%',#{param.search1},'%')
-        </if>
-
-    </select>
 </mapper>

@@ -22,8 +22,5 @@ public class AdImpl extends ServiceImpl<AdMapper, Ad> implements AdService {
     @Resource
     AdMapper targetMapper;
 
-    @Override
-    public MyPage<Ad> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
+
 }

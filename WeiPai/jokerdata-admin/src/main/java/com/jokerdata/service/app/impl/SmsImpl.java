@@ -22,8 +22,4 @@ public class SmsImpl extends ServiceImpl<SmsMapper, Sms> implements SmsService {
     @Resource
     SmsMapper targetMapper;
 
-    @Override
-    public MyPage<Sms> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 }

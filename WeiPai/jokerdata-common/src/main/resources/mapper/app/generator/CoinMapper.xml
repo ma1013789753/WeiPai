@@ -23,15 +23,4 @@
         coin_id, order_sn, user_id, user_name, coin_amount, order_amount, pay_type, pay_out_sn, add_time, pay_state, pay_time, pdr_admin
     </sql>
 
-    <select id="selectPage" resultMap="BaseResultMap">
-
-        select
-        <include refid="Base_Column_List"/>
-        from g_coin
-        where del = 0
-        <if test=" param.search1 != ''">
-            and g_coin.name LIKE CONCAT('%',#{param.search1},'%')
-        </if>
-
-    </select>
 </mapper>

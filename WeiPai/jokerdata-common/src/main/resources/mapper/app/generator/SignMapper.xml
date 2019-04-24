@@ -17,15 +17,4 @@
         sign_id, user_id, sign_coin, sign_date, sign_state, add_time
     </sql>
 
-    <select id="selectPage" resultMap="BaseResultMap">
-
-        select
-        <include refid="Base_Column_List"/>
-        from g_sign
-        where del = 0
-        <if test=" param.search1 != ''">
-            and g_sign.name LIKE CONCAT('%',#{param.search1},'%')
-        </if>
-
-    </select>
 </mapper>

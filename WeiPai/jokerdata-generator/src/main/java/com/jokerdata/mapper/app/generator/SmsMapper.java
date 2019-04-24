@@ -11,9 +11,8 @@ import org.apache.ibatis.annotations.Param;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-23
+ * @since 2019-04-24
  */
 public interface SmsMapper extends BaseMapper<Sms> {
 
-    MyPage<Sms> selectPage(@Param("param") MyPage page);
 }

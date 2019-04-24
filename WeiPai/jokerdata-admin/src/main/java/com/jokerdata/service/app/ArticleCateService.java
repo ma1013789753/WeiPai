@@ -14,5 +14,4 @@ import com.jokerdata.vo.MyPage;
  */
 public interface ArticleCateService extends IService<ArticleCate> {
 
-     MyPage<ArticleCate> selectPage(MyPage page);
 }

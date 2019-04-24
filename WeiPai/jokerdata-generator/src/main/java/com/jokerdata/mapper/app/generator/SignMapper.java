@@ -11,9 +11,8 @@ import org.apache.ibatis.annotations.Param;
     * </p>
  *
  * @author oldMa
- * @since 2019-04-20
+ * @since 2019-04-24
  */
 public interface SignMapper extends BaseMapper<Sign> {
 
-    MyPage<Sign> selectPage(@Param("param") MyPage page);
 }

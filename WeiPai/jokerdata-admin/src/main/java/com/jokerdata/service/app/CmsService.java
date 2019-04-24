@@ -14,5 +14,4 @@ import com.jokerdata.vo.MyPage;
  */
 public interface CmsService extends IService<Cms> {
 
-     MyPage<Cms> selectPage(MyPage page);
 }

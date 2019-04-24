@@ -14,5 +14,4 @@ import com.jokerdata.vo.MyPage;
  */
 public interface PdRechargeService extends IService<PdRecharge> {
 
-     MyPage<PdRecharge> selectPage(MyPage page);
 }

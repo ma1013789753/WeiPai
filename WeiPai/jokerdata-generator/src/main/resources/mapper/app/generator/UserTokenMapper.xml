@@ -16,15 +16,4 @@
         ut_id, user_id, user_name, user_token, add_time
     </sql>
 
-    <select id="selectPage" resultMap="BaseResultMap">
-
-        select
-        <include refid="Base_Column_List"/>
-        from g_user_token
-        where del = 0
-        <if test=" param.search1 != ''">
-            and g_user_token.name LIKE CONCAT('%',#{param.search1},'%')
-        </if>
-
-    </select>
 </mapper>

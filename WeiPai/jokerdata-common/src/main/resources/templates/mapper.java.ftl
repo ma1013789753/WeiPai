@@ -18,6 +18,6 @@ interface ${table.mapperName} : ${superMapperClass}<${entity}>
 <#else>
 public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
 
-    MyPage<${entity}> selectPage(@Param("param") MyPage page);
+    <#--MyPage<${entity}> selectPage(@Param("param") MyPage page);-->
 }
 </#if>

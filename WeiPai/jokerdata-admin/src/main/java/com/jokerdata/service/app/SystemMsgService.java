@@ -15,7 +15,6 @@ import com.jokerdata.vo.MyPage;
  */
 public interface SystemMsgService extends IService<SystemMsg> {
 
-     MyPage<SystemMsg> selectPage(MyPage page);
 
      Page<SystemMsg> getMsgList(Integer userId, Integer curpage);
 }

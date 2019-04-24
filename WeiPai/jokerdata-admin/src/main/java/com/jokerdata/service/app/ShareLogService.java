@@ -17,7 +17,6 @@ import java.util.List;
  */
 public interface ShareLogService extends IService<ShareLog> {
 
-     MyPage<ShareLog> selectPage(MyPage page);
 
     List<ShareIndexVo> getshareInfo();
 

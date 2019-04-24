@@ -22,8 +22,4 @@ public class SystemmsgUserImpl extends ServiceImpl<SystemmsgUserMapper, Systemms
     @Resource
     SystemmsgUserMapper targetMapper;
 
-    @Override
-    public MyPage<SystemmsgUser> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 }

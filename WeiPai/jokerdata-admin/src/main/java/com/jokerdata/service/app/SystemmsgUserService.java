@@ -14,5 +14,4 @@ import com.jokerdata.vo.MyPage;
  */
 public interface SystemmsgUserService extends IService<SystemmsgUser> {
 
-     MyPage<SystemmsgUser> selectPage(MyPage page);
 }

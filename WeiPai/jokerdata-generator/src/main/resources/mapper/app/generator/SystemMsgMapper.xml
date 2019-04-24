@@ -21,15 +21,4 @@
         notice_id, notice_type, notice_content, is_new, author_name, add_time, type, data, is_all, is_base64
     </sql>
 
-    <select id="selectPage" resultMap="BaseResultMap">
-
-        select
-        <include refid="Base_Column_List"/>
-        from g_system_msg
-        where del = 0
-        <if test=" param.search1 != ''">
-            and g_system_msg.name LIKE CONCAT('%',#{param.search1},'%')
-        </if>
-
-    </select>
 </mapper>

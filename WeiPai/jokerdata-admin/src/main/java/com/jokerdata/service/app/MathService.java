@@ -14,5 +14,4 @@ import com.jokerdata.vo.MyPage;
  */
 public interface MathService extends IService<Math> {
 
-     MyPage<Math> selectPage(MyPage page);
 }

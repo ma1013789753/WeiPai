@@ -14,5 +14,4 @@ import com.jokerdata.vo.MyPage;
  */
 public interface AuthGroupAccessService extends IService<AuthGroupAccess> {
 
-     MyPage<AuthGroupAccess> selectPage(MyPage page);
 }

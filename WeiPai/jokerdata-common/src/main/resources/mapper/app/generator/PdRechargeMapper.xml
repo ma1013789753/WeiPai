@@ -23,15 +23,4 @@
         pdr_id, pdr_sn, pdr_member_id, pdr_member_name, pdr_amount, pdr_payment_code, pdr_payment_name, pdr_trade_sn, pdr_add_time, pdr_payment_state, pdr_payment_time, pdr_admin
     </sql>
 
-    <select id="selectPage" resultMap="BaseResultMap">
-
-        select
-        <include refid="Base_Column_List"/>
-        from g_pd_recharge
-        where del = 0
-        <if test=" param.search1 != ''">
-            and g_pd_recharge.name LIKE CONCAT('%',#{param.search1},'%')
-        </if>
-
-    </select>
 </mapper>
