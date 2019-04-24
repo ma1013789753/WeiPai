@@ -29,10 +29,6 @@ public class SystemMsgImpl extends ServiceImpl<SystemMsgMapper, SystemMsg> imple
     SystemCustomMsgMapper systemCustomMsgMapper;
 
 
-    @Override
-    public MyPage<SystemMsg> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 
     @Override
     public Page<SystemMsg> getMsgList(Integer userId, Integer curpage) {

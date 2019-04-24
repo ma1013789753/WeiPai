@@ -28,10 +28,6 @@ public class ShareLogImpl extends ServiceImpl<ShareLogMapper, ShareLog> implemen
     @Resource
     ShareLogCustomMapper shareLogCustomMapper;
 
-    @Override
-    public MyPage<ShareLog> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 
     @Override
     public List<ShareIndexVo> getshareInfo() {

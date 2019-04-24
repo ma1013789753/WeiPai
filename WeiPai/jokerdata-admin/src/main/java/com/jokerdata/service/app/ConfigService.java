@@ -14,5 +14,4 @@ import com.jokerdata.vo.MyPage;
  */
 public interface ConfigService extends IService<Config> {
 
-     MyPage<Config> selectPage(MyPage page);
 }

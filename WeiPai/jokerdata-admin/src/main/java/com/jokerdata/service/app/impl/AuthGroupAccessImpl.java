@@ -22,8 +22,4 @@ public class AuthGroupAccessImpl extends ServiceImpl<AuthGroupAccessMapper, Auth
     @Resource
     AuthGroupAccessMapper targetMapper;
 
-    @Override
-    public MyPage<AuthGroupAccess> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 }

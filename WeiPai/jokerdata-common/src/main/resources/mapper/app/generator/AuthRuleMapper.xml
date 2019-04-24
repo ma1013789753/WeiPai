@@ -21,15 +21,4 @@
         id, name, title, pid, type, condition, is_menu, icon, sort, status
     </sql>
 
-    <select id="selectPage" resultMap="BaseResultMap">
-
-        select
-        <include refid="Base_Column_List"/>
-        from g_auth_rule
-        where del = 0
-        <if test=" param.search1 != ''">
-            and g_auth_rule.name LIKE CONCAT('%',#{param.search1},'%')
-        </if>
-
-    </select>
 </mapper>

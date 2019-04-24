@@ -22,8 +22,4 @@ public class PdCashImpl extends ServiceImpl<PdCashMapper, PdCash> implements PdC
     @Resource
     PdCashMapper targetMapper;
 
-    @Override
-    public MyPage<PdCash> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 }

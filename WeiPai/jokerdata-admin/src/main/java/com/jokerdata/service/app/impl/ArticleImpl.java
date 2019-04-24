@@ -22,8 +22,4 @@ public class ArticleImpl extends ServiceImpl<ArticleMapper, Article> implements 
     @Resource
     ArticleMapper targetMapper;
 
-    @Override
-    public MyPage<Article> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 }

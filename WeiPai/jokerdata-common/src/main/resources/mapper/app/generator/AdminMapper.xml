@@ -19,15 +19,4 @@
         admin_id, admin_name, admin_password, admin_logintime, admin_loginnum, admin_avatar, admin_state, admin_is_super
     </sql>
 
-    <select id="selectPage" resultMap="BaseResultMap">
-
-        select
-        <include refid="Base_Column_List"/>
-        from g_admin
-        where del = 0
-        <if test=" param.search1 != ''">
-            and g_admin.name LIKE CONCAT('%',#{param.search1},'%')
-        </if>
-
-    </select>
 </mapper>

@@ -22,8 +22,4 @@ public class PdRechargeImpl extends ServiceImpl<PdRechargeMapper, PdRecharge> im
     @Resource
     PdRechargeMapper targetMapper;
 
-    @Override
-    public MyPage<PdRecharge> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 }

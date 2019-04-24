@@ -22,8 +22,4 @@ public class CoinImpl extends ServiceImpl<CoinMapper, Coin> implements CoinServi
     @Resource
     CoinMapper targetMapper;
 
-    @Override
-    public MyPage<Coin> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 }

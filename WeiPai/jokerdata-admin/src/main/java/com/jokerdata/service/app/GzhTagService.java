@@ -14,5 +14,4 @@ import com.jokerdata.vo.MyPage;
  */
 public interface GzhTagService extends IService<GzhTag> {
 
-     MyPage<GzhTag> selectPage(MyPage page);
 }

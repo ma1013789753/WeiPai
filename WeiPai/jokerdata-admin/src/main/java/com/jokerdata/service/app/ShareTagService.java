@@ -14,5 +14,4 @@ import com.jokerdata.vo.MyPage;
  */
 public interface ShareTagService extends IService<ShareTag> {
 
-     MyPage<ShareTag> selectPage(MyPage page);
 }

@@ -14,5 +14,4 @@ import com.jokerdata.vo.MyPage;
  */
 public interface AuthRuleService extends IService<AuthRule> {
 
-     MyPage<AuthRule> selectPage(MyPage page);
 }

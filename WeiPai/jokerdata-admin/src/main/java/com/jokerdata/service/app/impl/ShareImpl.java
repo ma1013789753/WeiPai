@@ -34,13 +34,6 @@ public class ShareImpl extends ServiceImpl<ShareCustomMapper, Share> implements 
     @Resource
     ShareLogCustomMapper shareLogCustomMapper;
 
-
-
-    @Override
-    public MyPage<Share> selectPage(MyPage page) {
-        return shareCustomMapper.selectPage(page);
-    }
-
     @Override
     public IPage<MonetListVo> moneyList(IPage<MonetListVo> sharePage, boolean b) {
 

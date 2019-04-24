@@ -30,15 +30,4 @@
         user_id, user_name, user_mobile, user_password, user_gender, user_state, add_time, user_pay_pwd, wechat_openid, alipay_account, available_predeposit, freeze_predeposit, user_coin, sign_limit, coin_total, user_qq, user_email, user_wx, alipay_name
     </sql>
 
-    <select id="selectPage" resultMap="BaseResultMap">
-
-        select
-        <include refid="Base_Column_List"/>
-        from g_user
-        where del = 0
-        <if test=" param.search1 != ''">
-            and g_user.name LIKE CONCAT('%',#{param.search1},'%')
-        </if>
-
-    </select>
 </mapper>

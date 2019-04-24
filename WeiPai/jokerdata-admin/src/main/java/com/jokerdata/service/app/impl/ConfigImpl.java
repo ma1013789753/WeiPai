@@ -22,8 +22,4 @@ public class ConfigImpl extends ServiceImpl<ConfigMapper, Config> implements Con
     @Resource
     ConfigMapper targetMapper;
 
-    @Override
-    public MyPage<Config> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 }

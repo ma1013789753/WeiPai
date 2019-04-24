@@ -15,5 +15,4 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface CmsCustomMapper extends BaseMapper<Cms> {
 
-    MyPage<Cms> selectPage(@Param("param") MyPage page);
 }

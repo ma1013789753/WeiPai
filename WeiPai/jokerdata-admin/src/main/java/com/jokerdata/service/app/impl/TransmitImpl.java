@@ -22,8 +22,4 @@ public class TransmitImpl extends ServiceImpl<TransmitMapper, Transmit> implemen
     @Resource
     TransmitMapper targetMapper;
 
-    @Override
-    public MyPage<Transmit> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 }

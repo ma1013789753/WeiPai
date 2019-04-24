@@ -22,8 +22,4 @@ public class ArticleCateImpl extends ServiceImpl<ArticleCateMapper, ArticleCate>
     @Resource
     ArticleCateMapper targetMapper;
 
-    @Override
-    public MyPage<ArticleCate> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 }

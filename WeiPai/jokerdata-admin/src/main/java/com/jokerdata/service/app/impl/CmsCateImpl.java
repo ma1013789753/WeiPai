@@ -22,8 +22,4 @@ public class CmsCateImpl extends ServiceImpl<CmsCateMapper, CmsCate> implements 
     @Resource
     CmsCateMapper targetMapper;
 
-    @Override
-    public MyPage<CmsCate> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 }

@@ -22,8 +22,4 @@ public class SignImpl extends ServiceImpl<SignMapper, Sign> implements SignServi
     @Resource
     SignMapper targetMapper;
 
-    @Override
-    public MyPage<Sign> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 }

@@ -36,17 +36,17 @@
     </sql>
 
 </#if>
-<#if baseColumnList>
-    <select id="selectPage" resultMap="BaseResultMap">
+<#--<#if baseColumnList>-->
+    <#--<select id="selectPage" resultMap="BaseResultMap">-->
 
-        select
-        <include refid="Base_Column_List"/>
-        from ${table.name}
-        where del = 0
-        <if test=" param.search1 != ''">
-            and ${table.name}.name LIKE CONCAT('%',${r'#{param.search1}'},'%')
-        </if>
+        <#--select-->
+        <#--<include refid="Base_Column_List"/>-->
+        <#--from ${table.name}-->
+        <#--where del = 0-->
+        <#--<if test=" param.search1 != ''">-->
+            <#--and ${table.name}.name LIKE CONCAT('%',${r'#{param.search1}'},'%')-->
+        <#--</if>-->
 
-    </select>
-</#if>
+    <#--</select>-->
+<#--</#if>-->
 </mapper>

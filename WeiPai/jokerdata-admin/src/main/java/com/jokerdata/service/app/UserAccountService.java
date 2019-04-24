@@ -14,5 +14,4 @@ import com.jokerdata.vo.MyPage;
  */
 public interface UserAccountService extends IService<UserAccount> {
 
-     MyPage<UserAccount> selectPage(MyPage page);
 }

@@ -22,8 +22,4 @@ public class SignCoinImpl extends ServiceImpl<SignCoinMapper, SignCoin> implemen
     @Resource
     SignCoinMapper targetMapper;
 
-    @Override
-    public MyPage<SignCoin> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 }

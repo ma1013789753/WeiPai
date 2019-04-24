@@ -22,8 +22,4 @@ public class UserImpl extends ServiceImpl<UserMapper, User> implements UserServi
     @Resource
     UserMapper targetMapper;
 
-    @Override
-    public MyPage<User> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 }

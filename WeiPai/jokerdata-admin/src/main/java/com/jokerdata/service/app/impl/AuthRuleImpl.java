@@ -22,8 +22,4 @@ public class AuthRuleImpl extends ServiceImpl<AuthRuleMapper, AuthRule> implemen
     @Resource
     AuthRuleMapper targetMapper;
 
-    @Override
-    public MyPage<AuthRule> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 }

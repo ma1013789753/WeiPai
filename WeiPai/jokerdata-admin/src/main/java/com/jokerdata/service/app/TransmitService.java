@@ -14,5 +14,4 @@ import com.jokerdata.vo.MyPage;
  */
 public interface TransmitService extends IService<Transmit> {
 
-     MyPage<Transmit> selectPage(MyPage page);
 }

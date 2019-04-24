@@ -22,8 +22,4 @@ public class ShareTagImpl extends ServiceImpl<ShareTagMapper, ShareTag> implemen
     @Resource
     ShareTagMapper targetMapper;
 
-    @Override
-    public MyPage<ShareTag> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 }

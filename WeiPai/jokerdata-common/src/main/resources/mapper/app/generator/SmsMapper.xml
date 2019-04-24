@@ -16,15 +16,4 @@
         sms_id, sms_mobi, sms_content, sms_type, add_time
     </sql>
 
-    <select id="selectPage" resultMap="BaseResultMap">
-
-        select
-        <include refid="Base_Column_List"/>
-        from g_sms
-        where del = 0
-        <if test=" param.search1 != ''">
-            and g_sms.name LIKE CONCAT('%',#{param.search1},'%')
-        </if>
-
-    </select>
 </mapper>

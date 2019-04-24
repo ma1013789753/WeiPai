@@ -22,8 +22,4 @@ public class CoinLogImpl extends ServiceImpl<CoinLogMapper, CoinLog> implements 
     @Resource
     CoinLogMapper targetMapper;
 
-    @Override
-    public MyPage<CoinLog> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 }

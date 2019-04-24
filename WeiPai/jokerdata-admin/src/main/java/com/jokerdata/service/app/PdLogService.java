@@ -14,5 +14,4 @@ import com.jokerdata.vo.MyPage;
  */
 public interface PdLogService extends IService<PdLog> {
 
-     MyPage<PdLog> selectPage(MyPage page);
 }

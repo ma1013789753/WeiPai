@@ -14,5 +14,4 @@ import com.jokerdata.vo.MyPage;
  */
 public interface AdminService extends IService<Admin> {
 
-     MyPage<Admin> selectPage(MyPage page);
 }

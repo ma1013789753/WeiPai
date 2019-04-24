@@ -22,8 +22,4 @@ public class GzhTagImpl extends ServiceImpl<GzhTagMapper, GzhTag> implements Gzh
     @Resource
     GzhTagMapper targetMapper;
 
-    @Override
-    public MyPage<GzhTag> selectPage(MyPage page) {
-        return targetMapper.selectPage(page);
-    }
 }

@@ -21,15 +21,4 @@
         cms_id, cms_title, cms_author, cate_id, cate_name, cms_image, cms_content, cms_sort, add_time, see_num
     </sql>
 
-    <select id="selectPage" resultMap="BaseResultMap">
-
-        select
-        <include refid="Base_Column_List"/>
-        from g_cms
-        where del = 0
-        <if test=" param.search1 != ''">
-            and g_cms.name LIKE CONCAT('%',#{param.search1},'%')
-        </if>
-
-    </select>
 </mapper>

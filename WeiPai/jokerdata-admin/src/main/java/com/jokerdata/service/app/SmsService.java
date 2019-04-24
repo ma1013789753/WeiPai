@@ -14,5 +14,4 @@ import com.jokerdata.vo.MyPage;
  */
 public interface SmsService extends IService<Sms> {
 
-     MyPage<Sms> selectPage(MyPage page);
 }
