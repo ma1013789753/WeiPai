@@ -55,6 +55,38 @@
 
     </select>
 
+
+    <select id="shareList" resultMap="BaseResultMap">
+
+        SELECT share_id,a.user_id,user_name,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time,
+			share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image
+	    FROM g_share a
+        RIGHT JOIN g_user_account b
+        ON a.`account_id` = b.account_id
+        WHERE a.share_state in (0,2)
+        <if test="shareIndexParams.tag_id != ''">
+          and a.tag_id = #{shareIndexParams.tag_id}
+        </if>
+        <if test="shareIndexParams.is_self == 1">
+            and a.is_original = 1
+            and a.share_status = 0
+        </if>
+        <if test="shareIndexParams.is_new == 1">
+            order by a.add_time desc
+        </if>
+        <if test="shareIndexParams.is_new == 0">
+            order by a.add_time asc
+        </if>
+        <if test="shareIndexParams.is_hot == 1">
+            , a.share_num_true desc
+        </if>
+        <if test="shareIndexParams.is_rich == 1">
+            , a.share_coin desc
+        </if>
+
+
+    </select>
+
     <select id="moneyMore" resultMap="BaseResultMap">
 
         SELECT share_id,a.user_id,user_name,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time,

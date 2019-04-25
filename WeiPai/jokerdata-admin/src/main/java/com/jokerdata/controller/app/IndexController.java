@@ -32,7 +32,7 @@ public class IndexController {
     ShareLogService shareLogService;
 
     @Autowired
-    CmsService ddService;
+    CmsService cmsService;
 
 
     @Autowired
@@ -93,8 +93,11 @@ public class IndexController {
             }
         });
 
-        List<Cms> cmsdata = ddService.list(new QueryWrapper<Cms>().orderByDesc("cms_sort","add_time").last("limit 11"));
-        List<Map<String,Object>> cmsList = ClassUtil.toLowBeanList(cmsdata);
+        IPage<Cms> param = new Page<>();
+        param.setCurrent(1);
+        param.setSize(10);
+        param = cmsService.page(param,new QueryWrapper<Cms>().orderByDesc("cms_sort","add_time"));
+        List<Map<String,Object>> cmsList = ClassUtil.toLowBeanList(param.getRecords());
         cmsList.forEach(stringObjectMap -> {
             stringObjectMap.put("add_time_text",ClassUtil.getTaxt(stringObjectMap.get("add_time").toString()));
             stringObjectMap.put("cms_image",stringObjectMap.get("cms_image").toString().replace("./", ClassUtil.URL));
@@ -117,8 +120,8 @@ public class IndexController {
         map.put("money_list",monList);
         map.put("rec_more",recPage.getPages()>1?true:false);
         map.put("rec_list",tuiList);
-        map.put("cms_more",cmsList.size()>10?true:false);
-        map.put("cms_list",cmsList.subList(0,10));
+        map.put("cms_more",param.getPages()>1?true:false);
+        map.put("cms_list",cmsList);
         map.put("get_money_list",ClassUtil.toLowBeanList(shareIndexVos));
 
         return ApiResult.success(map);
@@ -179,18 +182,35 @@ public class IndexController {
 
     @GetMapping(value = "/cms_more",produces = "application/json;charset=UTF-8")
     public PageResule cms_more() {
-        Page<Cms> param = new Page<>();
-        ddService.list(new QueryWrapper<>());
-        ddService.page(param,new QueryWrapper<>());
-//        List<Cms> cmsdata = ddService.list(new QueryWrapper<Cms>().orderByDesc("cms_sort","add_time").last("limit 11"));
-//        List<Map<String,Object>> cmsList = ClassUtil.toLowBeanList(cmsdata);
-//        cmsList.forEach(stringObjectMap -> {
-//            stringObjectMap.put("add_time_text",ClassUtil.getTaxt(stringObjectMap.get("add_time").toString()));
-//            stringObjectMap.put("cms_image",stringObjectMap.get("cms_image").toString().replace("./", ClassUtil.URL));
-//        });
+        IPage<Cms> param = new Page<>();
+        param.setCurrent(1);
+        param.setSize(10);
+        param = cmsService.page(param,new QueryWrapper<Cms>().orderByDesc("cms_sort").orderByDesc("add_time"));
+        List<Map<String,Object>> cmsList = ClassUtil.toLowBeanList(param.getRecords());
 
-//        Map<String,List<Map<String,Object>>>  data = new HashMap<>();
-//        data.put("list",tuiList);
-        return  PageResule.success("").setPage((Page) param);
+        cmsList.forEach(stringObjectMap -> {
+            stringObjectMap.put("add_time_text",ClassUtil.getTaxt(stringObjectMap.get("add_time").toString()));
+            stringObjectMap.put("cms_image",stringObjectMap.get("cms_image").toString().replace("./", ClassUtil.URL));
+        });
+
+        Map<String,List<Map<String,Object>>>  data = new HashMap<>();
+        data.put("list",cmsList);
+        return  PageResule.success(data).setPage((Page) param);
+    }
+
+    @GetMapping(value = "/cms_info",produces = "application/json;charset=UTF-8")
+    public ApiResult cms_info(String cms_id) {
+        if(StringUtils.isEmpty(cms_id)){
+            return ApiResult.error("参数不合法");
+        }
+        Cms cms = cmsService.getById(cms_id);
+        cms.setSeeNum(cms.getSeeNum()+1);
+        cmsService.updateById(cms);
+        cms.setCmsImage(ClassUtil.URL+cms.getCmsImage());
+        Map<String,Object> map = ClassUtil.toLowBean(cms);
+        map.put("add_time_text",ClassUtil.getTaxt(cms.getAddTime()));
+        Map<String,Object> data = new HashMap<>();
+        data.put("cms_info",map);
+        return  ApiResult.success(data);
     }
 }

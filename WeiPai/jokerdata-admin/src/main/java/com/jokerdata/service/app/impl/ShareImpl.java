@@ -1,17 +1,14 @@
 package com.jokerdata.service.app.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jokerdata.entity.app.generator.Share;
-import com.jokerdata.entity.app.generator.ShareLog;
 import com.jokerdata.mapper.app.custom.ShareCustomMapper;
 import com.jokerdata.mapper.app.custom.ShareLogCustomMapper;
-import com.jokerdata.mapper.app.generator.ShareMapper;
+import com.jokerdata.parames.ShareIndexParams;
 import com.jokerdata.parames.vo.MonetListVo;
 import com.jokerdata.parames.vo.UserListVo;
 import com.jokerdata.service.app.ShareService;
-import com.jokerdata.vo.MyPage;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -73,5 +70,10 @@ public class ShareImpl extends ServiceImpl<ShareCustomMapper, Share> implements 
 
         }
         return page;
+    }
+
+    @Override
+    public IPage<MonetListVo> shareList(IPage<MonetListVo> sharePage, ShareIndexParams shareIndexParams) {
+        return shareCustomMapper.shareList(sharePage,shareIndexParams);
     }
 }
