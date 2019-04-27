@@ -24,4 +24,6 @@ public interface ShareService extends IService<Share> {
     IPage<MonetListVo> moneyMore(IPage<MonetListVo> sharePage, boolean b);
 
     IPage<MonetListVo> shareList(IPage<MonetListVo> sharePage, ShareIndexParams shareIndexParams);
+
+    IPage<MonetListVo> shareMoneyList(IPage<MonetListVo> sharePage, ShareIndexParams shareIndexParams);
 }

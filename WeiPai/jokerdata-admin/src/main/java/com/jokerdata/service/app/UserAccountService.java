@@ -2,7 +2,10 @@ package com.jokerdata.service.app;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jokerdata.entity.app.generator.UserAccount;
+import com.jokerdata.parames.vo.UserAccept;
 import com.jokerdata.vo.MyPage;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,4 +17,5 @@ import com.jokerdata.vo.MyPage;
  */
 public interface UserAccountService extends IService<UserAccount> {
 
+    List<UserAccept> getUserAccept(String user_id, String share_id);
 }

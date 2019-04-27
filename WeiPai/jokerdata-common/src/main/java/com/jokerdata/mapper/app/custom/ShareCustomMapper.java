@@ -24,4 +24,6 @@ public interface ShareCustomMapper extends BaseMapper<Share> {
     IPage<MonetListVo> tuiJianList(IPage<MonetListVo> recPage);
 
     IPage<MonetListVo> shareList(IPage<MonetListVo> sharePage, @Param("shareIndexParams") ShareIndexParams shareIndexParams);
+
+    IPage<MonetListVo> shareMoneyList(IPage<MonetListVo> sharePage, @Param("shareIndexParams")ShareIndexParams shareIndexParams);
 }

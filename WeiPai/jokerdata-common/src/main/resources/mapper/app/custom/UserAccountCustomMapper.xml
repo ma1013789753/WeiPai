@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jokerdata.mapper.app.generator.UserAccountMapper">
+
+
+
+    <resultMap id="BaseResultMap2" type="com.jokerdata.parames.vo.UserAccept">
+        <id column="account_id" property="account_id"/>
+        <result column="account_name" property="account_name"/>
+        <result column="access_token" property="access_token"/>
+        <result column="avatar_hd" property="avatar_hd"/>
+        <result column="account_state" property="account_state"/>
+        <result column="sl_id" property="sl_id"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List2">
+      a.account_id,account_name,access_token,avatar_hd,account_state,sl_id
+    </sql>
+
+    <select id="getUserAccept" resultMap="BaseResultMap2">
+        SELECT share_id ,a.account_id,account_name,access_token,avatar_hd,account_state,sl_id
+        FROM g_user_account AS a
+        LEFT JOIN g_share_log b ON b.account_id=a.account_id
+        WHERE a.user_id = #{user_id}
+        AND a.account_state != -1
+        AND b.`share_id` = #{share_id}
+    </select>
+</mapper>

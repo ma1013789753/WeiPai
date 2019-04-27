@@ -2,6 +2,7 @@ package com.jokerdata.common;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.util.Base64Utils;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
@@ -184,5 +185,8 @@ public class ClassUtil {
         return RelativeDateFormat.format(date);
     }
 
+    public static String Base64Decode(String str){
+        return new String(Base64Utils.decode(str.getBytes()));
+    }
 
 }

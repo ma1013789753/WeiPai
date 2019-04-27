@@ -51,7 +51,7 @@ public class Share extends Model<Share> {
     /**
      * 1:微博；2公众号文章
      */
-    private Boolean shareType;
+    private String shareType;
 
     private String shareUrl;
 
