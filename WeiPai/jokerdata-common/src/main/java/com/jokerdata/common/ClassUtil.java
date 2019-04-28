@@ -3,6 +3,7 @@ package com.jokerdata.common;
 import com.google.common.collect.Lists;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.util.Base64Utils;
+import org.springframework.util.StringUtils;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
@@ -189,4 +190,13 @@ public class ClassUtil {
         return new String(Base64Utils.decode(str.getBytes()));
     }
 
+    public static boolean isExit(Object object){
+        if(object == null){
+            return false;
+        }
+        if(StringUtils.isEmpty(object.toString())){
+            return false;
+        }
+        return true;
+    }
 }
