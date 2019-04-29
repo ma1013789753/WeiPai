@@ -47,7 +47,7 @@ public class User extends Model<User> {
     /**
      * 性别:1男，2女
      */
-    private Boolean userGender;
+    private int userGender;
 
     /**
      * 正常0,1禁用
@@ -148,11 +148,11 @@ public class User extends Model<User> {
         this.userPassword = userPassword;
     }
 
-    public Boolean getUserGender() {
+    public int getUserGender() {
         return userGender;
     }
 
-    public void setUserGender(Boolean userGender) {
+    public void setUserGender(int userGender) {
         this.userGender = userGender;
     }
 
