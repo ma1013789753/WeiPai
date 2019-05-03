@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.jokerdata.entity.app.generator.Share;
 import com.jokerdata.entity.app.generator.ShareLog;
 import com.jokerdata.parames.vo.ShareIndexVo;
+import com.jokerdata.parames.vo.SpreadBeanVo;
 import com.jokerdata.vo.MyPage;
 
 import java.util.List;
@@ -28,4 +29,6 @@ public interface ShareLogService extends IService<ShareLog> {
     List<Map<String, Object>> getshareInfoUser(Integer shareId);
 
     IPage<Map<String, Object>> shareUserList(IPage<ShareLog> iPage, String share_id);
+
+    IPage<SpreadBeanVo> getSPreadList(IPage<SpreadBeanVo> shareListPage, Integer userId);
 }

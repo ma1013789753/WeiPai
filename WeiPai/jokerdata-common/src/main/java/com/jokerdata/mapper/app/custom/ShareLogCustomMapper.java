@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jokerdata.entity.app.generator.Share;
 import com.jokerdata.entity.app.generator.ShareLog;
 import com.jokerdata.parames.vo.ShareIndexVo;
+import com.jokerdata.parames.vo.SpreadBeanVo;
 import com.jokerdata.parames.vo.UserListVo;
 import com.jokerdata.vo.MyPage;
 import org.apache.ibatis.annotations.Param;
@@ -33,4 +34,6 @@ public interface ShareLogCustomMapper extends BaseMapper<ShareLog> {
     List<Map<String, Object>> getshareInfoUser(Integer shareId);
 
     IPage<Map<String, Object>> shareUserList(IPage<ShareLog> iPage, @Param("share_id")String share_id);
+
+    IPage<SpreadBeanVo> getSPreadList(IPage<SpreadBeanVo> shareListPage,@Param("userId") Integer userId);
 }

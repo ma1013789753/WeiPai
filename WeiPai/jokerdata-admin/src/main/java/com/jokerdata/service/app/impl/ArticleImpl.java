@@ -1,5 +1,6 @@
 package com.jokerdata.service.app.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jokerdata.entity.app.generator.Article;
 import com.jokerdata.mapper.app.generator.ArticleMapper;
@@ -22,4 +23,13 @@ public class ArticleImpl extends ServiceImpl<ArticleMapper, Article> implements 
     @Resource
     ArticleMapper targetMapper;
 
+    /**
+     * 根据code获取文章
+     * @param sign_rule
+     * @return
+     */
+    @Override
+    public Article getArticleByCode(String sign_rule) {
+        return this.getOne(new QueryWrapper<Article>().eq("article_code",sign_rule));
+    }
 }

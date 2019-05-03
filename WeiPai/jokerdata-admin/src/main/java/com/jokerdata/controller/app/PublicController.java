@@ -3,7 +3,7 @@ package com.jokerdata.controller.app;
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jokerdata.common.ClassUtil;
+import com.jokerdata.common.ShareUtil;
 import com.jokerdata.common.MD5;
 import com.jokerdata.common.utils.CommonUtil;
 import com.jokerdata.common.utils.RundomUtil;
@@ -19,15 +19,10 @@ import com.jokerdata.service.app.*;
 import com.jokerdata.service.common.AliSmsService;
 import com.jokerdata.vo.ApiResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.*;
 
 /**
@@ -150,7 +145,7 @@ public class PublicController {
     public ApiResult login(@Validated LoginParames parames) {
 
         User bean = (User) userService.getOne(new QueryWrapper<User>().eq("user_mobile",parames.getMobile()));
-        UserInfo user = ClassUtil.beanToBean(bean,UserInfo.class);
+        UserInfo user = ShareUtil.beanToBean(bean,UserInfo.class);
 
         if(!MD5.MD5Encode(parames.getPassword(),"utf-8").equals(user.getUserPassword())){
             return ApiResult.error("密码错误");
@@ -158,7 +153,7 @@ public class PublicController {
         if(user.getUserState()){
             return ApiResult.error("您的帐号异常,请联系管理员");
         }
-        user.setUserAvatar(ClassUtil.getAvatar(user.getUserId()+""));
+        user.setUserAvatar(ShareUtil.getAvatar(user.getUserId()+""));
         QueryWrapper<UserToken> wrapper = new QueryWrapper<>();
         wrapper.eq("user_id",user.getUserId())
                 .eq("user_name",parames.getMobile());
@@ -177,7 +172,7 @@ public class PublicController {
         }
 
         Map<String,Object> map = new HashMap<>();
-        map.put("user_info",ClassUtil.toLowBean(user));
+        map.put("user_info", ShareUtil.toLowBean(user));
         return ApiResult.success(map);
     }
 
@@ -189,7 +184,7 @@ public class PublicController {
 
         List<SystemMsgvo> list = new ArrayList<>();
         datas.getRecords().forEach(systemMsg -> {
-            SystemMsgvo sys = ClassUtil.beanToBean(systemMsg,SystemMsgvo.class);
+            SystemMsgvo sys = ShareUtil.beanToBean(systemMsg,SystemMsgvo.class);
             sys.setAddTime(systemMsg.getAddTime());
             if(sys.getIsBase64()==1){
                 sys.setNoticeContent(new String(Base64.getDecoder().decode(sys.getNoticeContent())));
@@ -197,7 +192,7 @@ public class PublicController {
             list.add(sys);
         });
         Map<String,List<Map<String,Object>>>  data = new HashMap<>();
-        data.put("list",ClassUtil.toLowBeanList(list));
+        data.put("list", ShareUtil.toLowBeanList(list));
 
         return PageResule.success(data).setPage(datas);
     }
@@ -220,7 +215,7 @@ public class PublicController {
 
         Article article = articleService.getOne(queryWrapper);
         Map<String,Object> map = new HashMap<>();
-        map.put("article_info",ClassUtil.toLowBean(article));
+        map.put("article_info", ShareUtil.toLowBean(article));
         return ApiResult.success(map);
 
     }
@@ -231,7 +226,7 @@ public class PublicController {
         List<ArticleCate> data = articleCateService.list(new QueryWrapper<>());
 
         Map<String,List<Map<String,Object>>> map = new HashMap<>();
-        map.put("article_cate",ClassUtil.toLowBeanList(data));
+        map.put("article_cate", ShareUtil.toLowBeanList(data));
         return ApiResult.success(map);
     }
 
@@ -243,7 +238,7 @@ public class PublicController {
         );
 
         Map<String,Object> map = new HashMap<>();
-        map.put("config_msg",ClassUtil.toLowBean(data));
+        map.put("config_msg", ShareUtil.toLowBean(data));
         return ApiResult.success(map);
     }
 
@@ -253,7 +248,7 @@ public class PublicController {
                 new QueryWrapper<>()
         );
         Map<String,List<Map<String,Object>>> map = new HashMap<>();
-        map.put("tag_list",ClassUtil.toLowBeanList(data));
+        map.put("tag_list", ShareUtil.toLowBeanList(data));
         return ApiResult.success(map);
     }
 
@@ -268,7 +263,7 @@ public class PublicController {
         List<Article> data = articleService.list(new QueryWrapper<Article>().eq("cate_id",articleCate.getCateId()));
 
         Map<String,List<Map<String,Object>>> map = new HashMap<>();
-        map.put("article_list",ClassUtil.toLowBeanList(data));
+        map.put("article_list", ShareUtil.toLowBeanList(data));
         return ApiResult.success(map);
     }
 
@@ -277,7 +272,7 @@ public class PublicController {
 
         List<ShareTag> data = shareTagService.list(new QueryWrapper<ShareTag>().orderByDesc("tag_sort"));
         Map<String,List<Map<String,Object>>> map = new HashMap<>();
-        map.put("tag_list",ClassUtil.toLowBeanList(data));
+        map.put("tag_list", ShareUtil.toLowBeanList(data));
         return ApiResult.success(map);
     }
 

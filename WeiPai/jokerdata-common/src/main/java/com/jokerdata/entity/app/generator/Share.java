@@ -92,7 +92,7 @@ public class Share extends Model<Share> {
     /**
      * 默认进行中0， 审核中1， 审核失败2   结束3     取消4
      */
-    private Boolean shareState;
+    private String shareState;
 
     /**
      * 原创转发奖励积分

@@ -50,7 +50,7 @@ public class Feedback extends Model<Feedback> {
     /**
      * 添加时间
      */
-    private String addTime;
+    private Long addTime;
 
 
     @Override

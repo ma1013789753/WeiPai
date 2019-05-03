@@ -41,7 +41,7 @@ public class Sign extends Model<Sign> {
      */
     private String signDate;
 
-    private Boolean signState;
+    private String signState;
 
     /**
      * 添加时间
