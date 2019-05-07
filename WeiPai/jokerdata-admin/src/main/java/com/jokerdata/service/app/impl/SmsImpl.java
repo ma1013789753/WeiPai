@@ -33,7 +33,7 @@ public class SmsImpl extends ServiceImpl<SmsMapper, Sms> implements SmsService {
                 .orderByDesc("add_time");
         Sms sms = this.getOne(wrapper);
         if(sms == null){
-            return "验证码错误";
+            return "验证码不存在";
         }
         if((new Date().getTime()/1000-Long.parseLong(sms.getAddTime()))>5*60){
             return "验证码已过期";

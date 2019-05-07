@@ -65,7 +65,7 @@ public class AuthToken {
         }
         UserToken userToken = userTokenService.getUserByToken(key);
         User user = userService.getById(userToken.getUserId());
-        if(user.getUserState()){
+        if("1".equals(user.getUserState())){
             throw new ApiException("账号异常,请联系管理员");
         }
         RequestHolder.add(user);
