@@ -159,7 +159,7 @@ public class IndexController {
     }
 
     @ApiOperation(value="cms详情", notes="cms详情")
-    @GetMapping(value = "/cms_more",produces = "application/json;charset=UTF-8")
+    @GetMapping(value = "/cms_info",produces = "application/json;charset=UTF-8")
     public ApiResult cms_more(String cms_id) {
         if(StringUtils.isEmpty(cms_id)){
             return ApiResult.error("参数不合法");

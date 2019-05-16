@@ -91,71 +91,54 @@ public class PublicController {
         }
 
         String code = RundomUtil.randomCode();
+
+
         aliSmsService.sendSms(type,mobile,code);
+
         return ApiResult.success();
+
     }
 
-
-    /**
-     * 用户注册
-     * @param parames
-     * @return
-     */
-    @ApiOperation(value="用户注册", notes="根据手机号注册")
     @GetMapping(value = "/reg",produces = "application/json;charset=UTF-8")
     public ApiResult reg(@Validated RegParames parames){
         QueryWrapper<Sms> wrapper = new QueryWrapper<>();
         wrapper.eq("sms_mobi",parames.getMobile())
                 .eq("sms_content",parames.getSms())
                 .eq("sms_type",1);
+
+
         Sms sms = smsService.getOne(wrapper);
         if(sms == null){
             return ApiResult.error("验证码不存在");
         }
+
         if((new Date().getTime()/1000-Long.parseLong(sms.getAddTime()))>5*60){
             return ApiResult.error("验证码已过期");
         }
-
-        User user = userService.getOne(new QueryWrapper<User>().eq("user_mobile",parames.getMobile()));
-        if(user!=null){
-            return ApiResult.error("手机号码已被注册");
-        }
-        user = new User();
+        User user = new User();
         user.setUserMobile(parames.getMobile());
         user.setUserPassword(MD5.MD5Encode(parames.getPassword(),"utf-8"));
         user.setUserName("手机用户"+parames.getMobile().substring(7));
-        user.setUserState(0);
-        user.setAddTime(new Date().getTime()/1000+"");
-        if(userService.save(user)){
-            return ApiResult.success("注册成功");
-        }
-        return ApiResult.error("注册失败");
-
+        userService.save(user);
+        return ApiResult.success("注册成功");
     }
 
-    /**
-     * 忘记密码
-     * @param parames
-     * @return
-     */
-    @ApiOperation(value="忘记密码", notes="重置密码")
     @GetMapping(value = "/forget",produces = "application/json;charset=UTF-8")
     public ApiResult forget(@Validated ResetPassword parames) {
         if(!parames.getRepassword().equals(parames.getPassword())){
-           return ApiResult.error("确认密码不正确");
+            return ApiResult.error("确认密码不正确");
         }
-
-        String isOk = smsService.valiteSms(parames.getMobile(),parames.getSms(),"2");
-        if(!"1".equals(isOk)){
-            return ApiResult.error(isOk);
+        String valiteSms = smsService.valiteSms(parames.getMobile(),parames.getRepassword(),"2");
+        if(!"1".equals(valiteSms)){
+            return ApiResult.error(valiteSms);
         }
         User user = userService.getOne(new QueryWrapper<User>().eq("user_mobile",parames.getMobile()));
         if(user == null){
             return ApiResult.error("用户不存在");
         }
-        user.setUserPassword(ShareUtil.Base64Encode(parames.getPassword()));
-
-        if(userService.updateById(user)){
+        user.setUserPassword(MD5.MD5Encode(parames.getPassword(),"utf-8"));
+        boolean flag = userService.updateById(user);
+        if(flag){
             return ApiResult.success("成功");
         }
         return ApiResult.error("设置失败");
@@ -237,28 +220,31 @@ public class PublicController {
         }
         return getUserToken(user);
     }
-    /**
-     * 系统通知
-     * @param key
-     * @param curpage
-     * @return
-     */
-    @ApiOperation(value="系统通知", notes="用户登录状态下")
+
+
+    public ApiResult getUserToken(User user){
+        UserInfo userToken = ShareUtil.beanToBean(user,UserInfo.class);
+        userToken.setUserAvatar(ShareUtil.getAvatar(userToken.getUserId()+""));
+        UserToken token = userTokenService.getTokenByUserId(user.getUserId());
+        userToken.setToken(token.getUserToken());
+        Map<String,Object> map = new HashMap<>();
+        map.put("user_info", ShareUtil.toLowBean(user));
+        return ApiResult.success(map);
+    }
+
+
     @GetMapping(value = "/sys_notice",produces = "application/json;charset=UTF-8")
-    @Auth(value = true)
-    public PageResule sys_notice(String key,@RequestParam(required = false) int curpage) {
-        User user = RequestHolder.getUser();
-        if (curpage == 0) {
-            curpage = 1;
-        }
-        Page<SystemMsg> datas = systemMsgService.getMsgList(user.getUserId(),curpage);
+    public PageResule sys_notice(PageParames parames) {
+
+        UserToken userToken = userTokenService.getUserByToken(parames.getKey());
+        Page<SystemMsg> datas = systemMsgService.getMsgList(userToken.getUserId(),parames.getCurpage());
 
         List<SystemMsgvo> list = new ArrayList<>();
         datas.getRecords().forEach(systemMsg -> {
             SystemMsgvo sys = ShareUtil.beanToBean(systemMsg,SystemMsgvo.class);
-            sys.setAdd_time_text(ShareUtil.getTaxt(systemMsg.getAddTime()));
+            sys.setAddTime(systemMsg.getAddTime());
             if(sys.getIsBase64()==1){
-                sys.setNoticeContent(ShareUtil.Base64Decode(systemMsg.getNoticeContent()));
+                sys.setNoticeContent(new String(Base64.getDecoder().decode(sys.getNoticeContent())));
             }
             list.add(sys);
         });
@@ -268,14 +254,6 @@ public class PublicController {
         return PageResule.success(data).setPage(datas);
     }
 
-
-    /**
-     *文章详情
-     * @param article_id
-     * @param code
-     * @return
-     */
-    @ApiOperation(value="文章详情", notes="文章详情")
     @GetMapping(value = "/article_info",produces = "application/json;charset=UTF-8")
     public ApiResult article_info(@RequestParam(required = false) String article_id,@RequestParam(required = false)String code) {
 
@@ -286,25 +264,19 @@ public class PublicController {
         if(!StringUtils.isEmpty(article_id)){
             queryWrapper = new QueryWrapper<Article>()
                     .eq("article_id",article_id);
+
         }else{
             queryWrapper = new QueryWrapper<Article>()
                     .eq("article_code",code);
         }
+
         Article article = articleService.getOne(queryWrapper);
-        article.setArticleContent(ShareUtil.htmlEncode(article.getArticleContent()));
         Map<String,Object> map = new HashMap<>();
         map.put("article_info", ShareUtil.toLowBean(article));
         return ApiResult.success(map);
 
     }
 
-
-    /**
-     * 文章分类详情
-     *
-     * @return
-     */
-    @ApiOperation(value="文章分类", notes="文章分类详情")
     @GetMapping(value = "/article_cate",produces = "application/json;charset=UTF-8")
     public ApiResult article_cate() {
 
@@ -315,77 +287,56 @@ public class PublicController {
         return ApiResult.success(map);
     }
 
-    /**
-     * 获取配置
-     * @param code
-     * @return
-     */
-    @ApiOperation(value="获取配置", notes="获取配置")
     @GetMapping(value = "/config_get",produces = "application/json;charset=UTF-8")
     public ApiResult config_get(String code) {
 
         Config data = configService.getOne(
                 new QueryWrapper<Config>().eq("config_code",code)
         );
+
         Map<String,Object> map = new HashMap<>();
         map.put("config_msg", ShareUtil.toLowBean(data));
         return ApiResult.success(map);
     }
 
-    /**
-     * 转发微信部分
-     * @return
-     */
-    @ApiOperation(value="转发微信部分", notes="转发微信部分")
     @GetMapping(value = "/gzh_tag_list",produces = "application/json;charset=UTF-8")
     public ApiResult gzh_tag_list() {
         List<GzhTag> data = gzhTagService.list(
-                new QueryWrapper<GzhTag>().orderByDesc("tag_sort")
+                new QueryWrapper<>()
         );
         Map<String,List<Map<String,Object>>> map = new HashMap<>();
         map.put("tag_list", ShareUtil.toLowBeanList(data));
         return ApiResult.success(map);
     }
 
-    /**
-     * 帮助中心
-     * @param name
-     * @return
-     */
-    @ApiOperation(value="帮助中心", notes="帮助中心")
     @GetMapping(value = "/help_center",produces = "application/json;charset=UTF-8")
     public ApiResult help_center(String name) {
 
         ArticleCate articleCate = articleCateService.getOne(new QueryWrapper<ArticleCate>().eq("cate_name",name));
         if(articleCate==null){
-            return ApiResult.error("参数错误");
+            return ApiResult.success();
         }
 
-        List<Article> data = articleService.list(
-                new QueryWrapper<Article>().eq("cate_id",articleCate.getCateId())
-                .orderByDesc("article_id")
-        );
-        data.forEach(article -> {
-            article.setArticleContent(ShareUtil.htmlEncode(article.getArticleContent()));
-        });
+        List<Article> data = articleService.list(new QueryWrapper<Article>().eq("cate_id",articleCate.getCateId()));
+
         Map<String,List<Map<String,Object>>> map = new HashMap<>();
         map.put("article_list", ShareUtil.toLowBeanList(data));
         return ApiResult.success(map);
     }
 
-    /**
-     * 标签列表
-     * @return
-     */
     @GetMapping(value = "/tag_list",produces = "application/json;charset=UTF-8")
-    @ApiOperation(value="标签列表", notes="标签列表")
     public ApiResult tag_list() {
 
-        List<ShareTag> data = shareTagService.list(
-                new QueryWrapper<ShareTag>().orderByDesc("tag_sort"));
+        List<ShareTag> data = shareTagService.list(new QueryWrapper<ShareTag>().orderByDesc("tag_sort"));
         Map<String,List<Map<String,Object>>> map = new HashMap<>();
         map.put("tag_list", ShareUtil.toLowBeanList(data));
         return ApiResult.success(map);
     }
 
+
+
+    public static void main(String[] args) throws IOException {
+        String str =  MD5.MD5Encode("ma1992224","utf-8");
+        System.out.println("str = " + str);
+    }
 }
