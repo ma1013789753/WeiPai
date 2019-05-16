@@ -143,6 +143,19 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.3.2</version>
         </dependency>
+        <!--httpclient-->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.3.5</version>
+        </dependency>
+        <!-- 支持@ConfigurationProperties 注解 -->
+        <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-configuration-processor</artifactId>
+        <optional>true</optional>
+    </dependency>
+
     </dependencies>
 
     <build>
