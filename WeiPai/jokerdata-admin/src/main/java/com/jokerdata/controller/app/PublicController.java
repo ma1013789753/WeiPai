@@ -228,7 +228,7 @@ public class PublicController {
         UserToken token = userTokenService.getTokenByUserId(user.getUserId());
         userToken.setToken(token.getUserToken());
         Map<String,Object> map = new HashMap<>();
-        map.put("user_info", ShareUtil.toLowBean(user));
+        map.put("user_info", ShareUtil.toLowBean(userToken));
         return ApiResult.success(map);
     }
 

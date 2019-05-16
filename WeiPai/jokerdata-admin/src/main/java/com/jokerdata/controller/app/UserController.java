@@ -535,4 +535,96 @@ public class UserController {
         return ApiResult.success(map);
     }
 
+
+    /**
+     * 积分提现
+     * @param count 数量
+     * @return
+     */
+    @GetMapping(value = "/with_draw", produces = "application/json;charset=UTF-8")
+    @Auth(value = true)
+    public ApiResult with_draw(String key,String count) {
+        User user = RequestHolder.getUser();
+        if(StringUtils.isEmpty(count)){
+            return ApiResult.error("参数错误");
+        }
+        int num = Integer.parseInt(count);
+        if (user.getUserCoin() < num){
+            return ApiResult.error("账户余额不足");
+        }
+        //更新用户金额
+        user.setUserCoin(user.getUserCoin()-num);
+        user.setAvailablePredeposit(new BigDecimal(user.getAvailablePredeposit().doubleValue()+num/1000));
+
+        CoinLog coinLog = new CoinLog();
+        coinLog.setAddTime(new Date().getTime()/1000);
+        coinLog.setLogUserId(user.getUserId()+"");
+        coinLog.setLogUserName(user.getUserName());
+        coinLog.setLogType("with_draw");
+        coinLog.setLogAvCoin(new BigDecimal(num));
+        if(!coinLogService.save(coinLog)){
+            throw new ApiException("");
+        }
+        PdLog pdLog = new PdLog();
+        pdLog.setLgMemberId(user.getUserId());
+        pdLog.setLgMemberName(user.getUserName());
+        pdLog.setLgType("with_draw");
+        pdLog.setLgAvAmount(new BigDecimal(num/1000));
+        pdLog.setLgAddTime(new Date().getTime()/1000);
+        if(!pdLogService.save(pdLog)){
+            throw new ApiException("");
+        }
+
+        if(!userService.saveOrUpdate(user)){
+            throw new ApiException("");
+        }
+        return ApiResult.success("1");
+    }
+
+    //详情
+    @GetMapping(value = "/add_befor", produces = "application/json;charset=UTF-8")
+    @Auth(value = true)
+    public ApiResult add_befor(String key,String url,String is_wb,String token) {
+        User user = RequestHolder.getUser();
+
+        if(StringUtils.isEmpty(url)||StringUtils.isEmpty(token)){
+            return ApiResult.error("参数错误");
+        }
+        if("1".equals(is_wb)){
+            UserAccount account = userAccountService.getOne(new QueryWrapper<UserAccount>().eq("access_token",token));
+            Map<String,Object> map = new HashMap<>();
+            map.put("user",ShareUtil.toLowBean(account));
+            //此处需要数据
+            map.put("text","这是测试数据");
+            return ApiResult.success(map);
+        }
+
+        return ApiResult.error("-1");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
