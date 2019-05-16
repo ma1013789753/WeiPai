@@ -54,8 +54,8 @@ public class SharePController {
         IPage<MonetListVo> sharePage = new Page<>();
         sharePage.setCurrent(Integer.parseInt(shareIndexParams.curpage));
         sharePage.setSize(10);
-        sharePage = shareService.shareList(sharePage,shareIndexParams);
 
+        sharePage = shareService.shareList(sharePage,shareIndexParams);
         List<Map<String,Object>> monList = ShareUtil.toLowBeanList(sharePage.getRecords());
         monList.forEach(stringObjectMap -> {
 

@@ -51,6 +51,7 @@
         ON a.`account_id` = b.account_id
         WHERE a.share_state = 0
         AND a.share_status = 1
+        order  by a.add_time desc
 
 
     </select>
@@ -63,7 +64,7 @@
         RIGHT JOIN g_user_account b
         ON a.`account_id` = b.account_id
         WHERE  a.user_id = #{userId}
-
+        order  by a.add_time desc
 
     </select>
 

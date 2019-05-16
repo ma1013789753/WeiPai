@@ -42,41 +42,39 @@ public class ShareImpl extends ServiceImpl<ShareCustomMapper, Share> implements 
     public IPage<MonetListVo> moneyList(IPage<MonetListVo> sharePage, boolean b) {
 
         IPage<MonetListVo> page = shareCustomMapper.moneyList(sharePage);
-        if(b){
-            page.getRecords().forEach(monetListVo -> {
+        page.getRecords().forEach(monetListVo -> {
+            if(b){
                 List<UserListVo> shareLogList = shareLogCustomMapper.selectUserListVo(monetListVo.getShareId());
                 monetListVo.setUser_list(shareLogList);
-            });
+            }
 
-        }
-        return page;
+        });
+        return parseData(page);
     }
 
     @Override
     public IPage<MonetListVo> tuiJianList(IPage<MonetListVo> recPage, boolean b) {
 
         IPage<MonetListVo> page = shareCustomMapper.tuiJianList(recPage);
-        if(b){
-            page.getRecords().forEach(monetListVo -> {
+        page.getRecords().forEach(monetListVo -> {
+            if(b){
                 List<UserListVo> shareLogList = shareLogCustomMapper.selectUserListVo(monetListVo.getShareId());
                 monetListVo.setUser_list(shareLogList);
-            });
-
-        }
-        return page;
+            }
+        });
+        return parseData(page);
     }
 
     @Override
     public IPage<MonetListVo> moneyMore(IPage<MonetListVo> sharePage, boolean b) {
         IPage<MonetListVo> page = shareCustomMapper.moneyMore(sharePage);
-        if(b){
-            page.getRecords().forEach(monetListVo -> {
+        page.getRecords().forEach(monetListVo -> {
+            if(b){
                 List<UserListVo> shareLogList = shareLogCustomMapper.selectUserListVo(monetListVo.getShareId());
                 monetListVo.setUser_list(shareLogList);
-            });
-
-        }
-        return page;
+            }
+        });
+        return parseData(page);
     }
 
     @Override
@@ -134,7 +132,7 @@ public class ShareImpl extends ServiceImpl<ShareCustomMapper, Share> implements 
 
                 }
             }else{
-                monetListVo.setBackgroundImage(ShareUtil.URL+monetListVo.getBackgroundImage());
+                monetListVo.setBackgroundImage(ShareUtil.getPic(monetListVo.getBackgroundImage()));
             }
             if(CommonUtil.isBase64(monetListVo.getShareContent())){
                 monetListVo.setShareContent(ShareUtil.Base64Decode(monetListVo.getShareContent()));

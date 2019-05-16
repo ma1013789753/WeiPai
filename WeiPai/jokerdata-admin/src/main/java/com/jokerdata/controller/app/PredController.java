@@ -48,43 +48,6 @@ public class PredController {
     private ShareLogService shareLogService;
 
 
-    @GetMapping(value = "/share_list",produces = "application/json;charset=UTF-8")
-    @Auth(value = true)
-    public PageResule share_list(String key, @RequestParam(required = false) int curpage){
-        User user = RequestHolder.getUser();
-        if (curpage == 0) {
-            curpage = 1;
-        }
-
-        IPage<MonetListVo> shareListPage = new Page<>();
-        shareListPage.setCurrent(curpage);
-        shareListPage.setSize(10);
-        shareListPage = shareService.userShareList(shareListPage,user.getUserId());
-
-        Map<String,Object> data = new HashMap<>();
-        data.put("list", ShareUtil.toLowBeanList(shareListPage.getRecords()));
-        data.put("curpage",shareListPage.getCurrent());
-        return PageResule.success(data).setPage((Page) shareListPage);
-
-    }
-
-    @GetMapping(value = "/my_spread",produces = "application/json;charset=UTF-8")
-    @Auth(value = true)
-    public PageResule my_spread(String key, @RequestParam(required = false) int curpage) {
-        User user = RequestHolder.getUser();
-        if (curpage == 0) {
-            curpage = 1;
-        }
-
-        IPage<SpreadBeanVo> shareListPage = new Page<>();
-        shareListPage.setCurrent(curpage);
-        shareListPage.setSize(10);
-        shareListPage = shareLogService.getSPreadList(shareListPage,user.getUserId());
-        Map<String,Object> data = new HashMap<>();
-        data.put("list", ShareUtil.toLowBeanList(shareListPage.getRecords()));
-        data.put("curpage",shareListPage.getCurrent());
-        return PageResule.success(data).setPage((Page) shareListPage);
-    }
 
 
 }
