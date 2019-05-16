@@ -13,5 +13,10 @@ import com.jokerdata.vo.MyPage;
  * @since 2019-04-15
  */
 public interface UserService extends IService<User> {
-
+    /**
+     * 根据手机号获取User
+     * @param mobile
+     * @return
+     */
+    User getUserByMobile(String mobile);
 }

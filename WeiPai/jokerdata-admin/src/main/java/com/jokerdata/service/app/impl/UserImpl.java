@@ -1,5 +1,6 @@
 package com.jokerdata.service.app.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jokerdata.entity.app.generator.User;
 import com.jokerdata.mapper.app.generator.UserMapper;
@@ -22,4 +23,15 @@ public class UserImpl extends ServiceImpl<UserMapper, User> implements UserServi
     @Resource
     UserMapper targetMapper;
 
+    /**
+     * 根据手机号获取User
+     * @param mobile
+     * @return
+     */
+    @Override
+    public User getUserByMobile(String mobile) {
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("user_mobile",mobile);
+        return getOne(userQueryWrapper);
+    }
 }

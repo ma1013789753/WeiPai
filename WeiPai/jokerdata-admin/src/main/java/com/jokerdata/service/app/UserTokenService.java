@@ -14,6 +14,17 @@ import com.jokerdata.vo.MyPage;
  */
 public interface UserTokenService extends IService<UserToken> {
 
+    /**
+     * 根据token 获取UserToken
+     * @param token
+     * @return
+     */
+    UserToken getUserByToken(String token);
 
-     UserToken getUserByToken(String token);
+    /**
+     * 根据userId获取用户token
+     * @param userId
+     * @return
+     */
+    UserToken getTokenByUserId(Integer userId);
 }

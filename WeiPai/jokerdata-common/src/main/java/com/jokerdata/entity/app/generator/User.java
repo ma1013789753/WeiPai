@@ -52,7 +52,7 @@ public class User extends Model<User> {
     /**
      * 正常0,1禁用
      */
-    private int userState;
+    private String userState;
 
     private String addTime;
 

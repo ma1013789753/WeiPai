@@ -5,10 +5,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jokerdata.common.ShareUtil;
 import com.jokerdata.common.MD5;
-import com.jokerdata.common.annotation.Auth;
 import com.jokerdata.common.exception.ApiException;
 import com.jokerdata.common.utils.CommonUtil;
-import com.jokerdata.common.utils.RequestHolder;
 import com.jokerdata.common.utils.RundomUtil;
 import com.jokerdata.entity.app.generator.*;
 import com.jokerdata.parames.LoginParames;
@@ -21,13 +19,8 @@ import com.jokerdata.parames.vo.UserInfo;
 import com.jokerdata.service.app.*;
 import com.jokerdata.service.common.AliSmsService;
 import com.jokerdata.vo.ApiResult;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +37,6 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/Public")
-@Api(value = "公用接口")
 @Transactional(rollbackFor = ApiException.class)
 public class PublicController {
 
@@ -79,22 +71,25 @@ public class PublicController {
     private UserTokenService userTokenService;
 
 
-    /**
-     *
-     * 获取验证码
-     * @param type
-     * @param mobile
-     * @return
-     */
-    @ApiOperation(value="获取验证码", notes="根据类型获取验证码")
     @GetMapping(value = "/get_sms",produces = "application/json;charset=UTF-8")
     public ApiResult getId(int type,String mobile){
+
         if(mobile.length()!=11 || !CommonUtil.isMobileNO(mobile)){
             return new ApiResult().error("手机号码错误");
         }
-        if(type != 1 && type != 2 && type != 3){
+
+        if(type != 1 && type != 2 && type != 3  && type != 4){
             return new ApiResult().error("验证类型错误");
         }
+        if(type == 4){
+            User user = userService.getUserByMobile(mobile);
+            if(user == null){
+                Map<String,Object> data = new HashMap<>();
+                data.put("state",1);
+                return ApiResult.success(data);
+            }
+        }
+
         String code = RundomUtil.randomCode();
         aliSmsService.sendSms(type,mobile,code);
         return ApiResult.success();
@@ -166,52 +161,82 @@ public class PublicController {
         return ApiResult.error("设置失败");
     }
 
-
-    /**
-     * 用户登录
-     * @param parames
-     * @return
-     */
-    @ApiOperation(value="用户登录", notes="用户登录")
-    @GetMapping(value = "/login",produces = "application/json;charset=UTF-8")
+    @GetMapping(value = "/login_psw",produces = "application/json;charset=UTF-8")
     public ApiResult login(@Validated LoginParames parames) {
 
-        User bean =  userService.getOne(new QueryWrapper<User>().eq("user_mobile",parames.getMobile()));
-        if(bean == null){
-            return ApiResult.error("用户不存在");
+        User user =  userService.getOne(new QueryWrapper<User>().eq("user_mobile",parames.getMobile()));
+        if(user == null){
+            return ApiResult.error("账号不存在");
         }
-        if(!MD5.MD5Encode(parames.getPassword(),"utf-8").equals(bean.getUserPassword())){
+        if(!MD5.MD5Encode(parames.getPassword(),"utf-8").equals(user.getUserPassword())){
             return ApiResult.error("密码错误");
         }
-        if(bean.getUserState()==1){
+        if("1".equals(user.getUserState())){
             return ApiResult.error("您的帐号异常,请联系管理员");
         }
-
-        QueryWrapper<UserToken> wrapper = new QueryWrapper<>();
-        wrapper.eq("user_id",bean.getUserId())
-                .eq("user_name",parames.getMobile());
-        UserToken token = userTokenService.getOne(wrapper);
-        Map<String,Object> data = ShareUtil.toLowBean(bean);
-        data.put("user_avatar",ShareUtil.getAvatar(bean.getUserId()+""));
-        if(token==null){
-            token = new UserToken();
-            String newToken = UUID.randomUUID().toString().replaceAll("-", "");
-            token.setUserToken(newToken);
-            token.setAddTime(new Date().getTime()/1000+"");
-            token.setUserId(bean.getUserId());
-            token.setUserName(bean.getUserName());
-            data.put("token",newToken);
-            if(!userTokenService.save(token)){
-                throw  new ApiException("更新失败");
-            }
-        }else{
-            data.put("token",userTokenService.getOne(wrapper).getUserToken());
-        }
-        Map<String,Object> map = new HashMap<>();
-        map.put("user_info", data);
-        return ApiResult.success(map);
+        return getUserToken(user);
     }
 
+
+    @GetMapping(value = "/login_sms",produces = "application/json;charset=UTF-8")
+    public ApiResult loginBySms(String mobile,String code){
+        if(StringUtils.isEmpty(mobile) || !CommonUtil.isMobileNO(mobile)){
+            return ApiResult.error("手机号码不正确");
+        }
+        if(StringUtils.isEmpty(mobile)){
+            return ApiResult.error("验证码不正确");
+        }
+        String flag = smsService.valiteSms(mobile,code,"3");
+        if(!"1".equals(flag)){
+            return ApiResult.error(flag);
+        }
+        User user = userService.getOne(new QueryWrapper<User>().eq("user_mobile",mobile));
+        if(user == null){
+            return ApiResult.error("账号不存在,请注册");
+        }
+        if("1".equals(user.getUserState())){
+            return ApiResult.error("您的帐号异常,请联系管理员");
+        }
+        return getUserToken(user);
+    }
+
+    @GetMapping(value = "/login_wx",produces = "application/json;charset=UTF-8")
+    public ApiResult loginByWx(String openId){
+        if(StringUtils.isEmpty(openId)){
+            return ApiResult.error("参数异常");
+        }
+        User user = userService.getOne(new QueryWrapper<User>().eq("wechat_openid",openId));
+        if(user == null){
+            Map<String,Object> data = new HashMap<>();
+            //未绑定手机号
+            data.put("state",1);
+            return ApiResult.success(data);
+        }
+        if("1".equals(user.getUserState())){
+            return ApiResult.error("您的帐号异常,请联系管理员");
+        }
+        return getUserToken(user);
+    }
+
+    @GetMapping(value = "/bind_wx",produces = "application/json;charset=UTF-8")
+    public ApiResult bindByWx(String openId,String mobile,String code){
+        if(StringUtils.isEmpty(openId)||StringUtils.isEmpty(mobile)||StringUtils.isEmpty(code)){
+            return ApiResult.error("参数异常");
+        }
+        String valiteSms = smsService.valiteSms(mobile,code,"4");
+        if(!"1".equals(valiteSms)){
+            return ApiResult.error(valiteSms);
+        }
+        User user = userService.getUserByMobile(mobile);
+        if("1".equals(user.getUserState())){
+            return ApiResult.error("您的帐号异常,请联系管理员");
+        }
+        user.setWechatOpenid(openId);
+        if(!userService.saveOrUpdate(user)){
+            throw new ApiException("绑定失败");
+        }
+        return getUserToken(user);
+    }
     /**
      * 系统通知
      * @param key
