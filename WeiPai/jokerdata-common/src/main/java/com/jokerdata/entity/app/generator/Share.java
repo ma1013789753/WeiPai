@@ -78,7 +78,7 @@ public class Share extends Model<Share> {
     /**
      * 是否原创：0否；1是
      */
-    private Boolean isOriginal;
+    private String isOriginal;
 
     /**
      * 添加时间
