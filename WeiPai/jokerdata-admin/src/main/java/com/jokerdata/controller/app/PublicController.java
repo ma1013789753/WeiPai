@@ -126,7 +126,7 @@ public class PublicController {
     @GetMapping(value = "/forget",produces = "application/json;charset=UTF-8")
     public ApiResult forget(@Validated ResetPassword parames) {
         if(!parames.getRepassword().equals(parames.getPassword())){
-           return ApiResult.error("确认密码不正确");
+            return ApiResult.error("确认密码不正确");
         }
         String valiteSms = smsService.valiteSms(parames.getMobile(),parames.getRepassword(),"2");
         if(!"1".equals(valiteSms)){
@@ -336,7 +336,7 @@ public class PublicController {
 
 
     public static void main(String[] args) throws IOException {
-       String str =  MD5.MD5Encode("ma1992224","utf-8");
+        String str =  MD5.MD5Encode("ma1992224","utf-8");
         System.out.println("str = " + str);
     }
 }

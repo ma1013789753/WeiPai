@@ -61,7 +61,6 @@ public class ShareController {
         if (curpage == 0) {
             curpage = 1;
         }
-
         IPage<MonetListVo> shareListPage = new Page<>();
         shareListPage.setCurrent(curpage);
         shareListPage.setSize(10);

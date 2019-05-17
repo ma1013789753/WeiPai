@@ -64,8 +64,11 @@ public class AuthToken {
             throw new ApiException("请登录");
         }
         UserToken userToken = userTokenService.getUserByToken(key);
+        if(userToken == null){
+            throw new ApiException("请重新登录");
+        }
         User user = userService.getById(userToken.getUserId());
-        if("1".equals(user.getUserState())){
+        if(user.getUserState().equals("1")){
             throw new ApiException("账号异常,请联系管理员");
         }
         RequestHolder.add(user);
