@@ -18,7 +18,7 @@ import org.apache.ibatis.annotations.Param;
 public interface ShareCustomMapper extends BaseMapper<Share> {
 
     IPage<MonetListVo> moneyList(IPage<MonetListVo> sharePage);
-
+    IPage<MonetListVo> userShareList(IPage<MonetListVo> sharePage,@Param("userId")int userId);
     IPage<MonetListVo> moneyMore(IPage<MonetListVo> sharePage);
 
     IPage<MonetListVo> tuiJianList(IPage<MonetListVo> recPage);

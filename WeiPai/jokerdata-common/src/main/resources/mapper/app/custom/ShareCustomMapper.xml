@@ -51,7 +51,20 @@
         ON a.`account_id` = b.account_id
         WHERE a.share_state = 0
         AND a.share_status = 1
+        order  by a.add_time desc
 
+
+    </select>
+
+    <select id="userShareList" resultMap="BaseResultMap">
+
+        SELECT share_id,a.user_id,user_name,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time,
+			share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image
+	    FROM g_share a
+        RIGHT JOIN g_user_account b
+        ON a.`account_id` = b.account_id
+        WHERE  a.user_id = #{userId}
+        order  by a.add_time desc
 
     </select>
 

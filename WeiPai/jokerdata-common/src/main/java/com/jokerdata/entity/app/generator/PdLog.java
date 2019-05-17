@@ -65,7 +65,7 @@ public class PdLog extends Model<PdLog> {
     /**
      * 添加时间
      */
-    private Integer lgAddTime;
+    private Long lgAddTime;
 
     /**
      * 描述

@@ -2,7 +2,6 @@ package com.jokerdata.service.app;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jokerdata.entity.app.generator.Sms;
-import com.jokerdata.vo.MyPage;
 
 /**
  * <p>
@@ -13,5 +12,7 @@ import com.jokerdata.vo.MyPage;
  * @since 2019-04-15
  */
 public interface SmsService extends IService<Sms> {
+
+    String valiteSms(String mobile, String code, String type);
 
 }

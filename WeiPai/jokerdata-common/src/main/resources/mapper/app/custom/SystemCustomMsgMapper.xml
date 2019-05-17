@@ -29,4 +29,36 @@
         ORDER BY a.`notice_id` DESC
     </select>
 
+    <select id="getPageList" resultType="java.util.HashMap">
+        SELECT a.notice_id,notice_type,notice_content,is_new,add_time,is_read,type,data,is_base64
+         FROM g_systemmsg_user a
+        left join g_system_msg s on s.notice_id=a.notice_id
+        WHERE
+        a.user_id = #{userId}
+        and s.notice_type in ('push','succ_master','succ_user','push_false')
+        ORDER BY a.notice_id desc
+    </select>
+
+
+    <select id="getPageListShop" resultType="java.util.HashMap">
+        SELECT a.notice_id,notice_type,notice_content,is_new,add_time,is_read,type,data,is_base64
+         FROM g_systemmsg_user a
+        left join g_system_msg s on s.notice_id=a.notice_id
+        WHERE
+        a.user_id = #{userId}
+        and s.notice_type in ('shop')
+        ORDER BY a.notice_id desc
+    </select>
+
+    <select id="countSum" resultType="java.util.HashMap">
+        SELECT a.notice_type,count(a.notice_id) as num
+         FROM g_system_msg a
+        left join g_systemmsg_user u on u.notice_id=a.notice_id
+        WHERE
+        u.user_id = #{userId}
+        and u.is_read = 0
+        and a.notice_type in ("shop","push","succ_master","succ_user","push_false")
+        group by a.notice_type
+    </select>
+
 </mapper>

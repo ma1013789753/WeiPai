@@ -112,4 +112,16 @@
         WHERE a.share_id = #{share_id}
         ORDER BY sl_id DESC
     </select>
+
+    <select id="getSPreadList" resultType="com.jokerdata.parames.vo.SpreadBeanVo">
+
+        SELECT sl_id,a.share_id,content,a.account_id,c.account_name,c.avatar_hd,a.add_time,share_content,share_image,share_video,d.account_id as account_id2,d.account_name as account_name2,d.avatar_hd as avatar_hd2,share_type,json,background_image
+        FROM
+        g_share_log a
+        left join g_share s on s.share_id=a.share_id
+        left join g_user_account c on c.account_id=a.account_id
+        left join g_user_account d on d.account_id=s.account_id
+        WHERE a.user_id = #{userId}
+        ORDER BY a.add_time desc
+    </select>
 </mapper>

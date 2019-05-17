@@ -6,7 +6,7 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jokerdata.common.ClassUtil;
+import com.jokerdata.common.ShareUtil;
 import com.jokerdata.entity.app.generator.*;
 import com.jokerdata.parames.ShareIndexParams;
 import com.jokerdata.parames.vo.MonetListVo;
@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,9 +54,9 @@ public class SharePController {
         IPage<MonetListVo> sharePage = new Page<>();
         sharePage.setCurrent(Integer.parseInt(shareIndexParams.curpage));
         sharePage.setSize(10);
-        sharePage = shareService.shareList(sharePage,shareIndexParams);
 
-        List<Map<String,Object>> monList = ClassUtil.toLowBeanList(sharePage.getRecords());
+        sharePage = shareService.shareList(sharePage,shareIndexParams);
+        List<Map<String,Object>> monList = ShareUtil.toLowBeanList(sharePage.getRecords());
         monList.forEach(stringObjectMap -> {
 
             if(stringObjectMap.get("share_video")!=null){
@@ -66,7 +65,7 @@ public class SharePController {
         });
 
         Map<String,Object> result = new HashMap<>();
-        result.put("TagList",ClassUtil.toLowBeanList(data));
+        result.put("TagList", ShareUtil.toLowBeanList(data));
         result.put("list",monList);
         return PageResule.success(result).setPage((Page)sharePage);
     }
@@ -79,7 +78,7 @@ public class SharePController {
         sharePage.setSize(10);
         sharePage = shareService.shareMoneyList(sharePage,shareIndexParams);
 
-        List<Map<String,Object>> monList = ClassUtil.toLowBeanList(sharePage.getRecords());
+        List<Map<String,Object>> monList = ShareUtil.toLowBeanList(sharePage.getRecords());
         monList.forEach(stringObjectMap -> {
 
             if(stringObjectMap.get("share_video")!=null){
@@ -102,9 +101,9 @@ public class SharePController {
 
         Share share = shareService.getOne(new QueryWrapper<Share>().eq("share_id",share_id));
         UserAccount userAccount = userAccountService.getOne(new QueryWrapper<UserAccount>().eq("account_id",share.getAccountId()));
-        Map<String,Object> data = ClassUtil.toLowBean(share);
-        data.put("account_avatar",ClassUtil.URL+userAccount.getAccountAvatar());
-        data.put("avatar_hd",ClassUtil.URL+userAccount.getAvatarHd());
+        Map<String,Object> data = ShareUtil.toLowBean(share);
+        data.put("account_avatar", ShareUtil.URL+userAccount.getAccountAvatar());
+        data.put("avatar_hd", ShareUtil.URL+userAccount.getAvatarHd());
         data.put("account_name",userAccount.getAccountName());
 
         if(!"0".equals(share.getExpires())&& !StringUtils.isEmpty(share.getShareVideo())){
@@ -113,16 +112,16 @@ public class SharePController {
         if(!StringUtils.isEmpty(share.getJson())){
             //转JSON 不需要吧
         }
-        data.put("user_avatr",ClassUtil.getAvatar(userAccount.getUid()));
+        data.put("user_avatr", ShareUtil.getAvatar(userAccount.getUid()));
         if(!StringUtils.isEmpty(share.getBackgroundImage())){
-            data.put("background_image",ClassUtil.URL+share.getBackgroundImage());
+            data.put("background_image", ShareUtil.URL+share.getBackgroundImage());
         }else{
-            data.put("background_image",ClassUtil.URL+"/Upload/money_push.jpg");
+            data.put("background_image", ShareUtil.URL+"/Upload/money_push.jpg");
         }
-        data.put("add_time_text",ClassUtil.getTaxt(share.getAddTime()));
+        data.put("add_time_text", ShareUtil.getTaxt(share.getAddTime()));
         data.put("share_content",new String(Base64Utils.decode(share.getShareContent().getBytes())));
         if(!StringUtils.isEmpty(share.getShareImg())){
-            data.put("share_img",ClassUtil.URL+share.getShareImg());
+            data.put("share_img", ShareUtil.URL+share.getShareImg());
         }
          if("2".equals(share.getShareType())){
             data.put("account_name",new String(Base64Utils.decode(userAccount.getAccountName().getBytes())));
@@ -145,9 +144,9 @@ public class SharePController {
         IPage<Map<String,Object>> userList = shareLogService.shareUserList(logPage,share_id);
         userList.getRecords().forEach(stringObjectMap -> {
             if("2".equals(stringObjectMap.get("acc_type"))){
-                stringObjectMap.put("account_name",ClassUtil.Base64Decode((String) stringObjectMap.get("account_name")));
+                stringObjectMap.put("account_name", ShareUtil.Base64Decode((String) stringObjectMap.get("account_name")));
             }
-            stringObjectMap.put("time_text",ClassUtil.getTaxt((String) stringObjectMap.get("add_time")));
+            stringObjectMap.put("time_text", ShareUtil.getTaxt((String) stringObjectMap.get("add_time")));
         });
         Map<String,Object> data = new HashMap<>();
         data.put("num",share.getHaveSharedNum());

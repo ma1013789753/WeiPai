@@ -60,7 +60,7 @@ public class CoinLog extends Model<CoinLog> {
     /**
      * 添加时间
      */
-    private Integer addTime;
+    private Long addTime;
 
 
     @Override

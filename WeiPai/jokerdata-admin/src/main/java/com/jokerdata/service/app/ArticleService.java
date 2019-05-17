@@ -14,4 +14,5 @@ import com.jokerdata.vo.MyPage;
  */
 public interface ArticleService extends IService<Article> {
 
+    Article getArticleByCode(String sign_rule);
 }

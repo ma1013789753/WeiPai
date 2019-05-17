@@ -9,6 +9,7 @@ import javax.validation.constraints.Pattern;
 @Data
 public class LoginParames {
 
+
     @NotEmpty
     @Length(min = 6,max = 16)
     String password;

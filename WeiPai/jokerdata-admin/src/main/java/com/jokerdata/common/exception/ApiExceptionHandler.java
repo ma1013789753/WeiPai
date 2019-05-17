@@ -42,6 +42,7 @@ public class ApiExceptionHandler {
         return ApiResult.error(e.getMsg());
     }
 
+
     @ExceptionHandler(DuplicateKeyException.class)
     public Result handleDuplicateKeyException(DuplicateKeyException e) {
         return Result.error500("数据库中已存在该记录");
