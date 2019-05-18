@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jokerdata.common.ShareUtil;
+import com.jokerdata.common.exception.ApiException;
 import com.jokerdata.entity.app.generator.*;
 import com.jokerdata.parames.ShareIndexParams;
 import com.jokerdata.parames.vo.MonetListVo;
@@ -15,6 +16,7 @@ import com.jokerdata.parames.vo.UserAccept;
 import com.jokerdata.service.app.*;
 import com.jokerdata.vo.ApiResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +28,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/ShareP")
+@Transactional(rollbackFor = ApiException.class)
 public class SharePController {
 
     @Autowired
@@ -61,6 +64,9 @@ public class SharePController {
 
             if(stringObjectMap.get("share_video")!=null){
                 stringObjectMap.put("share_video", JSON.parseObject(stringObjectMap.get("share_video").toString()));
+            }
+            if(stringObjectMap.get("share_image")!=null && !StringUtils.isEmpty(stringObjectMap.get("share_image").toString())){
+                stringObjectMap.put("share_image", JSON.parseArray(stringObjectMap.get("share_image").toString()));
             }
         });
 
@@ -102,15 +108,19 @@ public class SharePController {
         Share share = shareService.getOne(new QueryWrapper<Share>().eq("share_id",share_id));
         UserAccount userAccount = userAccountService.getOne(new QueryWrapper<UserAccount>().eq("account_id",share.getAccountId()));
         Map<String,Object> data = ShareUtil.toLowBean(share);
-        data.put("account_avatar", ShareUtil.URL+userAccount.getAccountAvatar());
-        data.put("avatar_hd", ShareUtil.URL+userAccount.getAvatarHd());
+        data.put("account_avatar", ShareUtil.getPic(userAccount.getAccountAvatar()));
+        data.put("avatar_hd",  ShareUtil.getPic(ShareUtil.URL+userAccount.getAvatarHd()));
         data.put("account_name",userAccount.getAccountName());
-
+        data.put("ratio",((double)share.getHaveSharedNum())/((double)share.getShareNum())*100+"");
         if(!"0".equals(share.getExpires())&& !StringUtils.isEmpty(share.getShareVideo())){
             //要做一个获取视频的东西
+            data.put("share_video",JSON.parse(share.getShareVideo()));
         }
         if(!StringUtils.isEmpty(share.getJson())){
             //转JSON 不需要吧
+        }
+        if(!StringUtils.isEmpty(share.getShareImage())){
+            data.put("share_image",JSON.parse(share.getShareImage()));
         }
         data.put("user_avatr", ShareUtil.getAvatar(userAccount.getUid()));
         if(!StringUtils.isEmpty(share.getBackgroundImage())){

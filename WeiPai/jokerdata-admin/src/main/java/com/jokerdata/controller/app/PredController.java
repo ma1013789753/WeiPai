@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jokerdata.common.ShareUtil;
 import com.jokerdata.common.annotation.Auth;
+import com.jokerdata.common.exception.ApiException;
 import com.jokerdata.common.utils.RequestHolder;
 import com.jokerdata.entity.app.generator.User;
 import com.jokerdata.parames.vo.MonetListVo;
@@ -14,6 +15,7 @@ import com.jokerdata.service.app.ShareService;
 import com.jokerdata.service.app.SmsService;
 import com.jokerdata.service.app.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,6 +34,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/Pred")
+@Transactional(rollbackFor = ApiException.class)
 public class PredController {
 
 

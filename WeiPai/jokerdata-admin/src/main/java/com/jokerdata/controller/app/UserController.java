@@ -171,26 +171,45 @@ public class UserController {
         User user = RequestHolder.getUser();
         ShareTag shareTag = shareTagService.getById(param.getTag_id());
         UserAccount account = userAccountService.getOne(new QueryWrapper<UserAccount>().eq("access_token",param.getWtoken()));
-        if(param.getShare_num()*param.getShare_coin()>=user.getUserCoin()){
-            return ApiResult.error("积分数量不够");
+        if("code".equals(param.getType())){
+            if(param.getShare_num()*param.getShare_coin()>=user.getUserCoin()){
+                return ApiResult.error("积分数量不够");
+            }
+        }else if("money".equals(param.getType())){
+            if(param.getShare_num()*Double.parseDouble(param.getFree())>=user.getAvailablePredeposit().doubleValue()){
+                return ApiResult.error("现金数量不够");
+            }
+        }else{
+            return ApiResult.error("参数错误");
         }
-        Result result =  weiBoService.getWeiBoByUrl("");//获取微博内容
+
+
+        Result result =  weiBoService.getWeiBoByUrl(param.getShare_url());//获取微博内容
         Config config = configService.getById(4);
+
+
         Share share = new Share();
         share.setUserId(user.getUserId());
         share.setUserName(user.getUserName());
         share.setAccountId(account.getAccountId());
-        share.setShareCoin(param.getShare_coin());
         share.setShareNum(param.getShare_num());
         share.setHaveSharedNum(0);
-        share.setTotalCoin(param.getShare_coin()*param.getShare_num());
-        share.setIsOriginal(param.getIs_original());
         share.setAddTime(new Date().getTime()/1000+"");
         share.setTagId(shareTag.getTagId());
         share.setTagName(shareTag.getTagName());
         share.setShareState("1");//审核中
         share.setShareExtraCoin(Integer.parseInt(config.getConfigContent()));
-        share.setShareStatus("0");//积分
+        if("code".equals(param.getType())){
+            share.setIsOriginal(param.getIs_original());
+            share.setTotalCoin(param.getShare_coin()*param.getShare_num());
+            share.setShareCoin(param.getShare_coin());
+            share.setShareStatus("0");//积分
+        }else{
+            share.setIsOriginal("0");
+            share.setShareStatus("1");//现金
+            share.setCoinMax(new BigDecimal(param.getFree()));
+            share.setCoinMin(new BigDecimal(param.getShare_coin()));
+        }
         //微博内容
         share.setShareUrl(param.getShare_url());
         share.setShareContent("");
@@ -201,6 +220,7 @@ public class UserController {
         share.setBackgroundImage("");
         share.setShortUrl("");
         share.setShareImg("");
+        share.setFromApp(1);
 
 
         if(shareService.save(share)){
@@ -213,7 +233,7 @@ public class UserController {
     @Auth(value = true)
     public ApiResult user_info(String key) {
         User user = RequestHolder.getUser();
-        Map<String, Object> userInfo = ShareUtil.beanToMap(user);
+        Map<String, Object> userInfo = ShareUtil.toLowBean(user);
         userInfo.put("user_avatar", ShareUtil.getAvatar(user.getUserId() + ""));
 
         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
@@ -228,12 +248,16 @@ public class UserController {
                         .select("sum(log_av_coin)")
         );
         double num = 0;
-        if (coinNum.get("sum(log_av_coin)") != null) {
+        if (coinNum!=null && coinNum.get("sum(log_av_coin)") != null) {
             num = ((BigDecimal) coinNum.get("sum(log_av_coin)")).doubleValue();
         }
         Map<String, Object> data = new HashMap<>();
         data.put("user_info", userInfo);
-        data.put("is_sign", sign.get("sign_id") != null ? 1 : 0);
+        if(sign==null){
+            data.put("is_sign", 0);
+        }else{
+            data.put("is_sign", sign.get("sign_id") != null ? 1 : 0);
+        }
         data.put("yesterday_coin", num);
         return ApiResult.success(data);
     }

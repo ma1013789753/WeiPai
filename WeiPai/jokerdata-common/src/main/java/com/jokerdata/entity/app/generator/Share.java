@@ -168,7 +168,12 @@ public class Share extends Model<Share> {
      * 微信文章分享封面图
      */
     private String shareImg;
+    /**
+     * 取消数额
+     */
+    private BigDecimal coinMax;
 
+    private BigDecimal coinMin;
 
     @Override
     protected Serializable pkVal() {

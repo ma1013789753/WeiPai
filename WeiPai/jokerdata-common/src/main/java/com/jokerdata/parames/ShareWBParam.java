@@ -18,4 +18,8 @@ public class ShareWBParam {
     private int tag_id;
     @NotEmpty
     private String share_url;
+
+    private String free;
+
+    private String type;
 }
