@@ -2,7 +2,7 @@
     <div class="pagination">
         <el-pagination  small background class="text-center"  @size-change="handleSizeChange" @current-change="handleCurrentChange"
                                 :current-page="page.current" :page-sizes="pageSizes" :page-size="page.size"
-                                layout="prev, pager, next" :page-count="total">
+                                layout="total, sizes, prev, pager, next" :total="total">
         </el-pagination>
     </div>
 </template>
@@ -21,7 +21,8 @@ export default {
                 current: 1,//当前页
                 size:10, //页条目 默认10个
                 search1:"",
-                search2:""
+                search2:"",
+                search3:""
             }
         };
     },
@@ -32,7 +33,7 @@ export default {
     methods: {
         // 每页条数变更
         handleSizeChange(val) {
-            this.page.limit = val;
+            this.page.size = val;
             this.$emit('pageChange', this.page);
         },
         // 当前页码变更
@@ -44,6 +45,7 @@ export default {
         parentHandleclick(val){
             this.page.search1 = val.search1;
             this.page.search2 = val.search2;
+            this.page.search3 = val.search3;
             this.page.current = 1;
             this.$emit('pageChange', this.page);
         }
