@@ -19,4 +19,6 @@ public class MonetListVo extends Share {
     private String share_num;
 
     private String user_avatr;
+
+    private String ratio;
 }

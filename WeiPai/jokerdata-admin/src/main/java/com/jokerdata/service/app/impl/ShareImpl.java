@@ -86,6 +86,7 @@ public class ShareImpl extends ServiceImpl<ShareCustomMapper, Share> implements 
             monetListVo.setAdd_time_text(ShareUtil.getTaxt(monetListVo.getAddTime()));
             monetListVo.setShareContent( new String(Base64Utils.decode(monetListVo.getShareContent().getBytes())));
             monetListVo.setUser_avatr(ShareUtil.getAvatar(monetListVo.getUserId()+""));
+            monetListVo.setRatio(((double)monetListVo.getHaveSharedNum())/((double)monetListVo.getShareNum())*100+"");
         });
         return page;
 

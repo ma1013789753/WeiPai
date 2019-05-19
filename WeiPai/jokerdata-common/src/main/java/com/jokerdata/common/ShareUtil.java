@@ -160,9 +160,9 @@ public class ShareUtil {
 
     //获取头像
     public static String getAvatar(String userId){
-
-        String str = "http://youdianshare.com/Upload/avatar/"+userId+".png";
-
+        //http://youdianshare.com/Upload/avatar/avatar_1.jpg?1558146561
+//        String str = "http://youdianshare.com/Upload/avatar/"+userId+".png";
+        String str = "http://youdianshare.com/Upload/avatar/avatar_"+userId+".jpg";
         HttpURLConnection urlcon2 = null;
         try {
             URL url = new URL(str);
@@ -244,6 +244,10 @@ public class ShareUtil {
         }
         if(pic.toString().indexOf(".")==0){
             pic = pic.toString().substring(1);
+            return URL + pic;
+        }
+        if(pic.toString().startsWith("http://")){
+            return pic.toString();
         }
         return URL + pic;
     }

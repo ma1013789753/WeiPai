@@ -78,7 +78,7 @@ public class Share extends Model<Share> {
     /**
      * 是否原创：0否；1是
      */
-    private Boolean isOriginal;
+    private String isOriginal;
 
     /**
      * 添加时间
@@ -168,7 +168,12 @@ public class Share extends Model<Share> {
      * 微信文章分享封面图
      */
     private String shareImg;
+    /**
+     * 取消数额
+     */
+    private BigDecimal coinMax;
 
+    private BigDecimal coinMin;
 
     @Override
     protected Serializable pkVal() {

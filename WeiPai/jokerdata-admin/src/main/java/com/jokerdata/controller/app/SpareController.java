@@ -3,6 +3,7 @@ package com.jokerdata.controller.app;
 import java.util.Date;
 import com.alibaba.druid.util.StringUtils;
 import com.jokerdata.common.annotation.Login;
+import com.jokerdata.common.exception.ApiException;
 import com.jokerdata.common.exception.MyException;
 import com.jokerdata.common.utils.ConstCode;
 import com.jokerdata.entity.app.generator.Spare;
@@ -10,6 +11,7 @@ import com.jokerdata.service.app.SpareService;
 import com.jokerdata.vo.MyPage;
 import com.jokerdata.vo.Result;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/spare")
+@Transactional(rollbackFor = ApiException.class)
 public class SpareController {
 
     @Autowired
