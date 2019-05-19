@@ -1,5 +1,5 @@
-import { login, logout, getInfo } from '@/api/login'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { login, logincheck, logout, getInfo } from '@/api/login'
+import { getToken, setToken, removeToken,getOauth, setOauth, removeOauth } from '@/utils/auth'
 
 const user = {
   state: {
@@ -10,7 +10,9 @@ const user = {
     user: {},
     roles: [],
     menus: [], // 菜单权限
-    buttons: [] // 安装权限
+    buttons: [], // 安装权限
+    authtype: '', //第三方验证类型
+    oauth: getOauth()
   },
 
   mutations: {
@@ -31,6 +33,12 @@ const user = {
     },
     SET_BUTTONS: (state, buttons) => {
       state.buttons = buttons
+    },
+    SET_AUTHTYPE: (state, authtype) => {
+      state.authtype = authtype
+    },
+    SET_OAUTH: (state, oauth) => {
+      state.oauth = oauth
     }
   },
 
@@ -42,6 +50,20 @@ const user = {
         login(username, userInfo.password).then(res => {
           setToken(res.data)
           commit('SET_TOKEN', res.data)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+
+    // 第三方授权验证
+    LoginCheck({ commit }, platform) {
+      const codevalue = platform.code
+      return new Promise((resolve, reject) => {
+        logincheck( platform.type,codevalue).then(res => {
+          setOauth(res.data)
+          commit('SET_OAUTH', res.data)
           resolve()
         }).catch(error => {
           reject(error)
@@ -77,7 +99,9 @@ const user = {
           commit('SET_INFO', '')
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
+          commit('SET_OAUTH', '')
           removeToken()
+          removeOauth()
           resolve()
         }).catch(error => {
           reject(error)
@@ -89,7 +113,9 @@ const user = {
     FedLogOut({ commit }) {
       return new Promise(resolve => {
         commit('SET_TOKEN', '')
+        commit('SET_OAUTH', '')
         removeToken()
+        removeOauth()
         resolve()
       })
     }

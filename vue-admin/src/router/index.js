@@ -39,6 +39,22 @@ export const constantRouterMap = [
     }]
   },
   {
+    path: '/redirect',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '/redirect/:path*',
+        component: () => import('@/views/redirect/index')
+      }
+    ]
+  },
+  {
+    path: '/auth-redirect',
+    component: () => import('@/views/login/auth-redirect'),
+    hidden: true
+  },
+  {
     path: '/error',
     component: () => import('@/views/error/404/index'),
     hidden: true,
@@ -220,7 +236,7 @@ export const asyncRouterMap = [
             name:'add',
             meta: {
               resources: 'add',
-              title: "互推列表"
+              title: "新增备品"
             },
           },
           {
@@ -398,6 +414,55 @@ export const asyncRouterMap = [
       }
     ]
   },
+
+  {
+    path: '/job',
+    component: Layout,
+    name: 'job',
+    meta: {
+      resources: 'job',
+      title: '任务调度'
+    },
+    children: [
+  {
+    path: '/joblist',
+    component: Common,
+    redirect: {name:'listJob'},
+    name: 'list',
+    meta: {
+      resources: 'list'
+    },
+    children: [
+      {
+        path: 'list',
+        hidden: true,
+        component: () => import('@/views/job/list/index'),
+        name: 'listJob',
+      },
+      {
+        path: 'add',
+        hidden: true,
+        component: () => import('@/views/job/add/index'),
+        name: 'addjob',
+        meta: {
+          resources: 'add'
+        }
+      },
+      {
+        path: 'edit',
+        hidden: true,
+        component: () => import('@/views/job/edit/index'),
+        name: 'editjob',
+        meta: {
+          resources: 'edit'
+        }
+      }
+
+    ]
+  }]},
+
+
+
   {
     path: '/report',
     component: Layout,

@@ -1,6 +1,7 @@
 package com.jokerdata.entity.admin.generator;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -13,8 +14,8 @@ import java.math.BigDecimal;
 
 /**
  * <p>
-    * 
-    * </p>
+ *
+ * </p>
  *
  * @author aozhang
  * @since 2019-05-1
@@ -106,6 +107,12 @@ public class CustomerUser extends Model<CustomerUser> {
      * 支付宝账户人
      */
     private String alipayName;
+
+    /**
+     * 分享次数
+     **/
+    @TableField(exist = false)
+    private int shareCount;
 
     @Override
     protected Serializable pkVal() {
@@ -266,5 +273,13 @@ public class CustomerUser extends Model<CustomerUser> {
 
     public void setAlipayName(String alipayName) {
         this.alipayName = alipayName;
+    }
+
+    public int getShareCount() {
+        return shareCount;
+    }
+
+    public void setShareCount(int shareCount) {
+        this.shareCount = shareCount;
     }
 }

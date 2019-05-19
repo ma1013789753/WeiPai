@@ -16,5 +16,6 @@ import org.apache.ibatis.annotations.Param;
 public interface CustomerMapper extends BaseMapper<CustomerUser> {
 
     MyPage<CustomerUser> selectPageVo(@Param("page") MyPage<CustomerUser> myPage);
+    MyPage<CustomerUser> selectRankingPageVo(@Param("page") MyPage<CustomerUser> myPage);
 
 }

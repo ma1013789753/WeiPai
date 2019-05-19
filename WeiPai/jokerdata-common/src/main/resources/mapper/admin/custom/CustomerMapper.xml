@@ -23,6 +23,7 @@
         <result column="user_email" property="userEmail"/>
         <result column="user_wx" property="userWx"/>
         <result column="alipay_name" property="alipayName"/>
+        <result column="s_num" property="shareCount"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -53,6 +54,45 @@
         <if test=" page.search3 != ''">
             AND user_id LIKE CONCAT('%',#{page.search3},'%')
         </if>
+    </select>
+
+    <select id="selectRankingPageVo" resultMap="BaseResultMap">
+        SELECT
+        u.user_id,
+        u.user_name,
+        u.user_mobile,
+        u.user_state,
+        u.add_time,
+        u.available_predeposit,
+        u.freeze_predeposit,
+        u.user_coin,
+        u.coin_total,
+        s.s_num
+        FROM
+        g_user u
+        LEFT JOIN (
+        SELECT
+        user_id,
+        count(sl_id) AS s_num
+        FROM
+        g_share_log
+        WHERE
+        is_pass = 1
+        GROUP BY
+        (user_id)
+        ) AS s ON s.user_id = u.user_id
+        WHERE 1 = 1
+        <if test=" page.search1 != ''">
+            AND u.user_name LIKE CONCAT('%',#{page.search1},'%')
+        </if>
+        <if test=" page.search2 != ''">
+            AND u.user_mobile LIKE CONCAT('%',#{page.search2},'%')
+        </if>
+        <if test=" page.search3 != ''">
+            AND u.user_id LIKE CONCAT('%',#{page.search3},'%')
+        </if>
+        ORDER BY
+        s_num DESC
     </select>
 
 </mapper>

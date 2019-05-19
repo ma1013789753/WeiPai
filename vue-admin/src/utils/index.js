@@ -72,3 +72,31 @@ export function formatTime(time, option) {
 export function isExternal(path) {
   return /^(https?:|mailto:|tel:)/.test(path)
 }
+
+/**
+ * @param {string} url
+ * @returns {Object}
+ */
+export function getQueryObject(url) {
+  url = url == null ? window.location.href : url
+  const search = url.substring(url.lastIndexOf('?') + 1)
+  const codeval = {}
+  const reg = /([^?&=]+)=([^?&=]*)/g
+  const cstr = search.match(reg)[0]
+  console.log('这是匹配到的第一个字符串:'+cstr)
+  console.log('最终code:'+cstr.substring(cstr.indexOf('=') + 1))
+  codeval['code'] = String(cstr.substring(cstr.indexOf('=') + 1))
+  console.log('对象的code:'+ codeval['code'])
+  return codeval
+}
+
+/**
+ * 延迟调用
+ */
+export const delay = (function () {
+  let timer = 0
+  return function (callback, ms) {
+    clearTimeout(timer)
+    timer = setTimeout(callback, ms)
+  }
+})();
