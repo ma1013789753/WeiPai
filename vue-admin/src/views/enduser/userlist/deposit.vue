@@ -6,13 +6,13 @@
           <el-input v-model="form.userName" disabled ></el-input>
           </el-col>
         </el-form-item>
-        <el-form-item label="充值方式" prop="nickname">
+        <el-form-item label="充值方式" prop="admin">
           <el-col :span="12">
           <el-input value="后台充值" disabled></el-input>
           </el-col>
         </el-form-item>
-        <el-form-item label="充值类型" prop="deptId">
-          <el-select v-model="type" placeholder="请选择" >
+        <el-form-item label="充值类型" prop="chargetype">
+          <el-select v-model="form.chargetype" placeholder="请选择" >
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -21,7 +21,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="充值额度" prop="num">
+        <el-form-item label="充值额度" prop="amount">
           <el-input-number v-model="amount" :step="100" min="-5000" max="10000"></el-input-number>
         </el-form-item>
         <el-form-item >
@@ -33,10 +33,20 @@
           </el-alert>
           </el-col>
         </el-form-item>
+        <el-form-item label="备注" prop="memo">
+          <el-col :span="12">
+        <el-input
+          type="textarea"
+          :rows="2"
+          placeholder="充值说明"
+          v-model="form.memo">
+        </el-input>
+          </el-col>
+        </el-form-item>
         <el-form-item>
           <el-col :span="12">
           <el-button class="fleft" @click="cancel()">取消</el-button>
-          <el-button class="fright" type="primary" @click="submitForm('form')">确定</el-button>
+          <el-button class="fright" type="primary" @click="submitForm();">确定</el-button>
           </el-col>
         </el-form-item>
       </el-form>
@@ -44,7 +54,7 @@
 </template>
 
 <script>
-  import { add,getById } from '@/api/customer'
+  import { Recharge,getById } from '@/api/customer'
   export default {
     data() {
       return {
@@ -60,32 +70,29 @@
           userName: '',
           userCoin:null,
           availablePredeposit:null,
+          memo:'',
+          chargetype:0
         },
-        amount:100,
-        type:0
+        amount:100
       }
     },
     created(){
         this.getParams () 
     },
     methods: {
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            add(this.form).then(res => {
-                this.$message({
+      submitForm() {
+        if(chargetype == 0){
+          this.form.availablePredeposit = this.form.availablePredeposit + this.amount;
+        }else {
+          this.form.userCoin = this.form.userCoin + this.amount;
+        }
+        Recharge(this.form).then(res => {
+          this.$message({
                   message: '充值成功',
                   type: 'success'
                 });
-                this.cancel();
-
-            })
-          }else{
-            console.log("An error occurred")
-          }
-
-        });
-      },
+          this.cancel();
+      })},
       getParams () {
         // 取到路由带过来的参数 
         this.form.uid = this.$route.query.uid
