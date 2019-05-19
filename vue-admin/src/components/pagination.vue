@@ -19,9 +19,11 @@ export default {
             pageSizes: [10, 20, 50, 100],
             page: {
                 current: 1,//当前页
-                size:10, //页条目 默认10个
+                size:20, //页条目 默认10个
                 search1:"",
-                search2:""
+                search2:"",
+                search3:"",
+                search4:"",
             }
         };
     },
