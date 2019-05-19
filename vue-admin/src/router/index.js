@@ -220,7 +220,7 @@ export const asyncRouterMap = [
             name:'add',
             meta: {
               resources: 'add',
-              title: "新增备品"
+              title: "互推列表"
             },
           },
           {
