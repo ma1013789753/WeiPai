@@ -206,11 +206,11 @@ export const asyncRouterMap = [
   },
 
   {
-    path: '/user',
+    path: '/enduser',
     component: Layout,
-    name: 'user',
+    name: 'enduser',
     meta: {
-      resources: 'user',
+      resources: 'enduser',
       title: '前台用户'
     },
     children: [
@@ -226,13 +226,13 @@ export const asyncRouterMap = [
           {
             path: 'list',
             hidden: true,
-            component: () =>import('@/views/user/userlist/index'),
+            component: () =>import('@/views/enduser/userlist/index'),
             name:'list',
           },
           {
             path: 'deposit',
             hidden: true,
-            component: () =>import('@/views/user/userlist/deposit'),
+            component: () =>import('@/views/enduser/userlist/deposit'),
             name:'deposit',
             meta: {
               resources: 'user',
@@ -244,7 +244,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'rankinglist',
-        component: () => import('@/views/user/rankinglist/index'),
+        component: () => import('@/views/enduser/rankinglist/index'),
         name: 'rankinglist',
         meta: {
           resources: 'rankinglist'
