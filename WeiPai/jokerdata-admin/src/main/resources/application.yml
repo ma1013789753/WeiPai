@@ -13,3 +13,20 @@ mybatis-plus:
       logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
   configuration:
     map-underscore-to-camel-case: true
+
+#第三方登陆接口配置
+wechat:
+ AppID: wxa4a19403389e6c81
+ AppSecret: 73f91942713ca1bbca1ccf2990f5150d
+ Wechat_BaseURI: https://api.weixin.qq.com/sns/oauth2/access_token
+
+#passageway模块接口配置
+passageway:
+  PASSAGEWAY_BASE_URL: http://localhost:8091/
+  GET_JOBS_URL: job/getAllJobs
+  ADD_JOB_URL: job/add
+  RUN_JOB_URL: job/run
+  PAUSE_JOB_URL: job/pause
+  RESUME_JOB_URL: job/resume
+  DELETE_JOB_URL: job/delete
+  GET_JOB_URL: job/getByName
