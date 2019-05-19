@@ -11,7 +11,9 @@ const getters = {
   menus: state => state.user.menus,
   // 从后台获取的用户 按钮权限
   buttons: state => state.user.buttons,
-
+  //第三方验证
+  authtype: state => state.user.authtype,
+  oauth: state => state.user.oauth,
   // 通用信息
   website: state => state.common.website,
 

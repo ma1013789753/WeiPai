@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-      <h3 class="title">MAX数据管理系统</h3>
+      <h3 class="title">WeiPro管理中心</h3>
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
@@ -37,20 +37,38 @@
           登录
         </el-button>
       </el-form-item>
-      <!-- <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: admin</span>
-      </div> -->
     </el-form>
+
+      <el-dialog
+        title="第三方验证"
+        :visible.sync="dialogVisible"
+        append-to-body=true
+        :before-close="handleClose">
+        <span>请选择快捷验证方式</span>
+        <br>
+        <SocialSignin/>
+      </el-dialog>
   </div>
+
 </template>
 
 <script>
 import { isvalidUsername } from '@/utils/validate'
+import { getQueryObject } from '@/utils/index'
+import SocialSignin from "./components/SocialSignIn";
 
 export default {
   name: 'Login',
+  components: {SocialSignin},
   data() {
+      const validatePass = (rule, value, callback) => {
+        if (value.length < 4) {
+          callback(new Error('密码不能小于5位'))
+        } else {
+          callback()
+        }
+      }
+
     const validateUsername = (rule, value, callback) => {
       if (!isvalidUsername(value)) {
         callback(new Error('请输入正确的用户名'))
@@ -58,13 +76,7 @@ export default {
         callback()
       }
     }
-    const validatePass = (rule, value, callback) => {
-      if (value.length < 4) {
-        callback(new Error('密码不能小于5位'))
-      } else {
-        callback()
-      }
-    }
+
     return {
       loginForm: {
         username: 'admin',
@@ -76,7 +88,8 @@ export default {
       },
       loading: false,
       pwdType: 'password',
-      redirect: undefined
+      redirect: undefined,
+      dialogVisible: false,
     }
   },
   watch: {
@@ -87,7 +100,20 @@ export default {
       immediate: true
     }
   },
+  //添加监听存储事件
+  created() {
+     window.addEventListener('storage', this.afterQRScan)
+  },
+  destroyed() {
+    window.removeEventListener('storage', this.afterQRScan)
+  },
   methods: {
+      wpen(){
+         window.open("",'wechat','toolbar=0, location=0, menubar=0, scrollbars=0, titlebar=0, status=0, width=500, height=500, left=450')
+      },
+      TestDialog() {
+      this.dialogVisible = true
+      },
     showPwd() {
       if (this.pwdType === 'password') {
         this.pwdType = ''
@@ -101,7 +127,8 @@ export default {
           this.loading = true
           this.$store.dispatch('Login', this.loginForm).then(() => {
             this.loading = false
-            this.$router.push({ path: '/' })
+            //this.$router.push({ path: '/' })
+            this.dialogVisible = true
           }).catch(() => {
             this.loading = false
           })
@@ -110,8 +137,32 @@ export default {
           return false
         }
       })
+    },
+    //处理第三方登陆
+    afterQRScan(e) {
+      if (e.key === 'x-admin-oauth-code') {
+        console.log('第三方type:' + this.$store.getters.authtype)
+        const codeval = getQueryObject(e.newValue)
+        const platform = {
+          code : codeval['code'],
+          type : this.$store.getters.authtype
+        }
+        if (platform.code) {
+            this.$store.dispatch('LoginCheck', platform).then(() => {
+            //this.$router.push({ path: this.redirect || '/' })
+            this.$router.push({ path: '/' })
+          }).catch(() => {
+              this.loading = false
+            })
+        } else {
+          alert('第三方登录失败')
+          console.log('login fail')
+          return false
+        }
+      }
     }
   }
+
 }
 </script>
 
@@ -200,5 +251,7 @@ $light_gray:#eee;
     cursor: pointer;
     user-select: none;
   }
+
+
 }
 </style>

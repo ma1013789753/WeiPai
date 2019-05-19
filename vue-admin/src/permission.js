@@ -3,11 +3,12 @@ import store from './store'
 import NProgress from 'nprogress' // Progress 进度条
 import 'nprogress/nprogress.css'// Progress 进度条样式
 import { Message } from 'element-ui'
-import { getToken } from '@/utils/auth' // 验权
+import { getToken, getOauth } from '@/utils/auth' // 验权
 
-const whiteList = ['/login'] // 不重定向白名单
+const whiteList = ['/login','/redirect/auth-redirect','/auth-redirect'] // 不重定向白名单
 router.beforeEach((to, from, next) => {
   NProgress.start()
+  //dev阶段
   if (getToken()) {
     if (to.path === '/login') {
       next({ path: '/' })
@@ -34,6 +35,8 @@ router.beforeEach((to, from, next) => {
       }
     }
   } else {
+    console.log('即将访问的to:',to.path)
+    //第一次登陆并且访问路径不是login,比如是/
     if (whiteList.indexOf(to.path) !== -1) {
       next()
     } else {
