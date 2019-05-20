@@ -24,11 +24,12 @@
         <result column="user_wx" property="userWx"/>
         <result column="alipay_name" property="alipayName"/>
         <result column="s_num" property="shareCount"/>
+        <result column="delete_flg" property="deleteFlg"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        user_id, user_name, user_mobile, user_password, user_gender, user_state, add_time, user_pay_pwd, wechat_openid, alipay_account, available_predeposit, freeze_predeposit, user_coin, sign_limit, coin_total, user_qq, user_email, user_wx, alipay_name
+        user_id, user_name, user_mobile, user_password, user_gender, user_state, add_time, user_pay_pwd, wechat_openid, alipay_account, available_predeposit, freeze_predeposit, user_coin, sign_limit, coin_total, user_qq, user_email, user_wx, alipay_name, delete_flg
     </sql>
 
     <select id="selectPageVo" resultMap="BaseResultMap">
@@ -44,7 +45,7 @@
         g_user.coin_total
         FROM
         g_user
-        WHERE 1 = 1
+        WHERE delete_flg = 0
         <if test=" page.search1 != ''">
             AND user_name LIKE CONCAT('%',#{page.search1},'%')
         </if>
@@ -81,7 +82,7 @@
         GROUP BY
         (user_id)
         ) AS s ON s.user_id = u.user_id
-        WHERE 1 = 1
+        WHERE u.delete_flg = 0
         <if test=" page.search1 != ''">
             AND u.user_name LIKE CONCAT('%',#{page.search1},'%')
         </if>
