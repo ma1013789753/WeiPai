@@ -107,6 +107,11 @@ public class User extends Model<User> {
      */
     private String alipayName;
 
+    /**
+     * 正常0,1删除
+     */
+    private String deleteFlg;
+
     @Override
     protected Serializable pkVal() {
         return this.userId;

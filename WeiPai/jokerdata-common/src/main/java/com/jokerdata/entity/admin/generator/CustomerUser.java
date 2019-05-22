@@ -114,6 +114,8 @@ public class CustomerUser extends Model<CustomerUser> {
     @TableField(exist = false)
     private int shareCount;
 
+    private String deleteFlg;
+
     @Override
     protected Serializable pkVal() {
         return this.userId;

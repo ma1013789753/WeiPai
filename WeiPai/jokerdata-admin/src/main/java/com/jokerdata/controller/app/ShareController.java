@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.lang.Math;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,9 +54,6 @@ public class ShareController {
     @Autowired
     private CoinLogService coinLogService;
 
-    @Autowired
-    private PdLogService pdLogService;
-
 
 
     @GetMapping(value = "/share_list",produces = "application/json;charset=UTF-8")
@@ -91,8 +87,7 @@ public class ShareController {
         UserAccount userAccount = userAccountService.getById(account_id);
         //创建coinLog记录
         CoinLog coinLog = new CoinLog();
-        //创建现金记录
-        PdLog pdLog = new PdLog();
+
         if("0".equals(share.getShareStatus())){
             coinLog.setLogUserId(user.getUserId()+"");
             coinLog.setLogUserName(user.getUserName());
@@ -109,21 +104,33 @@ public class ShareController {
             coinLog = coinLogService.getOne(new QueryWrapper<CoinLog>().eq("log_user_id",coinLog.getLogUserId())
                     .eq("add_time",coinLog.getAddTime())
             );
-        }else{
-            pdLog.setLgMemberId(user.getUserId());
-            pdLog.setLgMemberName(user.getUserName());
-            pdLog.setLgType("task_in_check");
-            DecimalFormat df = new DecimalFormat("#.0");
-            //随机金额
-            Double t = Math.random()*(share.getCoinMax().doubleValue()-share.getCoinMin().doubleValue())+share.getCoinMin().doubleValue();
-            pdLog.setLgAvAmount(new BigDecimal(df.format(t)));
-            pdLog.setLgAddTime(new Date().getTime()/1000);
-            pdLog.setLgDesc("分享微博现金");
-            if(!pdLogService.save(pdLog)){
+        }
+        PdLog pdLog = new PdLog();
+        pdLog.setLgMemberId(user.getUserId());
+        pdLog.setLgMemberName(user.getUserName());
+        pdLog.setLgType("task_in_check");
+        Double t = Math.random()*(share.getCoinMax().doubleValue()-share.getCoinMin().doubleValue());
+
+//        pdLog.setLgAvAmount();
+        pdLog.setLgAddTime(new Date().getTime()/1000);
+        pdLog.setLgDesc("分享微博现金");
+
+
+        if("11".equals(share.getShareStatus())){
+            coinLog.setLogUserId(user.getUserId()+"");
+            coinLog.setLogUserName(user.getUserName());
+            coinLog.setLogAdminId("-1");
+            coinLog.setLogAdminName("发布接口创建");
+            coinLog.setLogType("task_income_check");//待审核积分
+            coinLog.setLogAvCoin(new BigDecimal(share.getShareCoin()));
+            coinLog.setLogFreezeCoin(new BigDecimal(0));
+            coinLog.setLogMark("发布接口创建");
+            coinLog.setAddTime(new Date().getTime()/1000);
+            if(!coinLogService.save(coinLog)){
                 throw new ApiException("保存失败");
             }
-            pdLog = pdLogService.getOne(new QueryWrapper<PdLog>().eq("lg_add_time",pdLog.getLgAddTime())
-                            .eq("lg_member_id",pdLog.getLgMemberId())
+            coinLog = coinLogService.getOne(new QueryWrapper<CoinLog>().eq("log_user_id",coinLog.getLogUserId())
+                    .eq("add_time",coinLog.getAddTime())
             );
         }
 
@@ -131,24 +138,15 @@ public class ShareController {
         ShareLog shareLog = new ShareLog();
         shareLog.setUserId(user.getUserId());
         shareLog.setShareId(share.getShareId());
-        if("0".equals(share.getShareStatus())){
-            shareLog.setShareCoin(share.getShareCoin());
-            shareLog.setShareMoney(new BigDecimal(0));
-            shareLog.setRewardType(0);
-            shareLog.setLogId(coinLog.getLogId()+"");
-
-        }else{
-            shareLog.setShareMoney(pdLog.getLgAvAmount());
-            shareLog.setShareCoin(0);
-            shareLog.setRewardType(1);
-            shareLog.setLogId(pdLog.getLgId()+"");
-        }
+        shareLog.setShareCoin(share.getShareCoin());
         shareLog.setAddTime(new Date().getTime()/1000+"");
         shareLog.setIsPass(0);
+        shareLog.setRewardType(0);
         shareLog.setContent(content);
         shareLog.setAccountId(userAccount.getAccountId()+"");
         shareLog.setMasterId(share.getUserId());
         //审核后要将logid记录进去
+        shareLog.setLogId(coinLog.getLogId()+"");
         if(!shareLogService.save(shareLog)){
             throw new ApiException("保存失败");
         }
@@ -158,12 +156,7 @@ public class ShareController {
         }
         Map<String,Object> map = new HashMap<>();
         map.put("reward_type",share.getShareStatus());
-        if("0".equals(share.getShareStatus())){
-            map.put("reward",share.getShareCoin());
-
-        }else{
-            map.put("reward",pdLog.getLgAvAmount());
-        }
+        map.put("reward",share.getShareCoin());
         return ApiResult.success(map);
 
     }

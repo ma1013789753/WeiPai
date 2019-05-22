@@ -206,16 +206,16 @@ export const asyncRouterMap = [
   },
 
   {
-    path: '/spare',
+    path: '/enduser',
     component: Layout,
-    name: 'spare',
+    name: 'enduser',
     meta: {
-      resources: 'spare',
-      title: '备品管理'
+      resources: 'enduser',
+      title: '前台用户'
     },
     children: [
       {
-        path: 'sparelist',
+        path: 'userlist',
         component: Common,
         redirect: {name:'list'},
         name: 'list',
@@ -226,38 +226,28 @@ export const asyncRouterMap = [
           {
             path: 'list',
             hidden: true,
-            component: () =>import('@/views/spare/sparelist/index'),
+            component: () =>import('@/views/enduser/userlist/index'),
             name:'list',
           },
           {
-            path: 'add',
+            path: 'deposit',
             hidden: true,
-            component: () =>import('@/views/spare/sparelist/add'),
-            name:'add',
+            component: () =>import('@/views/enduser/userlist/deposit'),
+            name:'deposit',
             meta: {
-              resources: 'add',
-              title: "新增备品"
+              resources: 'user',
+              title: '用户充值'
             },
           },
-          {
-            path: 'edit',
-            hidden: true,
-            component: () =>import('@/views/spare/sparelist/edit'),
-            name:'edit',
-            meta: {
-              resources: 'edit',
-              title: "编辑备品"
-            },
-          }
+
         ]
       },
-
       {
-        path: 'record',
-        component: () => import('@/views/spare/sparerecord/index'),
-        name: 'record',
+        path: 'rankinglist',
+        component: () => import('@/views/enduser/rankinglist/index'),
+        name: 'rankinglist',
         meta: {
-          resources: 'record'
+          resources: 'rankinglist'
         }
       }
     ]
