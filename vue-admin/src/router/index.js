@@ -43,10 +43,10 @@ export const constantRouterMap = [
     component: Layout,
     hidden: true,
     children: [
-      {
-        path: '/redirect/:path*',
-        component: () => import('@/views/redirect/index')
-      }
+      // {
+      //   path: '/redirect/:path*',
+      //   component: () => import('@/views/redirect/index')
+      // }
     ]
   },
   {
@@ -206,6 +206,65 @@ export const asyncRouterMap = [
   },
 
   {
+    path: '/spare',
+    component: Layout,
+    redirect:"/spare/sparelist/index",
+    name: 'spare',
+    meta: {
+      resources: 'spare',
+      title: '互推管理'
+    },
+    children: [
+      {
+        path: 'sparelist',
+        component: Common,
+        redirect: {name:'sparelist'},
+        name: 'list',
+        meta: {
+          resources: 'list'
+        },
+        children: [
+          {
+            path: 'list',
+            hidden: true,
+            component: () =>import('@/views/spare/sparelist/index'),
+            name:'sparelist',
+          },
+          // {
+          //   path: 'add',
+          //   hidden: true,
+          //   component: () =>import('@/views/spare/sparelist/add'),
+          //   name:'add',
+          //   meta: {
+          //     resources: 'add',
+          //     title: "互推列表"
+          //   },
+          // },
+          // {
+          //   path: 'edit',
+          //   hidden: true,
+          //   component: () =>import('@/views/spare/sparelist/edit'),
+          //   name:'edit',
+          //   meta: {
+          //     resources: 'edit',
+          //     title: "编辑备品"
+          //   },
+          // }
+        ]
+      },
+
+      {
+        path: 'record',
+        component: () => import('@/views/spare/sparerecord/index'),
+        name: 'record',
+        meta: {
+          resources: 'record'
+        }
+      }
+    ]
+  },
+  
+  {
     path: '/enduser',
     component: Layout,
     name: 'enduser',
@@ -217,7 +276,7 @@ export const asyncRouterMap = [
       {
         path: 'userlist',
         component: Common,
-        redirect: {name:'list'},
+        redirect: {name:'userlist'},
         name: 'list',
         meta: {
           resources: 'list'
@@ -227,7 +286,7 @@ export const asyncRouterMap = [
             path: 'list',
             hidden: true,
             component: () =>import('@/views/enduser/userlist/index'),
-            name:'list',
+            name:'userlist',
           },
           {
             path: 'deposit',
