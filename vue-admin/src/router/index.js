@@ -318,16 +318,35 @@ export const asyncRouterMap = [
     name: 'maintain',
     meta: {
       resources: 'maintain',
-      title: '保养管理'
+      title: '任务派发'
     },
     children: [
       {
         path: 'manager',
-        component: () => import('@/views/maintain/manager/index'),
+        component: Common,
+        redirect: {name:'managerlist'},
         name: 'manager',
         meta: {
           resources: 'manager'
-        }
+        },
+        children: [
+          {
+            path: 'list',
+            hidden: true,
+            component: () =>import('@/views/maintain/manager/index'),
+            name:'managerlist',
+          },
+          {
+            path: 'add',
+            hidden: true,
+            component: () =>import('@/views/maintain/manager/add'),
+            name:'manageradd',
+            meta: {
+              title: '新增派单'
+            },
+          },
+
+        ]
       },
       {
         path: 'list',
