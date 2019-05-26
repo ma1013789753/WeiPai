@@ -2,6 +2,7 @@ package com.jokerdata.entity.app.generator;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -30,7 +31,7 @@ public class TaskLog extends Model<TaskLog> {
     /**
      * task_id
      */
-    private Long tId;
+    private String tId;
 
     /**
      * 现金奖励LogId
@@ -46,15 +47,15 @@ public class TaskLog extends Model<TaskLog> {
      * 反馈链接
      */
     private String link;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date createTime;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date modifyTime;
 
     /**
      * 0开始1完成2取消
      */
-    private Boolean state;
+    private int state;
 
 
     @Override

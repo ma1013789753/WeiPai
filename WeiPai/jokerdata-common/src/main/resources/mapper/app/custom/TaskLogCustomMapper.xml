@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jokerdata.mapper.app.generator.TaskLogMapper">
+
+
+    <resultMap id="BaseResultMapVo" type="com.jokerdata.vo.TaskVo">
+        <id column="id" property="id" />
+        <result column="t_id" property="tId" />
+        <result column="p_id" property="pId" />
+        <result column="account_id" property="accountId" />
+        <result column="link" property="link" />
+        <result column="create_time" property="createTime" />
+        <result column="modify_time" property="modifyTime" />
+        <result column="state" property="state" />
+        <association property="task" javaType="com.jokerdata.entity.app.generator.Task">
+            <result column="name" property="name" />
+            <result column="award" property="award" />
+            <result column="content" property="content" />
+            <result column="link" property="link" />
+            <result column="state" property="state" />
+        </association>
+        <association property="userAccount" javaType="com.jokerdata.entity.app.generator.UserAccount">
+            <id column="account_id" property="accountId"/>
+            <result column="user_id" property="userId"/>
+            <result column="account_name" property="accountName"/>
+            <result column="account_avatar" property="accountAvatar"/>
+            <result column="uid" property="uid"/>
+            <result column="access_token" property="accessToken"/>
+            <result column="avatar_hd" property="avatarHd"/>
+            <result column="account_state" property="accountState"/>
+            <result column="add_time" property="addTime"/>
+            <result column="account_limit" property="accountLimit"/>
+            <result column="disable_reason" property="disableReason"/>
+            <result column="nopass_reason" property="nopassReason"/>
+            <result column="acc_type" property="accType"/>
+            <result column="follow_num" property="followNum"/>
+            <result column="num_screen" property="numScreen"/>
+            <result column="wechat_pic" property="wechatPic"/>
+            <result column="v_legalize" property="vLegalize"/>
+            <result column="gzh_tag_id" property="gzhTagId"/>
+            <result column="remarks" property="remarks"/>
+            <result column="location" property="location"/>
+            <result column="gender" property="gender"/>
+            <result column="friends_count" property="friendsCount"/>
+            <result column="statuses_count" property="statusesCount"/>
+            <result column="created_at" property="createdAt"/>
+        </association>
+    </resultMap>
+
+    <select id="getPage" resultMap="BaseResultMapVo">
+        SELECT *   FROM
+        g_task_log a
+        LEFT JOIN g_task b
+        ON b.id = a.`t_id`
+        LEFT JOIN g_user_account c
+        ON a.`account_id` = c.`account_id`
+        WHERE
+         1=1
+        <if test=" page.search1 != ''">
+            and  a.name LIKE LIKE CONCAT('%',#{page.search1},'%')
+        </if>
+        <if test=" page.search2 != ''">
+            AND b.`state` = #{page.search2}
+        </if>
+
+    </select>
+</mapper>

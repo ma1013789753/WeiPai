@@ -12,6 +12,21 @@ export function isReward(row, column, cellValue){
     return '现金'
 }
 
+export function isProcess(row, column, cellValue){
+    if(cellValue==0){
+        return '未接单';
+    }
+    if(cellValue==1){
+        return '进行中';
+    }
+    if(cellValue==2){
+        return '已完成';
+    }    
+    if(cellValue==3){
+        return '已取消';
+    }
+}
+
 export function isFrom(row, column, cellValue){
     if(cellValue==1){
         return '微博';

@@ -340,9 +340,18 @@ export const asyncRouterMap = [
             path: 'add',
             hidden: true,
             component: () =>import('@/views/maintain/manager/add'),
-            name:'manageradd',
+            name:'add',
             meta: {
               title: '新增派单'
+            },
+          },
+          {
+            path: 'edit',
+            hidden: true,
+            component: () =>import('@/views/maintain/manager/edit'),
+            name:'edit',
+            meta: {
+              title: '编辑派单'
             },
           },
 
@@ -350,11 +359,41 @@ export const asyncRouterMap = [
       },
       {
         path: 'list',
-        component: () => import('@/views/maintain/list/index'),
-        name: 'list',
+        component: Common,
+        redirect: {name:'acceptlist'},
         meta: {
           resources: 'list'
-        }
+        },
+        children: [
+          {
+            path: 'acceptlist',
+            hidden: true,
+            component: () =>import('@/views/maintain/list/index'),
+            name:'acceptlist',
+            meta: {
+              title: '接单列表'
+            },
+          },
+          {
+            path: 'acceptadd',
+            hidden: true,
+            component: () =>import('@/views/maintain/list/add'),
+            name:'acceptadd',
+            meta: {
+              title: '新增'
+            },
+          },
+          {
+            path: 'acceptedit',
+            hidden: true,
+            component: () =>import('@/views/maintain/list/edit'),
+            name:'acceptedit',
+            meta: {
+              title: '编辑'
+            },
+          },
+
+        ]
       },
       {
         path: 'record',

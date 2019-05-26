@@ -1,7 +1,11 @@
 package com.jokerdata.mapper.app.generator;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jokerdata.entity.app.generator.TaskLog;
+import com.jokerdata.vo.MyPage;
+import com.jokerdata.vo.TaskVo;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -13,4 +17,5 @@ import com.jokerdata.entity.app.generator.TaskLog;
  */
 public interface TaskLogMapper extends BaseMapper<TaskLog> {
 
+    IPage<TaskVo> getPage(@Param("page") MyPage page);
 }

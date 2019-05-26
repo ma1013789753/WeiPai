@@ -4,15 +4,14 @@
     <el-header>
       <el-row :gutter="10">
         <el-col :span="4">
-          <el-input  placeholder="请输入用户名称" maxlength="5" minlength="1" clearable v-model="page.search1"></el-input>
+          <el-input  placeholder="请输入任务名称" maxlength="5" minlength="1" clearable v-model="page.search1"></el-input>
         </el-col>
         <el-col :span="4">
-          <el-select v-model="page.search2" placeholder="请选择审核状态">
-            <el-option label="分享状态" value=""></el-option>
-            <el-option label="进行中" value="0"></el-option>
-            <el-option label="审核中" value="1"></el-option>
-            <el-option label="已结束" value="3"></el-option>
-            <el-option label="已取消" value="4"></el-option>
+          <el-select v-model="page.search2" placeholder="请选择任务状态">
+            <el-option label="任务状态" value=""></el-option>
+            <el-option label="进行中" value="1"></el-option>
+            <el-option label="已完成" value="2"></el-option>
+            <el-option label="已取消" value="3"></el-option>
           </el-select>
         </el-col>
         <el-col :span="5">
@@ -27,25 +26,14 @@
     </el-header>
     <el-main >
       <el-table highlight-current-row border :data="tabledata"  empty-text="暂无数据" stripe height="400px" @current-change="handleCurrentChange">
-        <el-table-column  prop="shareId" label="编号" sortable width="80px"></el-table-column>
-        <el-table-column  prop="userName" label="用户名称" sortable width="120px" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="shareType" label="分享类型" show-overflow-tooltip :formatter="getIsFrom"></el-table-column>
-        <el-table-column prop="shareUrl" label="分享链接" width="140px"  show-overflow-tooltip></el-table-column>
-        <el-table-column prop="shareNum" label="分享数量" show-overflow-tooltip ></el-table-column>
-        <el-table-column  prop="haveSharedNum" label="已经分享" show-overflow-tooltip></el-table-column>
-        <el-table-column  prop="isOriginal" label="是否原创">
-          <template slot-scope="scope">
-            <el-tag v-if="scope.row.isOriginal == 0">{{getIsOk(0,0,scope.row.isOriginal)}}</el-tag>
-            <el-tag v-else type="danger"> {{getIsOk(0,0,scope.row.isOriginal)}}</el-tag>
-          </template>
+        <el-table-column   type="index" label="编号" sortable width="60px">></el-table-column>
+        <el-table-column  prop="name" label="任务名称" sortable width="200px" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="award" label="任务奖励" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="content" label="任务描述" width="240px"  show-overflow-tooltip></el-table-column>
+        <el-table-column prop="link" label="任务附件" show-overflow-tooltip ></el-table-column>
+        <el-table-column  prop="state" label="任务状态" :formatter="getIsPass">
         </el-table-column>
-        <el-table-column  prop="shareRecommend" label="是否推荐" :formatter="getIsOk"></el-table-column>
-        <el-table-column  prop="shareState" label="审核状态" :formatter="getIsPass"></el-table-column>
-        <el-table-column  prop="shareStatus" label="奖励类型" :formatter="getIsReward"></el-table-column>
-        <el-table-column prop="shareCoin" label="积分奖励" show-overflow-tooltip></el-table-column>
-        <el-table-column  prop="coinMax" label="最高奖励"></el-table-column>
-        <el-table-column  prop="coinMin" label="最低奖励"></el-table-column>
-        <el-table-column prop="addTime" label="创建时间" width="150px" :formatter="getTime"> </el-table-column>
+        <el-table-column prop="createTime" label="创建时间" width="150px" > </el-table-column>
         <el-table-column label="操作" width="150" fixed="right" align="center"> 
           <template slot-scope="scope">
             <el-button
@@ -69,8 +57,8 @@
 </template>
 
 <script>
-import {isOk,isPass,isReward,isFrom,getRealTime} from '@/utils/common'
-import { list,del,tuijian} from '@/api/spare'
+import {isOk,isProcess} from '@/utils/common'
+import { list} from '@/api/task'
 import pagination from '@/components/pagination'
 export default {
   components: {
@@ -106,16 +94,7 @@ export default {
         return isOk(row, column, cellValue)
     },
     getIsPass(row, column, cellValue){
-        return isPass(row, column, cellValue)
-    },
-    getIsReward(row, column, cellValue){
-        return isReward(row, column, cellValue)
-    },
-    getIsFrom(row, column, cellValue){
-        return isFrom(row, column, cellValue)
-    },
-    getTime(row, column, cellValue){
-      return getRealTime(row, column, cellValue)
+        return isProcess(row, column, cellValue)
     },
     handleDel(res){
         this.$confirm('确定推荐该分享, 是否继续?', '提示', {

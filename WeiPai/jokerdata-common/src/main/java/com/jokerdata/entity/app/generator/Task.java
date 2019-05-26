@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -28,8 +29,8 @@ public class Task extends Model<Task> {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    @TableId(value = "id",type = IdType.INPUT)
+    private String id;
 
     /**
      * 任务名称
@@ -64,8 +65,10 @@ public class Task extends Model<Task> {
     /**
      * 创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date createTime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date modifyTime;
 
 
