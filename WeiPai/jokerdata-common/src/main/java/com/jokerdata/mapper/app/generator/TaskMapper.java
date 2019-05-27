@@ -2,6 +2,10 @@ package com.jokerdata.mapper.app.generator;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jokerdata.entity.app.generator.Task;
+import com.jokerdata.vo.TaskVo;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,5 @@ import com.jokerdata.entity.app.generator.Task;
  */
 public interface TaskMapper extends BaseMapper<Task> {
 
+    List<TaskVo> getListByUser(@Param("userId")Integer userId,@Param("type") int type);
 }

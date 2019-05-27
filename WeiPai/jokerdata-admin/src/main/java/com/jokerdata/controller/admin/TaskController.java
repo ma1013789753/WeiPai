@@ -5,22 +5,24 @@ import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.google.common.collect.Lists;
+import com.jokerdata.common.annotation.Auth;
 import com.jokerdata.common.annotation.Login;
 import com.jokerdata.common.exception.ApiException;
 import com.jokerdata.common.exception.MyException;
 import com.jokerdata.common.utils.ConstCode;
 import com.jokerdata.common.utils.IdWorker;
+import com.jokerdata.common.utils.RequestHolder;
 import com.jokerdata.entity.admin.generator.SysUser;
 import com.jokerdata.entity.app.custom.TaskCustom;
-import com.jokerdata.entity.app.generator.Share;
-import com.jokerdata.entity.app.generator.Task;
-import com.jokerdata.entity.app.generator.TaskLog;
-import com.jokerdata.entity.app.generator.UserAccount;
+import com.jokerdata.entity.app.generator.*;
+import com.jokerdata.parames.vo.PageResule;
 import com.jokerdata.service.app.TaskLogService;
 import com.jokerdata.service.app.TaskService;
 import com.jokerdata.service.app.UserAccountService;
+import com.jokerdata.vo.ApiResult;
 import com.jokerdata.vo.MyPage;
 import com.jokerdata.vo.Result;
+import com.jokerdata.vo.TaskVo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -137,6 +139,17 @@ public class TaskController {
         }
 
         return Result.success(task);
+    }
+
+    @GetMapping(value = "/task",produces = "application/json;charset=UTF-8")
+    @Auth(value = true)
+    public ApiResult task(String key,int type){
+        User user = RequestHolder.getUser();
+
+        List<TaskVo> datas = taskService.getListByUser(user.getUserId(),type);
+
+        return ApiResult.success(datas);
+
     }
 
 }
