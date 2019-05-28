@@ -21,6 +21,8 @@ import '@/permission' // permission control
 
 import * as filters from './filters' // global filters
 
+let Base64 = require('js-base64').Base64
+
 Vue.use(ElementUI, { locale })
 
 // register global utility filters

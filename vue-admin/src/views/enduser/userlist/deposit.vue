@@ -22,7 +22,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="充值额度" prop="amount">
-          <el-input-number v-model="amount" :step="100" min="-5000" max="10000"></el-input-number>
+          <el-input-number v-model="form.amount" :step="100" min="-5000" max="10000"></el-input-number>
         </el-form-item>
         <el-form-item >
           <el-col :span="12">
@@ -39,14 +39,14 @@
           type="textarea"
           :rows="2"
           placeholder="充值说明"
-          v-model="form.memo">
+          v-model="form.desc">
         </el-input>
           </el-col>
         </el-form-item>
         <el-form-item>
           <el-col :span="12">
           <el-button class="fleft" @click="cancel()">取消</el-button>
-          <el-button class="fright" type="primary" @click="submitForm();">确定</el-button>
+          <el-button class="fright" type="primary" @click="submitForm()">确定</el-button>
           </el-col>
         </el-form-item>
       </el-form>
@@ -70,10 +70,10 @@
           userName: '',
           userCoin:null,
           availablePredeposit:null,
-          memo:'',
-          chargetype:0
-        },
-        amount:100
+          desc:'',
+          chargetype:0,
+          amount:100
+        }
       }
     },
     created(){
@@ -81,11 +81,6 @@
     },
     methods: {
       submitForm() {
-        if(chargetype == 0){
-          this.form.availablePredeposit = this.form.availablePredeposit + this.amount;
-        }else {
-          this.form.userCoin = this.form.userCoin + this.amount;
-        }
         Recharge(this.form).then(res => {
           this.$message({
                   message: '充值成功',
@@ -95,17 +90,20 @@
       })},
       getParams () {
         // 取到路由带过来的参数 
-        this.form.uid = this.$route.query.uid
+        this.form.userId = this.$route.query.uid
         this.getUserById()
       },
       getUserById(){
-        getById(this.form.uid).then(res =>{
-          this.form = res.data
+        getById(this.form.userId).then(res =>{
+          this.form.userId = res.data.userId
+          this.form.userName = res.data.userName
+          this.form.userCoin = res.data.userCoin
+          this.form.availablePredeposit = res.data.availablePredeposit
         })
       },
       cancel(){
          this.$router.push({//你需要接受路由的参数再跳转
-          path: "/pre/user/index"
+          path: "/enduser/userlist/list"
         });
       }
     }

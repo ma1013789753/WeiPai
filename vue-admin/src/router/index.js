@@ -239,6 +239,36 @@ export const asyncRouterMap = [
               title: '用户充值'
             },
           },
+          {
+            path: 'sign',
+            hidden: true,
+            component: () =>import('@/views/enduser/userlist/sign'),
+            name:'sign',
+            meta: {
+              resources: 'user',
+              title: '签到记录'
+            },
+          },
+          {
+            path: 'account',
+            hidden: true,
+            component: () =>import('@/views/enduser/userlist/account'),
+            name:'account',
+            meta: {
+              resources: 'user',
+              title: '账号列表'
+            },
+          },
+          {
+            path: 'accfreeze',
+            hidden: true,
+            component: () =>import('@/views/enduser/userlist/accfreeze'),
+            name:'accfreeze',
+            meta: {
+              resources: 'user',
+              title: '账号封禁'
+            },
+          },
 
         ]
       },
@@ -249,7 +279,39 @@ export const asyncRouterMap = [
         meta: {
           resources: 'rankinglist'
         }
-      }
+      },
+      {
+        path: 'weiboacc',
+        component: () => import('@/views/enduser/weibo/list'),
+        name: 'weiboacc',
+        meta: {
+          resources: 'weiboacc'
+        }
+      },
+      {
+        path: 'toutiaoacc',
+        component: () => import('@/views/enduser/toutiao/list'),
+        name: 'toutiaoacc',
+        meta: {
+          resources: 'toutiaoacc'
+        }
+      },
+      {
+        path: 'weichatacc',
+        component: () => import('@/views/enduser/weichat/list'),
+        name: 'weichatacc',
+        meta: {
+          resources: 'weichatacc'
+        }
+      },
+      {
+        path: 'subscription',
+        component: () => import('@/views/enduser/subscription/list'),
+        name: 'subscription',
+        meta: {
+          resources: 'subscription'
+        }
+      },
     ]
   },
 
