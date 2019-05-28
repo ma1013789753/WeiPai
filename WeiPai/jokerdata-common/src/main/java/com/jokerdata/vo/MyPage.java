@@ -15,16 +15,18 @@ public class MyPage<T> extends Page<T> {
     public String search1 = null;
     public String search2 = null;
     public String search3 = null;
+    public String search4 = null;
 
     public MyPage() {
 
     }
 
-    public MyPage(long current, long size, String search1, String search2, String search3) {
+    public MyPage(long current, long size, String search1, String search2,String search3, String search4) {
         super(current, size);
         this.search1 = search1;
         this.search2 = search2;
         this.search3 = search3;
+        this.search4 = search4;
     }
 
     public MyPage(long current, long size) {
