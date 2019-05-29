@@ -33,7 +33,12 @@
         <el-table-column prop="shareUrl" label="分享链接" width="140px"  show-overflow-tooltip></el-table-column>
         <el-table-column prop="shareNum" label="分享数量" show-overflow-tooltip ></el-table-column>
         <el-table-column  prop="haveSharedNum" label="已经分享" show-overflow-tooltip></el-table-column>
-        <el-table-column  prop="isOriginal" label="是否原创" :formatter="getIsOk"></el-table-column>
+        <el-table-column  prop="isOriginal" label="是否原创">
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.isOriginal == 0">{{getIsOk(0,0,scope.row.isOriginal)}}</el-tag>
+            <el-tag v-else type="danger"> {{getIsOk(0,0,scope.row.isOriginal)}}</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column  prop="shareRecommend" label="是否推荐" :formatter="getIsOk"></el-table-column>
         <el-table-column  prop="shareState" label="审核状态" :formatter="getIsPass"></el-table-column>
         <el-table-column  prop="shareStatus" label="奖励类型" :formatter="getIsReward"></el-table-column>

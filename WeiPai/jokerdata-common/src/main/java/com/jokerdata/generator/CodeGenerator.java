@@ -86,7 +86,7 @@ public class CodeGenerator {
         strategy.setEntityLombokModel(true);
         strategy.setRestControllerStyle(true);
         strategy.setSuperControllerClass(null);
-        strategy.setInclude(new String[]{"g_ad"});
+        strategy.setInclude(new String[]{"g_task_log","g_task"});
 //        strategy.setSuperEntityColumns("tid");
         strategy.setControllerMappingHyphenStyle(true);
         mpg.setStrategy(strategy);
