@@ -12,18 +12,17 @@
         <result column="create_time" property="createTime" />
         <result column="modify_time" property="modifyTime" />
         <result column="state" property="state" />
-        <association property="task">
-            <id column="id" property="id" />
+        <association property="task" javaType="com.jokerdata.entity.app.generator.Task">
             <result column="name" property="name" />
             <result column="award" property="award" />
             <result column="content" property="content" />
-            <result column="link" property="link" />
+            <result column="l_link" property="link" />
             <result column="is_del" property="isDel" />
             <result column="state" property="state" />
             <result column="create_time" property="createTime" />
             <result column="modify_time" property="modifyTime" />
         </association>
-        <association property="user">
+        <association property="user" javaType="com.jokerdata.entity.app.generator.User">
             <id column="user_id" property="userId"/>
             <result column="user_name" property="userName"/>
             <result column="user_mobile" property="userMobile"/>
@@ -47,7 +46,7 @@
     </resultMap>
 
     <select id="getListByUser" resultMap="BaseResultMapVo" >
-        SELECT a.*,b.*,d.* FROM g_task a
+        SELECT b.*,a.*,d.* FROM g_task a
         LEFT JOIN g_task_log b
         ON a.`id` = b.`t_id`
         LEFT JOIN g_user_account c
@@ -55,5 +54,14 @@
         LEFT JOIN g_user d ON d.`user_id` = c.`user_id`
         WHERE d.`user_id` = #{userId}
         AND b.`state` = #{type}
+    </select>
+    <select id="getTaskById" resultMap="BaseResultMapVo" >
+        SELECT b.*,a.*,d.* ,a.link as l_link  FROM g_task a
+        LEFT JOIN g_task_log b
+        ON a.`id` = b.`t_id`
+        LEFT JOIN g_user_account c
+        ON c.`account_id` = b.`account_id`
+        LEFT JOIN g_user d ON d.`user_id` = c.`user_id`
+        WHERE b.id = #{id}
     </select>
 </mapper>

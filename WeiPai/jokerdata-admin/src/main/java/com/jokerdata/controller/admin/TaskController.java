@@ -152,5 +152,32 @@ public class TaskController {
 
     }
 
+
+    @GetMapping(value = "/taskInfo",produces = "application/json;charset=UTF-8")
+    @Auth(value = true)
+    public ApiResult taskInfo(String key,String id){
+        User user = RequestHolder.getUser();
+
+        TaskVo data = taskService.getTaskById(id);
+
+        return ApiResult.success(data);
+
+    }
+
+    @GetMapping(value = "/accept",produces = "application/json;charset=UTF-8")
+    @Auth(value = true)
+    public ApiResult accept(String key,String id){
+        User user = RequestHolder.getUser();
+        TaskLog taskLog = new TaskLog();
+        taskLog.setId(id);
+        taskLog.setState(1);
+
+        taskLogService.updateById(taskLog);
+
+        TaskVo data = taskService.getTaskById(id);
+        return ApiResult.success(data);
+
+    }
+
 }
 

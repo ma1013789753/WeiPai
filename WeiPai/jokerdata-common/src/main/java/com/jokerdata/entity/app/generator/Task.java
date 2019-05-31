@@ -60,7 +60,7 @@ public class Task extends Model<Task> {
     /**
      * 1开始 2完成
      */
-    private Boolean state;
+    private int state;
 
     /**
      * 创建时间

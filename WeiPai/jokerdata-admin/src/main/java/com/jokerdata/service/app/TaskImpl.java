@@ -27,4 +27,9 @@ public class TaskImpl extends ServiceImpl<TaskMapper, Task> implements TaskServi
     public List<TaskVo> getListByUser(Integer userId, int type) {
         return taskMapper.getListByUser(userId,type);
     }
+
+    @Override
+    public TaskVo getTaskById(String id) {
+        return taskMapper.getTaskById(id);
+    }
 }

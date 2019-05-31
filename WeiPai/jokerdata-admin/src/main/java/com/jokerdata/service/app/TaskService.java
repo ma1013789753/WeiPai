@@ -17,4 +17,6 @@ import java.util.List;
 public interface TaskService extends IService<Task> {
 
     List<TaskVo> getListByUser(Integer userId, int type);
+
+    TaskVo getTaskById(String id);
 }

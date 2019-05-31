@@ -18,4 +18,6 @@ import java.util.List;
 public interface TaskMapper extends BaseMapper<Task> {
 
     List<TaskVo> getListByUser(@Param("userId")Integer userId,@Param("type") int type);
+
+    TaskVo getTaskById(String id);
 }
