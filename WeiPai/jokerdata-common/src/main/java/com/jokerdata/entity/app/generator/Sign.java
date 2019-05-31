@@ -1,6 +1,7 @@
 package com.jokerdata.entity.app.generator;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -48,6 +49,11 @@ public class Sign extends Model<Sign> {
      */
     private String addTime;
 
+    /**
+     * 签到用户
+     */
+    @TableField(exist = false)
+    private String userName;
 
     @Override
     protected Serializable pkVal() {

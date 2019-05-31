@@ -1,6 +1,7 @@
 package com.jokerdata.entity.app.generator;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -58,7 +59,7 @@ public class UserAccount extends Model<UserAccount> {
     /**
      * 等待审核0,审核通过1,审核失败2,账号禁用中-1 ，永久禁用-2
      */
-    private Boolean accountState;
+    private Integer accountState;
 
     private String addTime;
 
@@ -136,6 +137,12 @@ public class UserAccount extends Model<UserAccount> {
      * 微博账号注册时间
      */
     private String createdAt;
+
+    /**
+     * 用户名称
+     */
+    @TableField(exist = false)
+    private String userName;
 
 
     @Override

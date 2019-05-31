@@ -1,5 +1,7 @@
 package com.jokerdata.service.app.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jokerdata.entity.app.generator.Ad;
 import com.jokerdata.mapper.app.generator.AdMapper;
@@ -22,5 +24,12 @@ public class AdImpl extends ServiceImpl<AdMapper, Ad> implements AdService {
     @Resource
     AdMapper targetMapper;
 
+    @Override
+    public IPage<Ad> getPage(IPage<Ad> adIPage) {
 
+        return targetMapper.selectPage(adIPage,new QueryWrapper<Ad>()
+                .eq("ad_type","index")
+                .eq("ad_state",0)
+                .orderByAsc("ad_sort"));
+    }
 }

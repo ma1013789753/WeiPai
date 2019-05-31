@@ -28,6 +28,7 @@
         <result column="friends_count" property="friendsCount"/>
         <result column="statuses_count" property="statusesCount"/>
         <result column="created_at" property="createdAt"/>
+        <result column="user_name" property="userName"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -35,4 +36,37 @@
         account_id, user_id, account_name, account_avatar, uid, access_token, avatar_hd, account_state, add_time, account_limit, disable_reason, nopass_reason, acc_type, follow_num, num_screen, wechat_pic, v_legalize, gzh_tag_id, remarks, location, gender, friends_count, statuses_count, created_at
     </sql>
 
+    <select id="getUserAccount" resultMap="BaseResultMap">
+        SELECT
+            ua.*
+        FROM
+            g_user_account ua
+        RIGHT JOIN g_user u ON u.user_id = ua.user_id
+        WHERE
+            ua.acc_type = #{accType}
+        AND u.user_id = #{userId}
+    </select>
+
+    <select id="selectAccountsPageVo" resultMap="BaseResultMap">
+        SELECT
+            u.user_name,
+            ua.*
+        FROM
+            g_user_account ua
+        RIGHT JOIN g_user u ON u.user_id = ua.user_id
+        WHERE
+            ua.acc_type = #{accType}
+        <if test="accountState == 1">
+            AND ua.account_state IN (1, 3)
+        </if>
+        <if test="accountState != 1">
+            AND ua.account_state = #{accountState}
+        </if>
+        <if test=" page.search1 != ''">
+            AND ua.user_id LIKE CONCAT('%',#{page.search1},'%')
+        </if>
+        <if test=" page.search2 != ''">
+            AND ua.account_name LIKE CONCAT('%',#{page.search2},'%')
+        </if>
+    </select>
 </mapper>

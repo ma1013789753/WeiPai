@@ -107,6 +107,16 @@ public class Result<T> implements Serializable {
     public static <T> Result error400(String msg) {
         return result(400, msg, null);
     }
+    /**
+     * @return Result
+     * @describe 服务器拒绝请求
+     * @parameter [msg, error]
+     * @date 2019/5/1
+     * @author aozhang
+     */
+    public static <T> Result error403(String msg) {
+        return result(403, msg, null);
+    }
 
     /**
      * @return Result

@@ -49,16 +49,12 @@ public class IndexController {
     @GetMapping(value = "/index",produces = "application/json;charset=UTF-8")
     @ApiOperation(value="首页数据", notes="首页数据")
     public ApiResult index() {
-        String type = "index";
+
         //广告
         IPage<Ad> adIPage = new Page<>();
         adIPage.setCurrent(1);
         adIPage.setSize(10);
-        adIPage = adService.page(adIPage,new QueryWrapper<Ad>()
-                .eq("ad_type",type)
-                .eq("ad_state",0)
-                .orderByAsc("ad_sort")
-        );
+        adIPage = adService.getPage(adIPage);
         List<Map<String,Object>> adlist = ShareUtil.toLowBeanList(adIPage.getRecords());
         adlist.forEach(map -> {
             map.put("ad_img",ShareUtil.getPic(map.get("ad_img").toString()));
@@ -81,8 +77,9 @@ public class IndexController {
         IPage<Cms> param = new Page<>();
         param.setCurrent(1);
         param.setSize(10);
-        param = cmsService.page(param,new QueryWrapper<Cms>().orderByDesc("cms_sort")
-                                    .orderByDesc("add_time")
+        param = cmsService.page(param,new QueryWrapper<Cms>().
+                orderByDesc("cms_sort")
+                .orderByDesc("add_time")
         );
         List<Map<String,Object>> cmsList = ShareUtil.toLowBeanList(param.getRecords());
         cmsList.forEach(stringObjectMap -> {
@@ -169,7 +166,7 @@ public class IndexController {
         if(cms == null){
             return ApiResult.error("参数不合法");
         }
-        Map<String,Object> map = new HashMap<>();
+        Map<String,Object> map = ShareUtil.toLowBean(cms);
         map.put("cms_image",ShareUtil.getPic(map.get("cms_image")));
         map.put("add_time_text",ShareUtil.getTaxt(map.get("add_time")));
 

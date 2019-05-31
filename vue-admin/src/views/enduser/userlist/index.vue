@@ -22,8 +22,7 @@
                 v-loading="loading"
                 element-loading-text="拼命加载中"
                 empty-text="暂无数据"
-                stripe height="380px"
-                @current-change="handleCurrentChange">
+                stripe height="380px">
         <el-table-column prop="userId" label="用户ID" sortable width="90px"></el-table-column>
         <el-table-column prop="userName" label="用户昵称" show-overflow-tooltip="true"></el-table-column>
         <el-table-column prop="userMobile" label="用户手机" width="110px" ></el-table-column>
@@ -50,7 +49,7 @@
       </el-table-column>
         <el-table-column  label="签到记录"  width="100px" align="center">
           <template slot-scope="scope">
-            <el-button size="mini" type="success" icon="el-icon-view">查看</el-button>
+            <el-button size="mini" type="success" icon="el-icon-view" @click="handleSign(scope.row)">查看</el-button>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="290" align="center">
@@ -63,13 +62,10 @@
             <el-button
               size="mini"
               type="primary"
-              @click="handleEdit(scope.row)"
+              @click="handleAcc(scope.row)"
             >账号</el-button>
-            <el-button
-              size="mini"
-              type="primary"
-              @click="handleEdit(scope.row)"
-            >禁用</el-button>
+            <el-button v-if="scope.row.userState == 0" size="mini" type="warning" @click="handleFreeze(scope.row)">禁用</el-button>
+            <el-button v-else size="mini" type="success" @click="handleUnfreeze(scope.row)">解禁</el-button>
             <el-button
               size="mini"
               type="danger"
@@ -91,7 +87,7 @@
 </template>
 
 <script>
-import { list,del} from '@/api/customer'
+import { list,del,freeze,unfreeze} from '@/api/customer'
 import { delay } from '@/utils/index'
 import pagination from '@/components/pagination'
 export default {
@@ -111,7 +107,7 @@ export default {
           total: 0
         },
         item: {
-          id:null
+          uid:null
         },
         tabledata: [],
         loading: true
@@ -124,30 +120,71 @@ export default {
     handleEdit(res){
       this.sendParams(res.userId);
     },
+    handleAcc(res){
+      this.accParams(res.userId);
+    },
+    handleSign(res){
+      this.signParams(res.userId);
+    },
+    handleFreeze(res){
+      this.$confirm('确定封禁该用户, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.itemFreeze(res.userId)
+      }).catch(() => {
+
+      });
+    },
+    handleUnfreeze(res){
+      this.$confirm('解封该用户, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.itemUnfreeze(res.userId)
+      }).catch(() => {
+
+      });
+    },
     handleDel(res){
+      alert(res.userId)
         this.$confirm('确定删除该用户, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-            this.itemDelete(res.id)
+            this.itemDelete(res.userId)
         }).catch(() => {
        
         });
     },
-    handleCurrentChange(val){
-      this.loading = true
-      this.values = [];
-      this.currentRow = val
-      val.permissions.forEach((perm, index) => {
-        if(perm.father != 0){
-          this.values.push(perm.pid)
-        }
+    //封禁
+    itemFreeze(val){
+      this.item.uid = val
+      freeze(this.item).then(res => {
+        this.$message({
+          type: 'success',
+          message: '操作成功'
+        });
+        this.onSearch();
+      })
+    },
+    //解封
+    itemUnfreeze(val){
+      this.item.uid = val
+      unfreeze(this.item).then(res => {
+        this.$message({
+          type: 'success',
+          message: '操作成功'
+        });
+        this.onSearch();
       })
     },
     //删除之后通知分页器刷新
     itemDelete(val){
-      this.item.id = val
+      this.item.uid = val
       del(this.item).then(res => {
         this.$message({
           type: 'success',
@@ -180,7 +217,23 @@ export default {
             uid: res
           }
       })
-    }
+    },
+    accParams (res) {
+      this.$router.push({
+        name: 'account',
+        query: {
+          uid: res
+        }
+      })
+    },
+    signParams (res) {
+      this.$router.push({
+        name: 'sign',
+        query: {
+          uid: res
+        }
+      })
+    },
 
   },
   watch:{

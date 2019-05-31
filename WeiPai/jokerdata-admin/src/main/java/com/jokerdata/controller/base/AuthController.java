@@ -12,10 +12,7 @@ import com.jokerdata.vo.Result;
 import com.jokerdata.vo.SysUserVo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -36,8 +33,6 @@ public class AuthController {
     SysUserService sysUserService;
     @Autowired
     private TokenService tokenService;
-
-
 
     @ApiOperation(value = "获取用户token",notes = "")
     @ApiImplicitParams({
@@ -67,5 +62,23 @@ public class AuthController {
         tokenService.deleteToken(String.valueOf(sysUser.getUid()));
         return Result.success();
     }
+
+
+    @Login
+    @ApiOperation(value = "第三方验证用户登陆",notes = "")
+    @ApiImplicitParams({
+            @ApiImplicitParam(dataType = "JsonObject", name = "map", value = "包含type,code参数", required = true, paramType = "body"),
+    })
+    @PostMapping(value = "/logincheck")
+    public Result<String> loginCheck(@RequestBody Map<String, String> map,@LoginUser SysUser user) {
+        String type = map.get("platform");
+        String code = map.get("code");
+        boolean result = tokenService.checkOauthToken(code, user, type == "wechat" ? 1 : 2);
+        if (result) {
+            return Result.success("验证通过","success");
+        }
+        return Result.error403("授权验证失败");
+    }
+
 
 }
