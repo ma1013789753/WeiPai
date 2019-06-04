@@ -36,11 +36,57 @@
         <result column="background_image" property="backgroundImage"/>
         <result column="short_url" property="shortUrl"/>
         <result column="share_img" property="shareImg"/>
+        <result column="coin_max" property="coinMax"/>
+        <result column="coin_min" property="coinMin"/>
+        <result column="cost_num" property="costNum"/>
+        <result column="account_name" property="accountName"/>
+        <result column="account_avatar" property="accountAvatar"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        share_id, user_id, user_name, account_id, share_content, share_image, share_type, share_url, share_coin, share_num, have_shared_num, total_coin, is_original, add_time, tag_id, tag_name, share_state, share_extra_coin, share_status, share_video, wb_id, see_num, share_recommend, share_num_true, original_coin, from_app, expires, json, cancel_nums, background_image, short_url, share_img
+        share_id, user_id, user_name, account_id, share_content, share_image, share_type, share_url, share_coin, share_num, have_shared_num, total_coin, is_original, add_time, tag_id, tag_name, share_state, share_extra_coin, share_status, share_video, wb_id, see_num, share_recommend, share_num_true, original_coin, from_app, expires, json, cancel_nums, background_image, short_url, share_img, coin_max, coin_min
     </sql>
 
+    <select id="selectPageVo" resultMap="BaseResultMap">
+        SELECT
+            s.*, sl.cost_num
+        FROM
+            g_share s
+        LEFT JOIN (
+            SELECT
+                share_id,
+                <if test=" typeId == 1">
+                    sum(share_money) AS cost_num
+                </if>
+                <if test=" typeId == 0">
+                    sum(share_coin) AS cost_num
+                </if>
+            FROM
+                g_share_log
+            GROUP BY
+                (share_id)
+        ) AS sl ON sl.share_id = s.share_id
+        WHERE
+            s.share_status = #{typeId}
+            <if test=" page.search1 != ''">
+                AND s.user_name LIKE CONCAT('%',#{page.search1},'%')
+            </if>
+            <if test=" page.search2 != ''">
+                AND s.share_state LIKE CONCAT('%',#{page.search2},'%')
+            </if>
+            ORDER BY
+            s.add_time DESC
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT
+            s.*, u.account_name,
+            u.account_avatar
+        FROM
+            g_share s
+        LEFT JOIN g_user_account u ON u.account_id = s.account_id
+        WHERE
+            s.share_id = #{id}
+    </select>
 </mapper>

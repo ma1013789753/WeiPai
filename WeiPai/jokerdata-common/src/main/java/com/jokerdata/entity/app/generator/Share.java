@@ -1,6 +1,7 @@
 package com.jokerdata.entity.app.generator;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -174,6 +175,24 @@ public class Share extends Model<Share> {
     private BigDecimal coinMax;
 
     private BigDecimal coinMin;
+
+    /**
+     * 当前现金/积分消耗
+     */
+    @TableField(exist = false)
+    private BigDecimal costNum;
+
+    /**
+     * 账号名称
+     */
+    @TableField(exist = false)
+    private String accountName;
+
+    /**
+     * 账号头像
+     */
+    @TableField(exist = false)
+    private String accountAvatar;
 
     @Override
     protected Serializable pkVal() {
