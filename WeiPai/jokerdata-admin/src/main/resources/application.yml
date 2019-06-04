@@ -30,3 +30,8 @@ passageway:
   RESUME_JOB_URL: job/resume
   DELETE_JOB_URL: job/delete
   GET_JOB_URL: job/getByName
+
+  # 极光推送
+jpush:
+    MasterSecret: 6a57b22f205e2450c748c993
+    AppKey: 9cedb54aa30fcfb7be3e1524

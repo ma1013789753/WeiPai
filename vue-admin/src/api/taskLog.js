@@ -10,3 +10,20 @@ export function list(data) {
   })
 }
 
+// 列表
+export function approve(data) {
+  return request({ 
+    url: '/taskLog/approve',
+    method: 'post',
+    data:data
+  })
+}
+// 列表
+export function approveFail(data) {
+  return request({ 
+    url: '/taskLog/approveFail',
+    method: 'post',
+    data:data
+  })
+}
+

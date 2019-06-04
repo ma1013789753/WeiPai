@@ -1,5 +1,6 @@
 package com.jokerdata.service.app;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jokerdata.entity.app.generator.Ad;
 import com.jokerdata.vo.MyPage;
@@ -14,4 +15,6 @@ import com.jokerdata.vo.MyPage;
  */
 public interface AdService extends IService<Ad> {
 
+    //获取分页
+    IPage<Ad> getPage(IPage<Ad> adIPage);
 }

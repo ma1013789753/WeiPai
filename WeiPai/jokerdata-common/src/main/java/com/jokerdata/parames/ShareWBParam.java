@@ -1,5 +1,6 @@
 package com.jokerdata.parames;
 
+import com.jokerdata.entity.Jweibo;
 import lombok.Data;
 import lombok.NonNull;
 
@@ -21,5 +22,7 @@ public class ShareWBParam {
 
     private String free;
 
-    private String type;
+    private String t;
+    private String jweibo;
+
 }

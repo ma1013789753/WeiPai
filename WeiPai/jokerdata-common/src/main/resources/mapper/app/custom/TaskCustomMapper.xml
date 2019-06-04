@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jokerdata.mapper.app.generator.TaskMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMapVo" type="com.jokerdata.vo.TaskVo">
+        <id column="id" property="id" />
+        <result column="t_id" property="tId" />
+        <result column="p_id" property="pId" />
+        <result column="account_id" property="accountId" />
+        <result column="link" property="link" />
+        <result column="create_time" property="createTime" />
+        <result column="modify_time" property="modifyTime" />
+        <result column="state" property="state" />
+        <association property="task" javaType="com.jokerdata.entity.app.generator.Task">
+            <result column="name" property="name" />
+            <result column="award" property="award" />
+            <result column="content" property="content" />
+            <result column="l_link" property="link" />
+            <result column="is_del" property="isDel" />
+            <result column="state" property="state" />
+            <result column="create_time" property="createTime" />
+            <result column="modify_time" property="modifyTime" />
+        </association>
+        <association property="user" javaType="com.jokerdata.entity.app.generator.User">
+            <id column="user_id" property="userId"/>
+            <result column="user_name" property="userName"/>
+            <result column="user_mobile" property="userMobile"/>
+            <result column="user_password" property="userPassword"/>
+            <result column="user_gender" property="userGender"/>
+            <result column="user_state" property="userState"/>
+            <result column="add_time" property="addTime"/>
+            <result column="user_pay_pwd" property="userPayPwd"/>
+            <result column="wechat_openid" property="wechatOpenid"/>
+            <result column="alipay_account" property="alipayAccount"/>
+            <result column="available_predeposit" property="availablePredeposit"/>
+            <result column="freeze_predeposit" property="freezePredeposit"/>
+            <result column="user_coin" property="userCoin"/>
+            <result column="sign_limit" property="signLimit"/>
+            <result column="coin_total" property="coinTotal"/>
+            <result column="user_qq" property="userQq"/>
+            <result column="user_email" property="userEmail"/>
+            <result column="user_wx" property="userWx"/>
+            <result column="alipay_name" property="alipayName"/>
+        </association>
+    </resultMap>
+
+    <select id="getListByUser" resultMap="BaseResultMapVo" >
+        SELECT b.*,a.*,d.* FROM g_task a
+        LEFT JOIN g_task_log b
+        ON a.`id` = b.`t_id`
+        LEFT JOIN g_user_account c
+        ON c.`account_id` = b.`account_id`
+        LEFT JOIN g_user d ON d.`user_id` = c.`user_id`
+        WHERE d.`user_id` = #{userId}
+        AND b.`state` = #{type}
+    </select>
+    <select id="getTaskById" resultMap="BaseResultMapVo" >
+        SELECT b.*,a.*,d.* ,a.link as l_link  FROM g_task a
+        LEFT JOIN g_task_log b
+        ON a.`id` = b.`t_id`
+        LEFT JOIN g_user_account c
+        ON c.`account_id` = b.`account_id`
+        LEFT JOIN g_user d ON d.`user_id` = c.`user_id`
+        WHERE b.id = #{id}
+    </select>
+</mapper>

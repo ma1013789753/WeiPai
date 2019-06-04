@@ -23,12 +23,11 @@
         <result column="user_email" property="userEmail"/>
         <result column="user_wx" property="userWx"/>
         <result column="alipay_name" property="alipayName"/>
-        <result column="delete_flg" property="deleteFlg"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        user_id, user_name, user_mobile, user_password, user_gender, user_state, add_time, user_pay_pwd, wechat_openid, alipay_account, available_predeposit, freeze_predeposit, user_coin, sign_limit, coin_total, user_qq, user_email, user_wx, alipay_name, delete_flg
+        user_id, user_name, user_mobile, user_password, user_gender, user_state, add_time, user_pay_pwd, wechat_openid, alipay_account, available_predeposit, freeze_predeposit, user_coin, sign_limit, coin_total, user_qq, user_email, user_wx, alipay_name
     </sql>
 
 </mapper>
