@@ -220,7 +220,7 @@ public class CustomerController {
     }
 
     @Login
-    @PostMapping(value = "/tagList",produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "/tagList")
     @ApiOperation(value = "获取公众号标签列表",notes = "")
     public Result getTagList(){
         List<GzhTag> tagList = customerService.getTagList();

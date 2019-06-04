@@ -26,6 +26,7 @@
             v-loading="loading"
             style="width: 100%"
             element-loading-text="拼命加载中"
+            height="400px"
             empty-text="暂无数据">
     <el-table-column label="账号ID" width="65" prop="accountId"></el-table-column>
     <el-table-column width="130px" label="账号名称" prop="accountName" show-overflow-tooltip="true">

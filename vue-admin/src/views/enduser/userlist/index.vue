@@ -22,7 +22,7 @@
                 v-loading="loading"
                 element-loading-text="拼命加载中"
                 empty-text="暂无数据"
-                stripe height="380px">
+                stripe height="400px">
         <el-table-column prop="userId" label="用户ID" sortable width="90px"></el-table-column>
         <el-table-column prop="userName" label="用户昵称" show-overflow-tooltip="true"></el-table-column>
         <el-table-column prop="userMobile" label="用户手机" width="110px" ></el-table-column>
@@ -149,7 +149,6 @@ export default {
       });
     },
     handleDel(res){
-      alert(res.userId)
         this.$confirm('确定删除该用户, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',

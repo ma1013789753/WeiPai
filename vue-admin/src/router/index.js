@@ -43,10 +43,10 @@ export const constantRouterMap = [
     component: Layout,
     hidden: true,
     children: [
-      {
-        path: '/redirect/:path*',
-        component: () => import('@/views/redirect/index')
-      }
+      // {
+      //   path: '/redirect/:path*',
+      //   component: () => import('@/views/redirect/index')
+      // }
     ]
   },
   {
@@ -206,6 +206,75 @@ export const asyncRouterMap = [
   },
 
   {
+    path: '/spare',
+    component: Layout,
+    redirect:"/spare/sparelist/index",
+    name: 'spare',
+    meta: {
+      resources: 'spare'
+    },
+    children: [
+      {
+        path: 'sparelist',
+        component: Common,
+        redirect: {name:'sparelist'},
+        name: 'list',
+        meta: {
+          resources: 'list'
+        },
+        children: [
+          {
+            path: 'list',
+            hidden: true,
+            component: () =>import('@/views/spare/sparelist/index'),
+            name:'sparelist',
+
+          },
+          {
+            path: 'detail',
+            hidden: true,
+            component: () =>import('@/views/spare/sharedetail/index'),
+            name:'showdetail',
+              meta: {
+                title: "互推详情"
+              },
+          },
+          // {
+          //   path: 'add',
+          //   hidden: true,
+          //   component: () =>import('@/views/spare/sparelist/add'),
+          //   name:'add',
+          //   meta: {
+          //     resources: 'add',
+          //     title: "互推列表"
+          //   },
+          // },
+          // {
+          //   path: 'edit',
+          //   hidden: true,
+          //   component: () =>import('@/views/spare/sparelist/edit'),
+          //   name:'edit',
+          //   meta: {
+          //     resources: 'edit',
+          //     title: "编辑备品"
+          //   },
+          // }
+        ]
+      },
+
+
+      {
+        path: 'record',
+        component: () => import('@/views/spare/sparerecord/index'),
+        name: 'record',
+        meta: {
+          resources: 'record'
+        }
+      }
+    ]
+  },
+  
+  {
     path: '/enduser',
     component: Layout,
     name: 'enduser',
@@ -217,7 +286,7 @@ export const asyncRouterMap = [
       {
         path: 'userlist',
         component: Common,
-        redirect: {name:'list'},
+        redirect: {name:'userlist'},
         name: 'list',
         meta: {
           resources: 'list'
@@ -227,7 +296,7 @@ export const asyncRouterMap = [
             path: 'list',
             hidden: true,
             component: () =>import('@/views/enduser/userlist/index'),
-            name:'list',
+            name:'userlist',
           },
           {
             path: 'deposit',
@@ -316,29 +385,173 @@ export const asyncRouterMap = [
   },
 
   {
+    path: '/cms',
+    component: Layout,
+    name: 'cms',
+    meta: {
+      resources: 'cms',
+      title: '资讯'
+    },
+    children: [
+      {
+        path: 'news',
+        component: Common,
+        redirect: {name:'cmslist'},
+        name: 'news',
+        meta: {
+          resources: 'news'
+        },
+        children: [
+          {
+            path: 'list',
+            hidden: true,
+            component: () =>import('@/views/cms/news/index'),
+            name:'cmslist',
+          },
+          {
+            path: 'cmsedit',
+            hidden: true,
+            component: () =>import('@/views/cms/news/edit'),
+            name:'cmsedit',
+            meta: {
+              resources: 'cmsedit',
+              title: '编辑资讯'
+            },
+          },
+          {
+            path: 'createcms',
+            hidden: true,
+            component: () =>import('@/views/cms/news/create'),
+            name:'createcms',
+            meta: {
+              resources: 'createcms',
+              title: '新增资讯'
+            },
+          },
+
+        ]
+      },
+      {
+        path: 'ad',
+        component: () => import('@/views/cms/ad/index'),
+        name: 'ad',
+        meta: {
+          resources: 'ad'
+        }
+      },
+    ]
+  },
+
+  {
+    path: '/flow',
+    component: Layout,
+    name: 'flow',
+    meta: {
+      resources: 'flow',
+      title: '平台流水'
+    },
+    children: [
+      {
+        path: 'cash',
+        component: () => import('@/views/flow/cash/index'),
+        name: 'cash',
+        meta: {
+          resources: 'cash'
+        },
+      },
+      {
+        path: 'points',
+        component: () => import('@/views/flow/points/index'),
+        name: 'points',
+        meta: {
+          resources: 'points'
+        }
+      }
+    ]
+  },
+
+  {
     path: '/maintain',
     component: Layout,
     name: 'maintain',
     meta: {
       resources: 'maintain',
-      title: '保养管理'
+      title: '任务派发'
     },
     children: [
       {
         path: 'manager',
-        component: () => import('@/views/maintain/manager/index'),
+        component: Common,
+        redirect: {name:'managerlist'},
         name: 'manager',
         meta: {
           resources: 'manager'
-        }
+        },
+        children: [
+          {
+            path: 'list',
+            hidden: true,
+            component: () =>import('@/views/maintain/manager/index'),
+            name:'managerlist',
+          },
+          {
+            path: 'add',
+            hidden: true,
+            component: () =>import('@/views/maintain/manager/add'),
+            name:'add',
+            meta: {
+              title: '新增派单'
+            },
+          },
+          {
+            path: 'edit',
+            hidden: true,
+            component: () =>import('@/views/maintain/manager/edit'),
+            name:'edit',
+            meta: {
+              title: '编辑派单'
+            },
+          },
+
+        ]
       },
       {
         path: 'list',
-        component: () => import('@/views/maintain/list/index'),
-        name: 'list',
+        component: Common,
+        redirect: {name:'acceptlist'},
         meta: {
           resources: 'list'
-        }
+        },
+        children: [
+          {
+            path: 'acceptlist',
+            hidden: true,
+            component: () =>import('@/views/maintain/list/index'),
+            name:'acceptlist',
+            meta: {
+              title: '接单列表'
+            },
+          },
+          {
+            path: 'acceptadd',
+            hidden: true,
+            component: () =>import('@/views/maintain/list/add'),
+            name:'acceptadd',
+            meta: {
+              title: '新增'
+            },
+          },
+          {
+            path: 'acceptedit',
+            hidden: true,
+            component: () =>import('@/views/maintain/list/edit'),
+            name:'acceptedit',
+            meta: {
+              title: '编辑'
+            },
+          },
+
+        ]
       },
       {
         path: 'record',

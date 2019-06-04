@@ -27,6 +27,7 @@
   <el-table :data="list" border fit highlight-current-row
             v-loading="loading"
             style="width: 100%"
+            height="400px"
             element-loading-text="拼命加载中"
             empty-text="暂无数据">
     <el-table-column label="账号ID" width="65" prop="accountId"></el-table-column>
@@ -159,7 +160,6 @@
           </template>
 
         </el-table-column>
-
 
         <el-table-column label="操作" width="150" align="center">
           <template slot-scope="{row}">
