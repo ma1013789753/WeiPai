@@ -1,7 +1,6 @@
 package com.jokerdata.jokerdatapassageway.common.uitls;
 
 import lombok.extern.slf4j.Slf4j;
-import sun.net.www.protocol.https.Handler;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
@@ -68,7 +67,8 @@ public final class ProxyUtils {
         boolean available = false;
         HttpsURLConnection httpsURLConnection = null;
         try {
-            URL url = new URL(null, VALIDATE_URL, new Handler());
+//            URL url = new URL(null, VALIDATE_URL, new  sun.net.www.protocol.https.Handler());
+            URL url = new URL(VALIDATE_URL);
             Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(ip, port));
             httpsURLConnection = (HttpsURLConnection) url.openConnection(proxy);
             httpsURLConnection.setSSLSocketFactory(HttpsUtils.getSslSocketFactory());

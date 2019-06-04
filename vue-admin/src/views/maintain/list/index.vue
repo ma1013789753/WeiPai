@@ -10,8 +10,9 @@
           <el-select v-model="page.search2" placeholder="请选择任务状态">
             <el-option label="任务状态" value=""></el-option>
             <el-option label="进行中" value="1"></el-option>
-            <el-option label="已完成" value="2"></el-option>
-            <el-option label="已取消" value="3"></el-option>
+            <el-option label="待审核" value="2"></el-option>
+            <el-option label="已完成" value="3"></el-option>
+            <el-option label="审核失败" value="4"></el-option>
           </el-select>
         </el-col>
         <el-col :span="5">
@@ -41,12 +42,12 @@
               size="mini"
               type="primary"
               @click="handleEdit(scope.row)"
-              >编辑</el-button>
-            <!-- <el-button
+              >成功</el-button>
+            <el-button
               size="mini"
               type="danger"
               @click="handleDel(scope.row)"
-              >推荐</el-button> -->
+              >失败</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -59,7 +60,7 @@
 
 <script>
 import {isOk,isProcess} from '@/utils/common'
-import { list} from '@/api/taskLog'
+import { list,approve,approveFail} from '@/api/taskLog'
 import pagination from '@/components/pagination'
 export default {
   components: {
@@ -89,7 +90,20 @@ export default {
   mounted() {},
   methods: {
     handleEdit(res){
-      this.sendParams(res.id);
+      if(res.state == 3 || res.state == 4){
+        this.$message({
+          type: 'success',
+          message: '不可操作'
+        });
+        return false
+      }
+      approve(res).then(res => {
+        this.$message({
+          type: 'success',
+          message: '审核成功'
+        });
+        this.onSearch();  
+      }) 
     },
     getIsOk(row, column, cellValue){
         return isOk(row, column, cellValue)
@@ -98,16 +112,20 @@ export default {
         return isProcess(row, column, cellValue)
     },
     handleDel(res){
-        this.$confirm('确定推荐该分享, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-            this.itemTuijian(res.shareId)
-
-        }).catch(() => {
-       
+        if(res.state == 3 || res.state == 4){
+        this.$message({
+          type: 'success',
+          message: '不可操作'
         });
+        return false
+      }
+      approveFail(res).then(res => {
+        this.$message({
+          type: 'success',
+          message: '审核失败'
+        });
+        this.onSearch();  
+      }) 
     },
     handleCurrentChange(val){
       this.values = [];
@@ -129,16 +147,7 @@ export default {
         this.onSearch();  
       })
     },
-    itemTuijian(val){
-      this.item.shareId = val
-      tuijian(this.item).then(res => {
-        this.$message({
-          type: 'success',
-          message: '推荐成功'
-        });
-        this.onSearch();  
-      })
-    },
+
     //分页器自动调用
     getList(page){
       this.currentRow = null

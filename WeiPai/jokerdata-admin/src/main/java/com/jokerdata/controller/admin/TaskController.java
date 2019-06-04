@@ -16,6 +16,7 @@ import com.jokerdata.entity.admin.generator.SysUser;
 import com.jokerdata.entity.app.custom.TaskCustom;
 import com.jokerdata.entity.app.generator.*;
 import com.jokerdata.parames.vo.PageResule;
+import com.jokerdata.service.app.PdLogService;
 import com.jokerdata.service.app.TaskLogService;
 import com.jokerdata.service.app.TaskService;
 import com.jokerdata.service.app.UserAccountService;
@@ -28,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -52,6 +54,10 @@ public class TaskController {
 
     @Autowired
     TaskLogService taskLogService;
+
+    @Autowired
+    PdLogService pdLogService;
+
 
     @Autowired
     IdWorker idWorker;
@@ -87,10 +93,11 @@ public class TaskController {
             Arrays.asList(ids).forEach(id->{
                 if(!StringUtils.isEmpty(id)){
                     TaskLog taskLog = new TaskLog();
+                    taskLog.setId(idWorker.nextId());
                     taskLog.setTId(task.getId());
                     taskLog.setModifyTime(new Date());
                     taskLog.setCreateTime(new Date());
-                    taskLog.setState(0);
+                    taskLog.setState(1);
                     taskLog.setAccountId(Long.parseLong(id));
                     taskLogs.add(taskLog);
                 }
@@ -113,9 +120,9 @@ public class TaskController {
     @Login
     @PostMapping("/getAccount")
     public Result getAccount(){
-
+        //所有的微博账号
         List<UserAccount> data = userAccountService.list(new QueryWrapper<UserAccount>()
-            .eq("acc_type",1)
+            .eq("acc_type",0)
                 .eq("account_state",1)
                 .orderByDesc("follow_num")
         );
@@ -147,7 +154,14 @@ public class TaskController {
         User user = RequestHolder.getUser();
 
         List<TaskVo> datas = taskService.getListByUser(user.getUserId(),type);
-
+        if(type == 1){
+            List<TaskVo> datas2 = taskService.getListByUser(user.getUserId(),2);
+            datas.addAll(datas2);
+        }
+        if(type == 3){
+            List<TaskVo> datas2 = taskService.getListByUser(user.getUserId(),4);
+            datas.addAll(datas2);
+        }
         return ApiResult.success(datas);
 
     }
@@ -175,6 +189,34 @@ public class TaskController {
         taskLogService.updateById(taskLog);
 
         TaskVo data = taskService.getTaskById(id);
+        return ApiResult.success(data);
+
+    }
+
+    @GetMapping(value = "/update",produces = "application/json;charset=UTF-8")
+    @Auth(value = true)
+    public ApiResult update(String key,String id,String link ){
+        User user = RequestHolder.getUser();
+        TaskLog taskLog = new TaskLog();
+        taskLog.setId(id);
+        taskLog.setState(2);
+        taskLog.setLink(link);
+        if(!taskLogService.updateById(taskLog)){
+            throw  new ApiException("更新失败");
+        }
+        TaskVo data = taskService.getTaskById(taskLog.getId());
+
+        PdLog pdLog = new PdLog();
+        pdLog.setLgMemberId(user.getUserId());
+        pdLog.setLgMemberName(user.getUserName());
+        pdLog.setLgAdminName("");
+        pdLog.setLgType("task_check_fail");
+        pdLog.setLgAvAmount((data.getTask().getAward()));
+        pdLog.setLgAddTime(new Date().getTime()/1000);
+        pdLog.setLgDesc("派单收入");
+        pdLog.setLgFromData(id);
+        pdLogService.save(pdLog);
+
         return ApiResult.success(data);
 
     }

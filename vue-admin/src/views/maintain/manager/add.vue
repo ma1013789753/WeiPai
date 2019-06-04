@@ -31,6 +31,29 @@
                v-model="form.names"
               >
             </el-input> 
+            <!-- <el-table
+            highlight-current-row border   empty-text="暂无数据" stripe 
+            ref="multipleTable"
+            :data="users"
+            tooltip-effect="dark"
+            height="350px"
+            @selection-change="handleSelectionChange">
+            <el-table-column
+              prop="accountName"
+              label="姓名"
+              width="200px">
+            </el-table-column>
+            <el-table-column
+              prop="followNum"
+              label="粉丝数"
+               width="100px"
+              show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+            v-model="form.award"
+              label="金额">
+            </el-table-column>
+          </el-table> -->
         </el-form-item>
         
         <el-form-item>
@@ -41,7 +64,7 @@
 
       <el-dialog
         title="微博账户选择"
-        width="500px"
+        width="700px"
         :visible.sync="dialogVisible"
         >
           <el-table
@@ -52,18 +75,15 @@
             height="350px"
             @selection-change="handleSelectionChange">
             <el-table-column
-              type="selection"
-              width="100px">
+              type="selection">
             </el-table-column>
             <el-table-column
               prop="accountName"
-              label="姓名"
-              width="200px">
+              label="姓名">
             </el-table-column>
             <el-table-column
               prop="followNum"
               label="粉丝数"
-               width="200px"
               show-overflow-tooltip>
             </el-table-column>
           </el-table>
@@ -189,6 +209,10 @@
     .fleft{
       width: 6rem;
     }
+    .el-form-item{
+    width: 700px;;
+    }
   }
+
   
 </style>

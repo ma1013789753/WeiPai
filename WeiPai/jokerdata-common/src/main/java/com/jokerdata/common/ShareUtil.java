@@ -3,6 +3,9 @@ package com.jokerdata.common;
 import com.google.common.collect.Lists;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.StringUtils;
 
@@ -209,7 +212,8 @@ public class ShareUtil {
         }
         String data = null;
         try {
-            data = new String(Base64Utils.decode(str.getBytes()),"utf-8");
+            byte[] bytes = str.getBytes("utf-8");
+            data = new String(Base64Utils.decode(bytes),"utf-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -221,7 +225,12 @@ public class ShareUtil {
         if(StringUtils.isEmpty(str)){
             return "";
         }
-        return MD5.MD5Encode(str,"utf-8");
+        try {
+            return Base64Utils.encodeToString(str.getBytes("utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return "error";
     }
 
 
@@ -268,6 +277,19 @@ public class ShareUtil {
         String pregRule = "/<[img|IMG].*?src=[\\'|\"](?!http)(.*?(?:[\\.jpg|\\.jpeg|\\.png|\\.gif|\\.bmp]))[\\'|\"](.*?[\\/]?>)/";
         html = html.replaceAll(pregRule,"<img src="+URL+"${1}\2");
         return  html;
+    }
+
+    public static String documentBody (String url) {
+        Element doc = Jsoup.parseBodyFragment(url).body();
+        Elements pngs = doc.select("img[src]");
+        for (Element element : pngs) {
+            String imgUrl = element.attr("src");
+            if (imgUrl.trim().startsWith("/")) { // 会去匹配我们富文本的图片的 src 的相对路径的首个字符，请注意一下
+                imgUrl =URL + imgUrl;
+                element.attr("src", imgUrl);
+            }
+        }
+        return url = doc.toString();
     }
 
     public static void main(String[] args) {

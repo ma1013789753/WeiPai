@@ -456,14 +456,6 @@ export const asyncRouterMap = [
           },
 
         ]
-      },
-      {
-        path: 'record',
-        component: () => import('@/views/maintain/list/index'),
-        name: 'record',
-        meta: {
-          resources: 'record'
-        }
       }
       
     ]

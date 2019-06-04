@@ -57,10 +57,10 @@
         WHERE
          1=1
         <if test=" page.search1 != ''">
-            and  a.name LIKE LIKE CONCAT('%',#{page.search1},'%')
+            and  a.name LIKE CONCAT('%',#{page.search1},'%')
         </if>
         <if test=" page.search2 != ''">
-            AND b.`state` = #{page.search2}
+            AND a.`state` = #{page.search2}
         </if>
 
     </select>

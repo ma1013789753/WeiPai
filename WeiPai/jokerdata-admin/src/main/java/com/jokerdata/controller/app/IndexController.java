@@ -169,6 +169,7 @@ public class IndexController {
         Map<String,Object> map = ShareUtil.toLowBean(cms);
         map.put("cms_image",ShareUtil.getPic(map.get("cms_image")));
         map.put("add_time_text",ShareUtil.getTaxt(map.get("add_time")));
+        map.put("cms_content",ShareUtil.documentBody(cms.getCmsContent()));
 
         return ApiResult.success(map);
     }

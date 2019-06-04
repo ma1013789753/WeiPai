@@ -23,14 +23,37 @@
             <el-button type="primary" @click="dialogVisible = true">选择账户</el-button>
         </el-form-item>
         <el-form-item  prop="names">
-            <el-input
+            <!-- <el-input
               disabled
               type="textarea"
               :rows="4"
               placeholder="请选择派发账户"
                v-model="form.names"
               >
-            </el-input> 
+            </el-input>  -->
+          <el-table
+            highlight-current-row border   empty-text="暂无数据" stripe 
+            ref="multipleTable"
+            :data="users"
+            tooltip-effect="dark"
+            height="350px"
+            @selection-change="handleSelectionChange">
+            <el-table-column
+              type="selection"
+              width="100px">
+            </el-table-column>
+            <el-table-column
+              prop="accountName"
+              label="姓名"
+              width="200px">
+            </el-table-column>
+            <el-table-column
+              prop="followNum"
+              label="粉丝数"
+               width="200px"
+              show-overflow-tooltip>
+            </el-table-column>
+          </el-table>
         </el-form-item>
         
         <el-form-item>

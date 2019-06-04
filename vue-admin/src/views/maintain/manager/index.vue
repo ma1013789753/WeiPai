@@ -41,11 +41,11 @@
               type="primary"
               @click="handleEdit(scope.row)"
               >编辑</el-button>
-            <el-button
+            <!-- <el-button
               size="mini"
               type="danger"
               @click="handleDel(scope.row)"
-              >推荐</el-button>
+              >推荐</el-button> -->
           </template>
         </el-table-column>
       </el-table>
@@ -94,7 +94,13 @@ export default {
         return isOk(row, column, cellValue)
     },
     getIsPass(row, column, cellValue){
-        return isProcess(row, column, cellValue)
+      if(1 == cellValue){
+        return '进行中'
+      }
+      if(2 == cellValue){
+        return '已完成'
+      }
+      return cellValue
     },
     handleDel(res){
         this.$confirm('确定推荐该分享, 是否继续?', '提示', {
