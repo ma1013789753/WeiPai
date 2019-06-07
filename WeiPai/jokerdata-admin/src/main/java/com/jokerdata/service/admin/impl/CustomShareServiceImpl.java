@@ -8,6 +8,7 @@ import com.jokerdata.vo.MyPage;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -30,5 +31,10 @@ public class CustomShareServiceImpl extends ServiceImpl<ShareMapper, Share> impl
     @Override
     public Share getShareById(int shareId) {
         return shareMapper.selectById(shareId);
+    }
+
+    @Override
+    public List<Integer> getShareReport() {
+        return shareMapper.selectShareReport();
     }
 }

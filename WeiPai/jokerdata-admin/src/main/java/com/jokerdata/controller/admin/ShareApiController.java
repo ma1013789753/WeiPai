@@ -48,29 +48,13 @@ public class ShareApiController {
 
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
-    private UserAccountService userAccountService;
-
-    @Autowired
     private ShareService shareService;
-
-    @Autowired
-    private ShareLogService shareLogService;
-
-    @Autowired
-    private CoinLogService coinLogService;
-
-    @Autowired
-    private PdLogService pdLogService;
 
     @Autowired
     private CustomShareService customShareService;
 
     @Autowired
     private CustomShareTagService customShareTagService;
-
 
 
     @Login

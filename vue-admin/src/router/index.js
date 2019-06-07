@@ -471,6 +471,37 @@ export const asyncRouterMap = [
   },
 
   {
+    path: '/message',
+    component: Layout,
+    name: 'message',
+    meta: {
+      resources: 'message',
+      title: '消息'
+    },
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/views/message/index'),
+        name: 'list',
+        meta: {
+          resources: 'list',
+          title: '系统消息'
+        },
+      },
+      {
+        path: 'feedback',
+        component: () => import('@/views/message/feedback'),
+        name: 'feedback',
+        meta: {
+          resources: 'feedback',
+          title: '用户反馈'
+        }
+      },
+
+    ]
+  },
+
+  {
     path: '/maintain',
     component: Layout,
     name: 'maintain',

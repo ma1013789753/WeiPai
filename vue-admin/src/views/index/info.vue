@@ -2,20 +2,26 @@
   <div class="index-container">
       <img style="width: 150px;
       height: 150px;border-radius:50%;"
-           src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/150/h/150">
+           src="http://psnskyixd.bkt.clouddn.com/weipro.jpg">
       <h3>{{ nickname }}欢迎您！</h3>
     <panel-group />
+    <div class="chart-container">
+      <chart height="100%" width="100%" />
+    </div>
   </div>
+
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import PanelGroup from '@/components/PanelGroup'
+import Chart from '@/components/Charts/MixChart'
 
 export default {
   name: 'index',
   components: {
     PanelGroup,
+    Chart
   },
   computed: {
     ...mapGetters([
@@ -26,7 +32,9 @@ export default {
 </script>
 
 <style scoped>
-.index-text{
-  vertical-align: middle;
+.chart-container{
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 84px);
 }
 </style>

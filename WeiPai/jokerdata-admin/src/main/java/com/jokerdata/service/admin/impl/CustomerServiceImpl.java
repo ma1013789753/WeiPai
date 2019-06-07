@@ -212,4 +212,9 @@ public class CustomerServiceImpl  extends ServiceImpl<CustomerMapper, CustomerUs
         return userAccountMapper.selectAccountsPageVo(page,accType,accState);
     }
 
+    @Override
+    public List<Integer> getRegisterReport() {
+        return customerMapper.selectRegisterReport();
+    }
+
 }

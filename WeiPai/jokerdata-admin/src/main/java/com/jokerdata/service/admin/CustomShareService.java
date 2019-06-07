@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.jokerdata.entity.app.generator.Share;
 import com.jokerdata.vo.MyPage;
 
+import java.util.List;
+
 
 /**
  * <p>
@@ -17,4 +19,5 @@ public interface CustomShareService extends IService<Share> {
 
     MyPage<Share> getSharePage(MyPage page, int typeId);
     Share getShareById(int shareId);
+    List<Integer> getShareReport();
 }

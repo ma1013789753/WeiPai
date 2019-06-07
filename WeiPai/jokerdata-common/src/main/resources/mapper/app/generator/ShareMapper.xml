@@ -89,4 +89,19 @@
         WHERE
             s.share_id = #{id}
     </select>
+
+    <select id="selectShareReport" resultType="java.lang.Integer">
+    SELECT
+        count(1) AS 'share'
+    FROM
+        g_share
+    WHERE
+        FROM_UNIXTIME(add_time) > date_add(now(), INTERVAL - 12 MONTH)
+    GROUP BY
+        DATE_FORMAT(
+            FROM_UNIXTIME(add_time),
+            '%Y-%m'
+        )
+    ORDER BY FROM_UNIXTIME(add_time) desc
+    </select>
 </mapper>

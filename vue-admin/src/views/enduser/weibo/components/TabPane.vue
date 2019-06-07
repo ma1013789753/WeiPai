@@ -130,7 +130,7 @@ export default {
   props: {
     type: {
       type: String,
-      default: '1'
+      default: '0'
     }
   },
   data() {

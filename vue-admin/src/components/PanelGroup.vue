@@ -7,9 +7,14 @@
           <svg-icon icon-class="money" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <el-badge :value="18" class="item">
+          <router-link to="/flow/cash">
+          <el-badge :value="this.withdrawCount" class="item" v-if="this.withdrawCount != 0">
           <div class="card-panel-text">提现申请</div>
           </el-badge>
+            <el-badge class="item" v-else>
+              <div class="card-panel-text">提现申请</div>
+            </el-badge>
+          </router-link>
         </div>
       </div>
     </el-col>
@@ -19,9 +24,14 @@
           <svg-icon icon-class="documentation" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <el-badge :value="8" class="item">
+          <router-link to="/spare/sparelist/list">
+          <el-badge :value="this.originalShareCount" class="item" v-if="this.originalShareCount != 0">
           <div class="card-panel-text">原创申请</div>
           </el-badge>
+            <el-badge class="item" v-else>
+              <div class="card-panel-text">原创申请</div>
+            </el-badge>
+          </router-link>
         </div>
       </div>
     </el-col>
@@ -31,9 +41,14 @@
           <svg-icon icon-class="sina2" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <el-badge :value="5" class="item">
+          <router-link to="/enduser/weiboacc">
+          <el-badge :value="this.sinaApplyCount" class="item" v-if="this.sinaApplyCount != 0">
           <div class="card-panel-text">待审微博账号</div>
           </el-badge>
+            <el-badge class="item" v-else>
+              <div class="card-panel-text">待审微博账号</div>
+            </el-badge>
+          </router-link>
         </div>
       </div>
     </el-col>
@@ -43,9 +58,14 @@
           <svg-icon icon-class="user" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <el-badge :value="18" class="item">
+          <router-link to="/enduser/toutiaoacc">
+          <el-badge :value="this.toutiaoApplyCount" class="item" v-if="this.toutiaoApplyCount != 0">
           <div class="card-panel-text">待审头条账号</div>
           </el-badge>
+            <el-badge  class="item" v-else>
+              <div class="card-panel-text">待审头条账号</div>
+            </el-badge>
+          </router-link>
         </div>
       </div>
     </el-col>
@@ -54,12 +74,17 @@
       <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
         <div class="card-panel" @click="">
           <div class="card-panel-icon-wrapper icon-people">
-            <svg-icon icon-class="wechat" class-name="card-panel-icon" />
+            <svg-icon icon-class="wechat2" class-name="card-panel-icon" />
           </div>
           <div class="card-panel-description">
-            <el-badge :value="88" class="item">
+            <router-link to="/enduser/weichatacc">
+            <el-badge :value="this.wechartApplyCount" class="item" v-if="this.wechartApplyCount != 0">
             <div class="card-panel-text">待审微信账号</div>
             </el-badge>
+              <el-badge class="item" v-else>
+                <div class="card-panel-text">待审微信账号</div>
+              </el-badge>
+            </router-link>
           </div>
         </div>
       </el-col>
@@ -69,9 +94,14 @@
             <svg-icon icon-class="sub" class-name="card-panel-icon" />
           </div>
           <div class="card-panel-description">
-
-            <div class="card-panel-text">待审公众号</div>
-
+            <router-link to="/enduser/subscription">
+              <el-badge :value="this.subscriptionApplyCount" class="item" v-if="this.subscriptionApplyCount != 0">
+              <div class="card-panel-text">待审公众号</div>
+              </el-badge>
+              <el-badge class="item" v-else>
+                <div class="card-panel-text">待审公众号</div>
+              </el-badge>
+            </router-link>
           </div>
         </div>
       </el-col>
@@ -81,9 +111,14 @@
             <svg-icon icon-class="feedback" class-name="card-panel-icon" />
           </div>
           <div class="card-panel-description">
-            <el-badge :value="7" class="item">
+            <router-link to="/message/feedback">
+            <el-badge :value="this.pendingFeedback" class="item" v-if="this.pendingFeedback != 0">
             <div class="card-panel-text">意见反馈</div>
             </el-badge>
+              <el-badge  class="item" v-else>
+                <div class="card-panel-text">意见反馈</div>
+              </el-badge>
+            </router-link>
           </div>
         </div>
       </el-col>
@@ -92,11 +127,68 @@
 </template>
 
 <script>
+import {withdrawCount,originalShareCount,platformAccCount,getPendingFeedback} from '@/api/notification'
 
 export default {
-
+  data() {
+    return {
+      withdrawCount:0,
+      originalShareCount:0,
+      sinaApplyCount:0,
+      toutiaoApplyCount:0,
+      wechartApplyCount:0,
+      subscriptionApplyCount:0,
+      pendingFeedback:0
+    }
+  },
+  created(){
+    this.initNotice()
+  },
   methods: {
-
+    initNotice(){
+      this.initWithdrawCount();
+      this.initOriginalShareCount();
+      this.initSinaApplyCount();
+      this.initSubscriptionApplyCount();
+      this.initWechartApplyCount();
+      this.initToutiaoApplyCount();
+      this.initPendingFeedback();
+    },
+    initWithdrawCount(){
+      withdrawCount().then(res => {
+       this.withdrawCount = res.data;
+      })
+    },
+    initOriginalShareCount(){
+      originalShareCount().then(res => {
+        this.originalShareCount = res.data;
+      })
+    },
+    initPendingFeedback(){
+      getPendingFeedback().then(res => {
+        this.pendingFeedback = res.data;
+      })
+    },
+    initSinaApplyCount(){
+      platformAccCount(0).then(res => {
+        this.sinaApplyCount = res.data;
+      })
+    },
+    initSubscriptionApplyCount(){
+      platformAccCount(1).then(res => {
+        this.subscriptionApplyCount = res.data;
+      })
+    },
+    initWechartApplyCount(){
+      platformAccCount(2).then(res => {
+        this.wechartApplyCount = res.data;
+      })
+    },
+    initToutiaoApplyCount(){
+      platformAccCount(3).then(res => {
+        this.toutiaoApplyCount = res.data;
+      })
+    },
   }
 }
 </script>

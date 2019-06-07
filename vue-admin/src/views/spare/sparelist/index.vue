@@ -24,7 +24,7 @@
           { label: '积分互推', key: '0' },
           { label: '原创审核', key: '2' }
         ],
-        activeName: '1',
+        activeName: '2',
       }
     },
     methods: {

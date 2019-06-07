@@ -107,8 +107,6 @@
         loading: true
       }
     },
-    created() {
-    },
     mounted() {},
     methods: {
       handleEdit(res){

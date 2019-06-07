@@ -14,6 +14,7 @@
         <result column="data" property="data"/>
         <result column="is_all" property="isAll"/>
         <result column="is_base64" property="isBase64"/>
+        <result column="user_name" property="userName"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -21,4 +22,17 @@
         notice_id, notice_type, notice_content, is_new, author_name, add_time, type, data, is_all, is_base64
     </sql>
 
+    <select id="selectPageVo" resultMap="BaseResultMap">
+        SELECT
+            sm.*, u.user_name
+        FROM
+            g_system_msg sm
+        LEFT JOIN g_user u ON u.user_id = sm.`data`
+        WHERE
+            sm.notice_type = 'system'
+        <if test=" page.search1 != ''">
+            AND sm.notice_content LIKE CONCAT('%',#{page.search1},'%')
+        </if>
+        ORDER BY sm.add_time DESC
+    </select>
 </mapper>

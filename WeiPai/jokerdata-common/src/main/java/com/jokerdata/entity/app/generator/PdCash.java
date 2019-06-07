@@ -80,7 +80,7 @@ public class PdCash extends Model<PdCash> {
     /**
      * 提现支付状态 0默认1支付完成 2拒绝
      */
-    private Boolean pdcPaymentState;
+    private Integer pdcPaymentState;
 
     /**
      * 支付管理员

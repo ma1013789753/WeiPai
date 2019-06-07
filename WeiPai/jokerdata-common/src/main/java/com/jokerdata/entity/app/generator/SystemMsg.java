@@ -1,6 +1,7 @@
 package com.jokerdata.entity.app.generator;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -11,7 +12,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * <p>
@@ -77,6 +77,11 @@ public class SystemMsg extends Model<SystemMsg> {
      */
     private Integer isBase64;
 
+    /**
+     *接收人名称
+     */
+    @TableField(exist = false)
+    private String userName;
 
     @Override
     protected Serializable pkVal() {

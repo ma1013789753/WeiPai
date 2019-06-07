@@ -24,7 +24,7 @@
           { label: '待审核', key: '0' },
           { label: '审核失败', key: '2' }
         ],
-        activeName: '1',
+        activeName: '0',
       }
     },
     methods: {

@@ -40,4 +40,5 @@ public interface CustomerService extends IService<CustomerUser> {
     MyPage<Sign> selectSignPage(MyPage page,int userId);
     List<UserAccount> getUserAccount(int userId,int accType);
     MyPage<UserAccount> getAccountPage(MyPage page,int accType,int accState);
+    List<Integer> getRegisterReport();
 }
