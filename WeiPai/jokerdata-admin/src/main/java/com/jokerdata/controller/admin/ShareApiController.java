@@ -44,6 +44,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/Api/Share")
+@Transactional(rollbackFor = ApiException.class)
 public class ShareApiController {
 
 
@@ -55,6 +56,15 @@ public class ShareApiController {
 
     @Autowired
     private CustomShareTagService customShareTagService;
+
+    @Autowired
+    private CoinLogService coinLogService;
+
+    @Autowired
+    private PdLogService pdLogService;
+
+    @Autowired
+    private UserService userService;
 
 
     @Login
@@ -75,6 +85,85 @@ public class ShareApiController {
         }
 
 
+    }
+
+    @Login
+    @PostMapping(value = "/approve",produces = "application/json;charset=UTF-8")
+    @ApiOperation(value = "审核订单",notes = "")
+    public Result approve(@RequestBody Share param){
+
+        //通过
+        if("0".equals(param.getShareState())){
+            if(!shareService.updateById(param)){
+                throw new ApiException("更新失败");
+            }
+        }
+        //现金 取消
+        if("4".equals(param.getShareState())&&"1".equals(param.getShareStatus())){
+            if(!shareService.updateById(param)){
+                throw new ApiException("更新失败");
+            }
+
+            PdLog pdCash = pdLogService.getOne(new QueryWrapper<PdLog>()
+                    .eq("lg_type","task_freeze")
+                    .eq("lg_desc",param.getShareId())
+            );
+            if(pdCash==null){
+                throw new ApiException("不存在");
+            }
+
+            PdLog refunt = new PdLog();
+            refunt.setLgType("refund");
+            refunt.setLgMemberId(pdCash.getLgMemberId());
+            refunt.setLgMemberName(pdCash.getLgMemberName());
+            refunt.setLgAddTime(new Date().getTime()/1000);
+            refunt.setLgAvAmount(pdCash.getLgAvAmount());
+            if(!pdLogService.save(refunt)){
+                throw new ApiException("更新失败");
+            }
+
+            User target = userService.getById(param.getUserId());
+            target.setAvailablePredeposit(target.getAvailablePredeposit().add(refunt.getLgAvAmount()));
+
+            if(!userService.updateById(target)){
+                throw new ApiException("更新失败");
+            }
+
+        }
+
+        //积分 取消
+        if("4".equals(param.getShareState())&&"0".equals(param.getShareStatus())){
+
+            if(!shareService.updateById(param)){
+                throw new ApiException("更新失败");
+            }
+
+            CoinLog coinCash = coinLogService.getOne(new QueryWrapper<CoinLog>()
+                    .eq("log_type","task_freeze")
+                    .eq("log_mark",param.getShareId())
+            );
+            if(coinCash==null){
+                throw new ApiException("不存在");
+            }
+            coinCash.setLogType("task_cancel");
+
+            CoinLog coinLog = coinCash;
+            coinLog.setLogId(null);
+            coinLog.setLogAvCoin(new BigDecimal(-coinCash.getLogAvCoin().intValue()));
+            coinLog.setAddTime(new Date().getTime()/1000);
+            if(!coinLogService.save(coinLog)){
+                throw new ApiException("更新失败");
+            }
+
+            User target = userService.getById(param.getUserId());
+            target.setUserCoin(target.getUserCoin()+coinLog.getLogAvCoin().intValue());
+
+            if(!userService.updateById(target)){
+                throw new ApiException("更新失败");
+            }
+
+        }
+        return Result.success("保存失败");
     }
 
     @Login

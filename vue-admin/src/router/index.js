@@ -264,11 +264,19 @@ export const asyncRouterMap = [
 
 
       {
-        path: 'record',
+        path: 'precord',
         component: () => import('@/views/spare/sparerecord/index'),
-        name: 'record',
+        name: 'precord',
         meta: {
-          resources: 'record'
+          resources: 'precord'
+        }
+      },
+      {
+        path: 'crecord',
+        component: () => import('@/views/spare/sparecrecord/index'),
+        name: 'crecord',
+        meta: {
+          resources: 'crecord'
         }
       }
     ]
@@ -595,122 +603,6 @@ export const asyncRouterMap = [
       
     ]
   },
-  {
-    path: '/external',
-    component: Layout,
-    name: 'external',
-    meta: {
-      resources: 'external',
-      title: '保养管理'
-    },
-    children: [
-      {
-        path: 'manager',
-        component: () => import('@/views/external/manager/index'),
-        name: 'manager',
-        meta: {
-          resources: 'manager'
-        }
-      },
-      {
-        path: 'list',
-        component: () => import('@/views/external/list/index'),
-        name: 'list',
-        meta: {
-          resources: 'list'
-        }
-      },
-      {
-        path: 'record',
-        component: () => import('@/views/external/list/index'),
-        name: 'record',
-        meta: {
-          resources: 'record'
-        }
-      }
-      
-    ]
-  },
-  {
-    path: '/produce',
-    component: Layout,
-    name: 'produce',
-    meta: {
-      resources: 'produce',
-      title: '生产管理'
-    },
-    children: [
-      {
-        path: 'manager',
-        component: () => import('@/views/produce/manager/index'),
-        name: 'manager',
-        meta: {
-          resources: 'manager'
-        }
-      },
-      {
-        path: 'list',
-        component: () => import('@/views/produce/list/index'),
-        name: 'list',
-        meta: {
-          resources: 'list'
-        }
-      },
-      {
-        path: 'schdule',
-        component: () => import('@/views/produce/schdule/index'),
-        name: 'schdule',
-        meta: {
-          resources: 'schdule'
-        }
-      },
-      {
-        path: 'upload',
-        component: () => import('@/views/produce/upload/index'),
-        name: 'upload',
-        meta: {
-          resources: 'upload'
-        }
-      }
-    ]
-  },
-
-  {
-    path: '/sys',
-    component: Layout,
-    name: 'sys',
-    meta: {
-      resources: 'sys',
-      title: '基础设置'
-    },
-    children: [
-      {
-        path: 'manager',
-        component: () => import('@/views/sys/manager/index'),
-        name: 'manager',
-        meta: {
-          resources: 'manager'
-        }
-      },
-      {
-        path: 'type',
-        component: () => import('@/views/sys/type/index'),
-        name: 'type',
-        meta: {
-          resources: 'type'
-        }
-      },
-      {
-        path: 'state',
-        component: () => import('@/views/sys/state/index'),
-        name: 'state',
-        meta: {
-          resources: 'state'
-        }
-      }
-    ]
-  },
-
   {
     path: '/job',
     component: Layout,

@@ -21,4 +21,6 @@ public class MonetListVo extends Share {
     private String user_avatr;
 
     private String ratio;
+    private Object shareImageJson;
+    private Object shareImgJson;
 }

@@ -21,6 +21,7 @@ import com.jokerdata.service.app.*;
 import com.jokerdata.service.common.WeiBoService;
 import com.jokerdata.vo.ApiResult;
 import com.jokerdata.vo.Result;
+import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -171,6 +172,12 @@ public class UserController {
         return ApiResult.error("功能未实现");
     }
 
+    /**
+     * 发布互推
+     * @param key
+     * @param param
+     * @return
+     */
     @GetMapping(value = "/add_weibo_t", produces = "application/json;charset=UTF-8")
     @Auth(value = true)
     public ApiResult add_weibo_t(String key, @Validated ShareWBParam param) {
@@ -243,12 +250,53 @@ public class UserController {
         share.setBackgroundImage("");
         share.setShortUrl("");
         share.setFromApp(1);
-
-        if(shareService.save(share)){
+        //插入成功
+        if(!shareService.save(share)){
             return ApiResult.success();
         };
-        return ApiResult.error("失败");
+        share = shareService.getOne(new QueryWrapper<Share>().eq("add_time",share.getAddTime()));
+        //冻结资金
+        //积分
+        if("1".equals(param.getT())){
+            CoinLog coinLog = new CoinLog();
+            coinLog.setLogUserId(String.valueOf(user.getUserId()));
+            coinLog.setLogUserName(user.getUserName());
+            coinLog.setLogType("task_freeze");
+            coinLog.setLogAvCoin(new BigDecimal(-share.getTotalCoin()));
+            coinLog.setLogMark("发布冻结积分");
+            coinLog.setAddTime(new Date().getTime()/1000);
+            coinLog.setLogMark(share.getShareId()+"");
+            if(!coinLogService.save(coinLog)){
+                throw new ApiException("更新失败");
+            }
+            user.setUserCoin(user.getUserCoin()-share.getTotalCoin());
+            if(!userService.updateById(user)){
+                throw new ApiException("更新失败");
+            }
+        }else{
+            //现金
+            PdLog pdLog = new PdLog();
+            pdLog.setLgMemberId(user.getUserId());
+            pdLog.setLgMemberName(user.getUserName());
+            pdLog.setLgType("task_freeze");
+            pdLog.setLgAvAmount(new BigDecimal(-param.getShare_num()*Double.parseDouble(param.getFree())));
+            pdLog.setLgAddTime(new Date().getTime()/1000);
+            pdLog.setLgDesc(share.getShareId()+"");
+            if(!pdLogService.save(pdLog)){
+                throw new ApiException("更新失败");
+            }
+
+            user.setAvailablePredeposit(user.getAvailablePredeposit().subtract(pdLog.getLgAvAmount()));
+            if(!userService.updateById(user)){
+                throw new ApiException("更新失败");
+            }
+        }
+
+
+        return ApiResult.success();
     }
+
+
 
     @GetMapping(value = "/user_info", produces = "application/json;charset=UTF-8")
     @Auth(value = true)
@@ -305,7 +353,7 @@ public class UserController {
 
         Map<String, Object> result = new HashMap<>();
         result.put("list", data);
-        result.put("user_coin", user.getCoinTotal());
+        result.put("user_coin", user.getUserCoin());
         return PageResule.success(result).setPage((Page) coinIPage);
 
     }
@@ -653,7 +701,7 @@ public class UserController {
         coinLog.setLogUserId(user.getUserId()+"");
         coinLog.setLogUserName(user.getUserName());
         coinLog.setLogType("with_draw");
-        coinLog.setLogAvCoin(new BigDecimal(num));
+        coinLog.setLogAvCoin(new BigDecimal(-num));
         if(!coinLogService.save(coinLog)){
             throw new ApiException("");
         }
@@ -661,8 +709,8 @@ public class UserController {
         pdLog.setLgMemberId(user.getUserId());
         pdLog.setLgMemberName(user.getUserName());
         pdLog.setLgType("with_draw");
-        pdLog.setLgAvAmount(new BigDecimal(num/1000));
-        pdLog.setLgAddTime(new Date().getTime()/1000);
+        pdLog.setLgAvAmount(new BigDecimal(num/100));
+        pdLog.setLgAddTime(new Date().getTime()/100);
         if(!pdLogService.save(pdLog)){
             throw new ApiException("");
         }

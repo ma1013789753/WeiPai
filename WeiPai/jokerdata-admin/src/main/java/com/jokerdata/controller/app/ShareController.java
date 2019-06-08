@@ -88,6 +88,10 @@ public class ShareController {
             return ApiResult.error("参数错误");
         }
         Share share = shareService.getById(share_id);
+        if(share.getHaveSharedNum()>= share.getShareNum()){
+            return ApiResult.error("已达分享上限");
+        }
+
         UserAccount userAccount = userAccountService.getById(account_id);
         //创建coinLog记录
         CoinLog coinLog = new CoinLog();
@@ -112,7 +116,7 @@ public class ShareController {
         }else{
             pdLog.setLgMemberId(user.getUserId());
             pdLog.setLgMemberName(user.getUserName());
-            pdLog.setLgType("task_in_check");
+            pdLog.setLgType("task_check_in");
             DecimalFormat df = new DecimalFormat("#.0");
             //随机金额
             Double t = Math.random()*(share.getCoinMax().doubleValue()-share.getCoinMin().doubleValue())+share.getCoinMin().doubleValue();

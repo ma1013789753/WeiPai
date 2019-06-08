@@ -79,8 +79,9 @@ public class SysUserImpl extends ServiceImpl<SysUserMapper, SysUser> implements 
         Set<MenuVo> menuVos = new HashSet<>();
         for (SysRoleCustom sysRole: sysRoles) {
             sysRole.getPermissions().forEach(permission -> {
-
-                    menuVos.add(new MenuVo(permission.getPid(), permission.getFather(), permission.getIcon(), permission.getResources(), permission.getTitle()));
+                    if (permission.getPid()!=null){
+                        menuVos.add(new MenuVo(permission.getPid(), permission.getFather(), permission.getIcon(), permission.getResources(), permission.getTitle()));
+                    }
             });
         }
 

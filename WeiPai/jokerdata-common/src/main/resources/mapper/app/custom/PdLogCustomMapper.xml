@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jokerdata.mapper.app.generator.PdLogMapper">
+
+    <select id="getAllCount" resultType="java.math.BigDecimal">
+        SELECT
+        SUM(p.`lg_av_amount`)
+        FROM
+        g_share g
+        INNER JOIN
+        g_share_log h
+        ON g.`share_id` = h.`share_id`
+        INNER JOIN g_pd_log p
+        ON p.`lg_id` = h.`log_id`
+        WHERE g.`share_status` = 1
+        AND g.`share_state` = 0
+        AND g.`share_id` = #{shareId}
+        AND p.`lg_type` = 'task_income'
+        ORDER BY g.`share_id` DESC
+    </select>
+
+</mapper>

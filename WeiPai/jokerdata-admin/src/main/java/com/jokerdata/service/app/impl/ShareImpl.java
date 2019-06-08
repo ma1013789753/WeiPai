@@ -13,6 +13,9 @@ import com.jokerdata.parames.ShareIndexParams;
 import com.jokerdata.parames.vo.MonetListVo;
 import com.jokerdata.parames.vo.UserListVo;
 import com.jokerdata.service.app.ShareService;
+import com.jokerdata.vo.CShareLog;
+import com.jokerdata.vo.MyPage;
+import com.jokerdata.vo.PShareLog;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.StringUtils;
@@ -141,12 +144,29 @@ public class ShareImpl extends ServiceImpl<ShareCustomMapper, Share> implements 
             if(!CommonUtil.isEmpty(monetListVo.getAccount_avatar())){
                 monetListVo.setAccount_avatar(ShareUtil.getPic(monetListVo.getAccount_avatar()));
             }
+            if(!CommonUtil.isEmpty(monetListVo.getShareImg())){
+                monetListVo.setShareImgJson(JSON.parseArray(monetListVo.getShareImg()));
+            }
+            if(!CommonUtil.isEmpty(monetListVo.getShareImage())){
+                monetListVo.setShareImageJson(JSON.parseArray(monetListVo.getShareImage()));
+            }
+            monetListVo.setRatio(String.valueOf(monetListVo.getHaveSharedNum()/monetListVo.getShareNum()));
         });
 
 
         return page;
     }
 
+    @Override
+    public IPage<PShareLog> getPPage(MyPage page) {
+
+        return shareCustomMapper.getSharePPage(page);
+    }
+
+    @Override
+    public IPage<CShareLog> getCPage(MyPage page) {
+        return shareCustomMapper.getShareCPage(page);
+    }
 
     public static void main(String[] args) throws UnsupportedEncodingException {
         java.lang.String str = "5b2T5bm056yU56yU5ZSx6L+Z6aaW44CKI+S8oOWlhy3lkajnrJTnlYVb6Z+z5LmQXSMg44CL5aW95YOP5piv56ys5LiA5qyh5Zyo5aSn5bqt5bm/5LyX56m/5ouW5Zyw6ZW/6KOZ5ZCn77yf5b2T5pe255qE6YKj5byg6Iie5Y+w54Wn5oOK6Imz5p6B5LqG77yM5Zyo5b6u5Y2a5LiK5Lmf5piv54Gr55qE5LiA6Laf57OK5raCW+aGp+aGrF1b5oan5oasXVvmhqfmhqxdI+WRqOeslOeVhSPmrYzlo7DkuK3pgI/pnLLlh7roh6rlt7HnmoTpo47moLzkuI7nibnoibLvvIznnJ/nmoTlvojmo5LlkaLvvIFb6IiU5bGPXVvoiJTlsY9dW+iIlOWxj10KI+aDheaEnyMgWW91J2xsIG5ldmVyIGZpbmQgdGhlIHJpZ2h0IHBlcnNvbiBpZiB5b3UgZG9uJ3QgbGV0IGdvIG9mIHRoZSAuLi7lhajmlofvvJogaHR0cDovL20ud2VpYm8uY24vMjQzNzQ3NTA0NC80MzY1NjcyMzAzMzEyNDI0IOKAiw==";

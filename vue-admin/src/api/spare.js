@@ -35,6 +35,15 @@ export function del(data) {
   })
 }
 
+// 删除
+export function approve(data) {
+  return request({ 
+    url: '/Api/Share/approve', 
+    method: 'post',
+    data:data
+  })
+}
+
 // 查看互推
 export function getShare(data) {
   return request({
