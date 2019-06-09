@@ -88,6 +88,7 @@ public class TaskController {
         if (StringUtils.isEmpty(task.getId())){
             task.setCreateTime(new Date());
             task.setId(idWorker.nextId());
+            task.setState(1);
             List<TaskLog> taskLogs = new ArrayList<>();
             String[] ids = taskCustom.getIds().split(",");
             Arrays.asList(ids).forEach(id->{
@@ -97,7 +98,7 @@ public class TaskController {
                     taskLog.setTId(task.getId());
                     taskLog.setModifyTime(new Date());
                     taskLog.setCreateTime(new Date());
-                    taskLog.setState(1);
+                    taskLog.setState(0);
                     taskLog.setAccountId(Long.parseLong(id));
                     taskLogs.add(taskLog);
                 }
@@ -210,7 +211,7 @@ public class TaskController {
         pdLog.setLgMemberId(user.getUserId());
         pdLog.setLgMemberName(user.getUserName());
         pdLog.setLgAdminName("");
-        pdLog.setLgType("task_check_fail");
+        pdLog.setLgType("task_check_in");
         pdLog.setLgAvAmount((data.getTask().getAward()));
         pdLog.setLgAddTime(new Date().getTime()/1000);
         pdLog.setLgDesc("派单收入");

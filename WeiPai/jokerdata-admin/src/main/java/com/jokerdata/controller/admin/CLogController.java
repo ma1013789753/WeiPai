@@ -83,6 +83,7 @@ public class CLogController {
         //更新用户积分
         User user = userService.getById(cShareLog.getShareLog().getUserId());
         user.setUserCoin(user.getUserCoin()+coinLog.getLogAvCoin().intValue());
+        user.setCoinTotal(user.getCoinTotal()+coinLog.getLogAvCoin().intValue());
         if(!userService.updateById(user)){
             throw new ApiException("金额更新失败");
         }

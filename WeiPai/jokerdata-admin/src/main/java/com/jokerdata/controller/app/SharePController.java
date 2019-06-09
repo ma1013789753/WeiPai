@@ -90,6 +90,9 @@ public class SharePController {
             if(stringObjectMap.get("share_video")!=null){
                 stringObjectMap.put("share_video", JSON.parseObject(stringObjectMap.get("share_video").toString()));
             }
+            if(stringObjectMap.get("share_image")!=null){
+                stringObjectMap.put("share_image", JSON.parseArray(stringObjectMap.get("share_image").toString()));
+            }
         });
         Map<String,Object> result = new HashMap<>();
         result.put("list",monList);
@@ -112,13 +115,13 @@ public class SharePController {
         data.put("avatar_hd",  ShareUtil.getPic(ShareUtil.URL+userAccount.getAvatarHd()));
         data.put("account_name",userAccount.getAccountName());
         data.put("ratio",((double)share.getHaveSharedNum())/((double)share.getShareNum())*100+"");
-        if(!"0".equals(share.getExpires())&& !StringUtils.isEmpty(share.getShareVideo())){
+        if(!StringUtils.isEmpty(share.getShareVideo())){
             //要做一个获取视频的东西
             data.put("share_video",JSON.parse(share.getShareVideo()));
         }
-        if(!StringUtils.isEmpty(share.getJson())){
-            //转JSON 不需要吧
-        }
+//        if(!StringUtils.isEmpty(share.getShareVideo())){
+//            //转JSON 不需要吧
+//        }
         if(!StringUtils.isEmpty(share.getShareImage())){
             data.put("share_image",JSON.parse(share.getShareImage()));
         }

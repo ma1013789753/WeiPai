@@ -82,7 +82,7 @@ public class MD5 {
     }
 
 
-    public static void main(String[] args) {
-        System.out.println("args = " + MD5Encode("ma1992224","utf-8"));
-    }
+//    public static void main(String[] args) {
+//        System.out.println("args = " + MD5Encode("ma1992224","utf-8"));
+//    }
 }

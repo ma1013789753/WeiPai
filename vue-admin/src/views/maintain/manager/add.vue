@@ -7,7 +7,7 @@
         <el-form-item label="任务奖励" prop="award">
           <el-input v-model="form.award" placeholder="请输入任务奖励" type="number"max="100"></el-input>
         </el-form-item>
-        <el-form-item label="任务描述" prop="content">
+        <!-- <el-form-item label="任务描述" prop="content">
             <el-input
               type="textarea"
               :rows="4"
@@ -15,6 +15,9 @@
               max="100"
               v-model="form.content">
             </el-input>
+        </el-form-item> -->
+        <el-form-item label="任务描述" prop="content">
+          <Tinymce ref="editor" v-model="form.content" :height="400" />
         </el-form-item>
         <el-form-item label="任务链接资源" prop="link">
             <el-input v-model="form.link" placeholder="请输入任务链接资源" type="text" max="50"></el-input>
@@ -86,6 +89,15 @@
               label="粉丝数"
               show-overflow-tooltip>
             </el-table-column>
+            <!-- <el-table-column
+              align="right">
+              <template slot="header" slot-scope="scope">
+                <el-input
+                  v-model="search"
+                  size="mini"
+                  placeholder="输入关键字搜索"/>
+              </template>
+            </el-table-column> -->
           </el-table>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false">取 消</el-button>
@@ -96,11 +108,14 @@
 </template>
 
 <script>
+  import Tinymce from '@/components/Tinymce'
   import { add ,getAccount} from '@/api/task'
   export default {
+    components: { Tinymce },
     data() {
       return {
         dialogVisible:false,
+        search:'',
         form: {
           id:null,
           name: '',
@@ -117,14 +132,13 @@
         rules: {
           name: [
             { required: true, message: '请输入任务名称', trigger: 'blur' },
-            { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
+            { min: 2, max: 40, message: '长度在 2 到40 个字符', trigger: 'blur' }
           ],
           award: [
             { required: true, message: '请输入任务奖励', trigger: 'blur' },
           ],
           content: [
             { required: true, message: '请输入任务描述', trigger: 'blur' },
-            { min: 2, max: 200, message: '长度在 2 到 200 个字符', trigger: 'blur' }
 
           ],
           names: [
@@ -200,8 +214,8 @@
 <style lang='scss' scoped>
   .contain{
     margin-top: 50px;
-    margin-left: 10%;
-    width: 50%;
+    margin-left: 5%;
+    width: 80%;
     .fright{
       float: right;
       width: 6rem;
@@ -210,7 +224,7 @@
       width: 6rem;
     }
     .el-form-item{
-    width: 700px;;
+    width: 100%;
     }
   }
 

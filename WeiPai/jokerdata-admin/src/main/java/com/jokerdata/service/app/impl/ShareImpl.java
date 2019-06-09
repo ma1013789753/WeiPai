@@ -48,7 +48,7 @@ public class ShareImpl extends ServiceImpl<ShareCustomMapper, Share> implements 
         page.getRecords().forEach(monetListVo -> {
             if(b){
                 List<UserListVo> shareLogList = shareLogCustomMapper.selectUserListVo(monetListVo.getShareId());
-                monetListVo.setUser_list(shareLogList);
+                monetListVo.setUserList(shareLogList);
             }
 
         });
@@ -62,7 +62,7 @@ public class ShareImpl extends ServiceImpl<ShareCustomMapper, Share> implements 
         page.getRecords().forEach(monetListVo -> {
             if(b){
                 List<UserListVo> shareLogList = shareLogCustomMapper.selectUserListVo(monetListVo.getShareId());
-                monetListVo.setUser_list(shareLogList);
+                monetListVo.setUserList(shareLogList);
             }
         });
         return parseData(page);
@@ -74,7 +74,7 @@ public class ShareImpl extends ServiceImpl<ShareCustomMapper, Share> implements 
         page.getRecords().forEach(monetListVo -> {
             if(b){
                 List<UserListVo> shareLogList = shareLogCustomMapper.selectUserListVo(monetListVo.getShareId());
-                monetListVo.setUser_list(shareLogList);
+                monetListVo.setUserList(shareLogList);
             }
         });
         return parseData(page);
@@ -85,8 +85,8 @@ public class ShareImpl extends ServiceImpl<ShareCustomMapper, Share> implements 
         IPage<MonetListVo> page = shareCustomMapper.shareList(sharePage, shareIndexParams);
         page.getRecords().forEach(monetListVo -> {
             List<UserListVo> shareLogList = shareLogCustomMapper.selectUserListVo(monetListVo.getShareId());
-            monetListVo.setUser_list(shareLogList);
-            monetListVo.setAdd_time_text(ShareUtil.getTaxt(monetListVo.getAddTime()));
+            monetListVo.setUserList(shareLogList);
+            monetListVo.setAddTimeText(ShareUtil.getTaxt(monetListVo.getAddTime()));
             monetListVo.setShareContent( new String(Base64Utils.decode(monetListVo.getShareContent().getBytes())));
             monetListVo.setUser_avatr(ShareUtil.getAvatar(monetListVo.getUserId()+""));
             monetListVo.setRatio(((double)monetListVo.getHaveSharedNum())/((double)monetListVo.getShareNum())*100+"");
@@ -100,8 +100,8 @@ public class ShareImpl extends ServiceImpl<ShareCustomMapper, Share> implements 
         IPage<MonetListVo> page = shareCustomMapper.shareMoneyList(sharePage, shareIndexParams);
         page.getRecords().forEach(monetListVo -> {
             List<UserListVo> shareLogList = shareLogCustomMapper.selectUserListVo(monetListVo.getShareId());
-            monetListVo.setUser_list(shareLogList);
-            monetListVo.setAdd_time_text(ShareUtil.getTaxt(monetListVo.getAddTime()));
+            monetListVo.setUserList(shareLogList);
+            monetListVo.setAddTimeText(ShareUtil.getTaxt(monetListVo.getAddTime()));
             monetListVo.setShareContent( new String(Base64Utils.decode(monetListVo.getShareContent().getBytes())));
             monetListVo.setUser_avatr(ShareUtil.getAvatar(monetListVo.getUserId()+""));
         });
@@ -119,7 +119,7 @@ public class ShareImpl extends ServiceImpl<ShareCustomMapper, Share> implements 
     @Override
     public IPage<MonetListVo> parseData(IPage<MonetListVo> page) {
         page.getRecords().forEach(monetListVo -> {
-            monetListVo.setAdd_time_text(ShareUtil.getTaxt(monetListVo.getAddTime()));
+            monetListVo.setAddTimeText(ShareUtil.getTaxt(monetListVo.getAddTime()));
             monetListVo.setUser_avatr(ShareUtil.getAvatar(monetListVo.getUserId()+""));
             monetListVo.setAvatar_hd(ShareUtil.getPic(monetListVo.getAvatar_hd()));
             if(StringUtils.isEmpty(monetListVo.getBackgroundImage())){
@@ -141,8 +141,8 @@ public class ShareImpl extends ServiceImpl<ShareCustomMapper, Share> implements 
             if(CommonUtil.isBase64(monetListVo.getShareContent())){
                 monetListVo.setShareContent(ShareUtil.Base64Decode(monetListVo.getShareContent()));
             }
-            if(!CommonUtil.isEmpty(monetListVo.getAccount_avatar())){
-                monetListVo.setAccount_avatar(ShareUtil.getPic(monetListVo.getAccount_avatar()));
+            if(!CommonUtil.isEmpty(monetListVo.getShareVideo())){
+                monetListVo.setShareVideoJson(JSON.parse(monetListVo.getShareVideo()));
             }
             if(!CommonUtil.isEmpty(monetListVo.getShareImg())){
                 monetListVo.setShareImgJson(JSON.parseArray(monetListVo.getShareImg()));

@@ -76,7 +76,7 @@ public class TaskLogController {
         if(pdLog == null){
             throw new ApiException("查询失败");
         }
-        pdLog.setLgType("task_check_in");
+        pdLog.setLgType("task_check_fail");
         if(!pdLogService.updateById(pdLog)){
             throw  new ApiException("更新失败");
         }
@@ -106,6 +106,7 @@ public class TaskLogController {
         if(pdLog == null){
             throw new ApiException("查询失败");
         }
+//        pdLog.setLgType("check_false");
         if(!pdLogService.removeById(pdLog)){
             throw  new ApiException("更新失败");
         }
