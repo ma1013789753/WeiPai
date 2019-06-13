@@ -1,4 +1,4 @@
-package com.jokerdata.common.config.push.config;
+package com.jokerdata.common.push.config;
 
 import cn.jpush.api.JPushClient;
 import org.slf4j.Logger;
@@ -31,7 +31,8 @@ public class PushClientConfiguration {
      */
     @Bean("pushDriverClient")
     public JPushClient pushDriverClientFactory() {
-        logger.info("司机端Push注入成功！！");
+        logger.error("appkey",driverAppKey);
+        logger.error("MasterSecret",masterDriverSecret);
         return new JPushClient(masterDriverSecret, driverAppKey);
     }
 

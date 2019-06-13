@@ -1,8 +1,8 @@
-package com.jokerdata.common.config.push;
+package com.jokerdata.service.app;
 
 import cn.jiguang.common.resp.APIConnectionException;
 import cn.jiguang.common.resp.APIRequestException;
-import com.jokerdata.common.config.push.config.MessagePush;
+import com.jokerdata.common.push.config.MessagePush;
 
 public interface IJPushService {
 
@@ -31,7 +31,7 @@ public interface IJPushService {
      * @Author: zhuys
      * @Date: 2019/4/27 15:27
      */
-    Boolean sendMessageToPersonalDriver(MessagePush messagePush) throws APIConnectionException, APIRequestException;
+    Boolean sendMessageToPersonal(MessagePush messagePush);
 
 
 
