@@ -41,5 +41,5 @@ passageway:
 
   # 极光推送
 jpush:
-    MasterSecret: 6a57b22f205e2450c748c993
-    AppKey: 9cedb54aa30fcfb7be3e1524
+    MasterSecret: 76f29adc246022dbf4d782dc
+    AppKey: 542c3a2607779c10e6c40178

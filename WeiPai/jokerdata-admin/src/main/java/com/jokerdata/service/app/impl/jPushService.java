@@ -1,4 +1,4 @@
-package com.jokerdata.common.config.push.impl;
+package com.jokerdata.service.app.impl;
 
 import cn.jiguang.common.resp.APIConnectionException;
 import cn.jiguang.common.resp.APIRequestException;
@@ -13,12 +13,11 @@ import cn.jpush.api.push.model.audience.Audience;
 import cn.jpush.api.push.model.notification.AndroidNotification;
 import cn.jpush.api.push.model.notification.IosNotification;
 import cn.jpush.api.push.model.notification.Notification;
-import com.jokerdata.common.config.push.IJPushService;
-import com.jokerdata.common.config.push.config.MessagePush;
+import com.jokerdata.common.push.config.MessagePush;
+import com.jokerdata.service.app.IJPushService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-
 
 import static cn.jpush.api.push.model.notification.PlatformNotification.ALERT;
 
@@ -28,8 +27,6 @@ public class jPushService implements IJPushService {
     @Resource
     private JPushClient pushDriverClient;
 
-    @Resource
-    private JPushClient pushOwnerClient;
 
     @Override
     public Boolean sendMessageToAll(MessagePush messagePush)
@@ -48,9 +45,15 @@ public class jPushService implements IJPushService {
     }
 
     @Override
-    public Boolean sendMessageToPersonalDriver(MessagePush messagePush) throws APIConnectionException, APIRequestException {
-        messagePush.setSegment("");
-        PushResult pushResult = pushDriverClient.sendPush(getAssignationMessage(messagePush));
+    public Boolean sendMessageToPersonal(MessagePush messagePush) {
+        PushResult pushResult = null;
+        try {
+            pushResult = pushDriverClient.sendPush(getAssignationMessage(messagePush));
+        } catch (APIConnectionException e) {
+            e.printStackTrace();
+        } catch (APIRequestException e) {
+            e.printStackTrace();
+        }
         return handlePushResult(pushResult);
     }
 
@@ -97,7 +100,7 @@ public class jPushService implements IJPushService {
         PushPayload pushPayload =
                 PushPayload.newBuilder()
                         .setPlatform(Platform.all())
-                        .setAudience(Audience.segment(messagePush.getSegment()))
+                        .setAudience(Audience.tag(messagePush.getTags()))
 //                        .setMessage(Message.newBuilder()
 //                                .setMsgContent(messagePush.getContent())
 //                                .setTitle(messagePush.getTitle())
@@ -129,7 +132,7 @@ public class jPushService implements IJPushService {
 
         return PushPayload.newBuilder()
                 .setPlatform(Platform.android_ios())
-                .setAudience(Audience.registrationId(messagePush.getRegistrationIds()))
+                .setAudience(Audience.tag(messagePush.getTags()))
 //                .setMessage(Message.newBuilder()
 //                        .setMsgContent(messagePush.getContent())
 //                        .setTitle(messagePush.getTitle())
@@ -146,7 +149,7 @@ public class jPushService implements IJPushService {
     public static PushPayload getSingleAndroidMessage(MessagePush messagePush) {
         return PushPayload.newBuilder()
                 .setPlatform(Platform.android())
-                .setAudience(Audience.registrationId(messagePush.getRegistrationIds()))
+                .setAudience(Audience.tag(messagePush.getTags()))
                 .setNotification(Notification.android(ALERT, messagePush.getTitle(), null))
                 .build();
     }
@@ -160,7 +163,7 @@ public class jPushService implements IJPushService {
     public static PushPayload getSingleIosMessage(MessagePush messagePush) {
         return PushPayload.newBuilder()
                 .setPlatform(Platform.ios())
-                .setAudience(Audience.registrationId(messagePush.getRegistrationIds()))
+                .setAudience(Audience.tag(messagePush.getTags()))
                 .setNotification(Notification.newBuilder()
                         .addPlatformNotification(IosNotification.newBuilder()
                                 .setAlert(ALERT)
@@ -186,7 +189,7 @@ public class jPushService implements IJPushService {
         PushPayload pushPayload =
                 PushPayload.newBuilder()
                         .setPlatform(Platform.all())
-                        .setAudience(Audience.registrationId(messagePush.getRegistrationIds()))
+                        .setAudience(Audience.tag(messagePush.getTags()))
                         .setMessage(Message.newBuilder()
                                 .setMsgContent(messagePush.getContent())
                                 .setTitle(messagePush.getTitle())

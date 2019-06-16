@@ -2,11 +2,13 @@ package com.jokerdata.controller.app;
 
 import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSON;
+import com.aliyuncs.exceptions.ClientException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jokerdata.common.ShareUtil;
 import com.jokerdata.common.exception.ApiException;
+import com.jokerdata.common.push.config.MessagePush;
 import com.jokerdata.entity.app.generator.*;
 import com.jokerdata.parames.vo.MonetListVo;
 import com.jokerdata.parames.vo.PageResule;
@@ -41,6 +43,26 @@ public class IndexController {
 
     @Autowired
     CmsCateService cmsCateService;
+
+    @Autowired
+    IJPushService ijPushService;
+
+
+    @GetMapping(value = "/send",produces = "application/json;charset=UTF-8")
+    public String send(){
+
+        MessagePush messagePush = new MessagePush();
+        messagePush.setContent("this is a test");
+        messagePush.setTitle("哈哈哈");
+        messagePush.setId("4333232123321");
+        List<String> tags = new ArrayList<>();
+        tags.add("u_367");
+        messagePush.setTags(tags);
+        ijPushService.sendMessageToPersonal(messagePush);
+
+        return "success";
+    }
+
 
     /**
      * 首页数据
