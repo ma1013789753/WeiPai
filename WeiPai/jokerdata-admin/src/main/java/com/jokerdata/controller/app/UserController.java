@@ -190,7 +190,7 @@ public class UserController {
                 return ApiResult.error("积分数量不够");
             }
         }else if("2".equals(param.getT())){
-            if(param.getShare_num()*Double.parseDouble(param.getFree())>=user.getAvailablePredeposit().doubleValue()){
+            if(param.getShare_num()*(param.getFree())>=user.getAvailablePredeposit().doubleValue()){
                 return ApiResult.error("现金数量不够");
             }
         }else{
@@ -211,14 +211,15 @@ public class UserController {
         share.setShareNum(param.getShare_num());
         share.setHaveSharedNum(0);
         share.setAddTime(new Date().getTime()/1000+"");
+        share.setJson(param.getJson());
         share.setTagId(shareTag.getTagId());
         share.setTagName(shareTag.getTagName());
-        share.setShareState("1");//审核中
+        share.setShareState("0");//审核中
         share.setShareExtraCoin(Integer.parseInt(config.getConfigContent()));
         if("1".equals(param.getT())){
             share.setIsOriginal(param.getIs_original());
-            share.setTotalCoin(param.getShare_coin()*param.getShare_num());
-            share.setShareCoin(param.getShare_coin());
+            share.setTotalCoin(Integer.parseInt(param.getShare_coin()+"")*param.getShare_num());
+            share.setShareCoin(Integer.parseInt(param.getShare_coin()+""));
             share.setShareStatus("0");//积分
         }else{
             share.setIsOriginal("0");
@@ -291,7 +292,7 @@ public class UserController {
             pdLog.setLgMemberId(user.getUserId());
             pdLog.setLgMemberName(user.getUserName());
             pdLog.setLgType("task_freeze");
-            pdLog.setLgAvAmount(new BigDecimal(-param.getShare_num()*Double.parseDouble(param.getFree())));
+            pdLog.setLgAvAmount(new BigDecimal(-param.getShare_num()*(param.getFree())));
             pdLog.setLgAddTime(new Date().getTime()/1000);
             pdLog.setLgDesc(share.getShareId()+"");
             if(!pdLogService.save(pdLog)){

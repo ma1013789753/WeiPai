@@ -62,6 +62,8 @@ public class Task extends Model<Task> {
      */
     private int state;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    private Date endTime;
     /**
      * 创建时间
      */

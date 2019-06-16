@@ -31,6 +31,13 @@
     <el-table-column label="账号ID" width="65" prop="accountId"></el-table-column>
     <el-table-column width="130px" label="账号名称" prop="accountName" show-overflow-tooltip="true"></el-table-column>
     <el-table-column width="80px" label="用户ID" prop="userId"></el-table-column>
+    <el-table-column width="80px" label="认证" prop="vlegalize">
+      <template slot-scope="scope">
+        <el-tag v-if="scope.row.vlegalize == 1"> V</el-tag>
+        <span v-else type="danger"> 未认证</span>
+      </template>
+
+    </el-table-column>
     <el-table-column width="130px" label="用户名称" prop="userName" show-overflow-tooltip="true"></el-table-column>
     <el-table-column width="120px" label="微博ID" prop="uid"></el-table-column>
     <el-table-column width="110px" label="状态">
@@ -49,7 +56,8 @@
     <el-table-column label="操作" width="150" >
       <template slot-scope="scope" >
         <el-button v-if="scope.row.accountState == 1" size="mini" type="primary" @click="handleShow(scope.row)">查看</el-button>
-        <el-button v-if="scope.row.accountState == 1" size="mini" type="danger" @click="handleDel(scope.row)">删除</el-button>
+        <el-button v-if="scope.row.accountState == 1" size="mini" type="danger" @click="handleYan(scope.row)">认证</el-button>
+        <!-- <el-button v-if="scope.row.accountState == 1" size="mini" type="danger" @click="handleDel(scope.row)">删除</el-button> -->
         <el-button v-else-if="scope.row.accountState == 0" size="mini" type="primary" @click="handleShow(scope.row)">审核</el-button>
         <el-button v-else size="mini" type="primary" @click="handleShow(scope.row)">查看</el-button>
       </template>
@@ -118,7 +126,7 @@
 </template>
 
 <script>
-  import { getAccounts,delAcc,getAccById,rejectAccById,passAccById} from '@/api/customer'
+  import { getAccounts,delAcc,getAccById,rejectAccById,passAccById,legalize} from '@/api/customer'
   import pagination from '@/components/pagination'
   import { delay } from '@/utils/index'
   import FilenameOption from '@/views/enduser/components/FilenameOption'
@@ -200,6 +208,16 @@ export default {
     handleShow(res){
       this.itemShow(res.accountId);
       this.dialogFormVisible = true
+    },
+    handleYan(res){
+      legalize(res.accountId).then(res => {
+        this.$message({
+          type: 'success',
+          message: '操作成功'
+        });
+        this.onSearch();
+      }).catch(() => {
+      })
     },
     handleDel(res){
       this.$confirm('确定删除该账号?', '提示', {

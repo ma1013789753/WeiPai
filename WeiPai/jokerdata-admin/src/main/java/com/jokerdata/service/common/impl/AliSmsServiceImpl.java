@@ -4,12 +4,16 @@ import com.aliyuncs.exceptions.ClientException;
 import com.jokerdata.common.SmsTemplate;
 import com.jokerdata.common.exception.ApiException;
 import com.jokerdata.entity.app.generator.Sms;
+import com.jokerdata.entity.app.generator.User;
 import com.jokerdata.mapper.app.custom.SmsCustomMapper;
+import com.jokerdata.mapper.app.generator.UserMapper;
 import com.jokerdata.service.common.AliSmsService;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class AliSmsServiceImpl implements AliSmsService {
@@ -20,6 +24,10 @@ public class AliSmsServiceImpl implements AliSmsService {
     @Resource
     SmsCustomMapper smsCustomMapper;
 
+    @Resource
+    UserMapper userMapper;
+
+    @Async
     @Override
     public void sendSms(int type, String phone, String code) {
 
@@ -36,6 +44,19 @@ public class AliSmsServiceImpl implements AliSmsService {
         sms.setSmsType(type);
         smsCustomMapper.insert(sms);
 
+    }
+
+    @Override
+    @Async
+    public void sendTask(List<String> ids) {
+        List<User> datas = userMapper.selectListByAccountId(ids);
+        datas.forEach(user -> {
+            try {
+                smsTemplate.sendTask(user.getUserMobile());
+            } catch (ClientException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
 

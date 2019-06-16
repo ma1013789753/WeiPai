@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jokerdata.mapper.app.generator.UserMapper">
+
+
+    <select id="selectListByAccountId" resultMap="BaseResultMap">
+        SELECT a.* FROM g_user a
+        LEFT JOIN g_user_account b
+        ON b.`user_id` = a.`user_id`
+        WHERE b.`account_id` IN
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+          #{item}
+         </foreach>
+    </select>
+</mapper>

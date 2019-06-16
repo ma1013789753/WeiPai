@@ -20,6 +20,7 @@ import com.jokerdata.service.app.PdLogService;
 import com.jokerdata.service.app.TaskLogService;
 import com.jokerdata.service.app.TaskService;
 import com.jokerdata.service.app.UserAccountService;
+import com.jokerdata.service.common.AliSmsService;
 import com.jokerdata.vo.ApiResult;
 import com.jokerdata.vo.MyPage;
 import com.jokerdata.vo.Result;
@@ -30,6 +31,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -65,7 +68,8 @@ public class TaskController {
     @Autowired
     UserAccountService userAccountService;
 
-
+    @Autowired
+    AliSmsService aliSmsService;
 
     @Login
     @PostMapping(value = "/getPage",produces = "application/json;charset=UTF-8")
@@ -87,8 +91,15 @@ public class TaskController {
         Task task = taskCustom;
         if (StringUtils.isEmpty(task.getId())){
             task.setCreateTime(new Date());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
+            try {
+                task.setEndTime(simpleDateFormat.parse(taskCustom.getEndingTime()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             task.setId(idWorker.nextId());
             task.setState(1);
+
             List<TaskLog> taskLogs = new ArrayList<>();
             String[] ids = taskCustom.getIds().split(",");
             Arrays.asList(ids).forEach(id->{
@@ -103,6 +114,7 @@ public class TaskController {
                     taskLogs.add(taskLog);
                 }
             });
+            aliSmsService.sendTask(Arrays.asList(ids));
             if(!taskLogService.saveBatch(taskLogs)){
                 throw new ApiException("插入失败");
             }
@@ -114,6 +126,8 @@ public class TaskController {
         if(!taskService.saveOrUpdate(task)){
             throw new ApiException("插入失败");
         }
+
+
 
         return Result.success();
     }

@@ -45,6 +45,7 @@ public class CustomerUser extends Model<CustomerUser> {
      */
     private String userPassword;
 
+
     /**
      * 性别:1男，2女
      */

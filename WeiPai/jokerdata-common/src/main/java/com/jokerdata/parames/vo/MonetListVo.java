@@ -11,7 +11,7 @@ public class MonetListVo extends Share {
 
     private List<UserListVo> userList;
     private String addTimeText;
-
+    private String vLegalize;
 //    private String account_avatar;
 
     private String avatar_hd;

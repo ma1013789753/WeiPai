@@ -35,6 +35,8 @@ public class SpreadBeanVo {
     private String shareVideo;
     @JsonProperty("share_type")
     private String shareType;
+    @JsonProperty("v_legalize")
+    private String vLegalize;
     @JsonProperty("account_name")
     private String accountName;
     @JsonProperty("json")

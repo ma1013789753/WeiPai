@@ -39,4 +39,22 @@ public class SmsTemplate {
 
     }
 
+    public void sendTask(String telephone) throws ClientException {
+
+
+        DefaultProfile profile = DefaultProfile.getProfile("default", "LTAI4BqVjnag7u2F", "hGIvzzZ2Pwl9p08h1YUUVvaQt0pRqk");
+        IAcsClient client = new DefaultAcsClient(profile);
+
+        CommonRequest request = new CommonRequest();
+        request.setMethod(MethodType.POST);
+        request.setDomain("dysmsapi.aliyuncs.com");
+        request.setVersion("2017-05-25");
+        request.setAction("SendSms");
+        request.putQueryParameter("PhoneNumbers", telephone);
+        request.putQueryParameter("TemplateCode", "SMS_167963673");
+        request.putQueryParameter("SignName", "weipro新媒体平台");
+        CommonResponse response = client.getCommonResponse(request);
+
+    }
+
 }

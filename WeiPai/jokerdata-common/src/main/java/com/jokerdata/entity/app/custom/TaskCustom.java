@@ -5,13 +5,14 @@ import com.jokerdata.entity.app.generator.UserAccount;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
 public class TaskCustom extends Task {
 
 
-
+    private String endingTime;
 
     private String ids;
 }

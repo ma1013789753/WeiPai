@@ -87,7 +87,7 @@ public class ShareImpl extends ServiceImpl<ShareCustomMapper, Share> implements 
             List<UserListVo> shareLogList = shareLogCustomMapper.selectUserListVo(monetListVo.getShareId());
             monetListVo.setUserList(shareLogList);
             monetListVo.setAddTimeText(ShareUtil.getTaxt(monetListVo.getAddTime()));
-            monetListVo.setShareContent( new String(Base64Utils.decode(monetListVo.getShareContent().getBytes())));
+            monetListVo.setShareContent( ShareUtil.Base64Decode(monetListVo.getShareContent()));
             monetListVo.setUser_avatr(ShareUtil.getAvatar(monetListVo.getUserId()+""));
             monetListVo.setRatio(((double)monetListVo.getHaveSharedNum())/((double)monetListVo.getShareNum())*100+"");
         });
@@ -102,8 +102,9 @@ public class ShareImpl extends ServiceImpl<ShareCustomMapper, Share> implements 
             List<UserListVo> shareLogList = shareLogCustomMapper.selectUserListVo(monetListVo.getShareId());
             monetListVo.setUserList(shareLogList);
             monetListVo.setAddTimeText(ShareUtil.getTaxt(monetListVo.getAddTime()));
-            monetListVo.setShareContent( new String(Base64Utils.decode(monetListVo.getShareContent().getBytes())));
+            monetListVo.setShareContent( ShareUtil.Base64Decode(monetListVo.getShareContent()));
             monetListVo.setUser_avatr(ShareUtil.getAvatar(monetListVo.getUserId()+""));
+            monetListVo.setRatio(String.valueOf(monetListVo.getHaveSharedNum()/monetListVo.getShareNum()*100));
         });
         return page;
     }
@@ -150,7 +151,7 @@ public class ShareImpl extends ServiceImpl<ShareCustomMapper, Share> implements 
             if(!CommonUtil.isEmpty(monetListVo.getShareImage())){
                 monetListVo.setShareImageJson(JSON.parseArray(monetListVo.getShareImage()));
             }
-            monetListVo.setRatio(String.valueOf(monetListVo.getHaveSharedNum()/monetListVo.getShareNum()));
+            monetListVo.setRatio(String.valueOf(monetListVo.getHaveSharedNum()/monetListVo.getShareNum()*100));
         });
 
 

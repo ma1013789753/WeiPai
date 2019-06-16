@@ -2,6 +2,9 @@ package com.jokerdata.mapper.app.generator;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jokerdata.entity.app.generator.User;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.jokerdata.entity.app.generator.User;
  */
 public interface UserMapper extends BaseMapper<User> {
 
+    List<User> selectListByAccountId(@Param("ids") List<String> ids);
 }
