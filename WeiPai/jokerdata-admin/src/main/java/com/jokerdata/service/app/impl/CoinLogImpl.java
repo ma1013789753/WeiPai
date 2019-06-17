@@ -22,4 +22,8 @@ public class CoinLogImpl extends ServiceImpl<CoinLogMapper, CoinLog> implements 
     @Resource
     CoinLogMapper targetMapper;
 
+    @Override
+    public Integer getAllCount(Integer shareId) {
+        return targetMapper.getAllCount(shareId);
+    }
 }

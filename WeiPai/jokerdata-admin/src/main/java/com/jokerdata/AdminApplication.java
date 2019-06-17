@@ -13,6 +13,7 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -26,6 +27,7 @@ import java.util.List;
 @MapperScan("com.jokerdata.mapper")
 @EnableScheduling//redis
 @EnableCaching
+@EnableAsync
 public class AdminApplication extends WebAppConfigurer {
 
     public static void main(String[] args) {

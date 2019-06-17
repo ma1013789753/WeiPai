@@ -98,16 +98,18 @@
         >推荐</el-button>
         <el-button
           size="mini"
-          v-if="scope.row.shareState == 0"
-          type="danger"
-          @click="handleDel(scope.row)"
-        >取消</el-button>
+          v-if="scope.row.shareState == 1"
+          type="primary"
+          @click="handleApprove(scope.row,0)"
+        >审核通过</el-button>
+
         <el-button
           size="mini"
           v-if="scope.row.shareState == 1"
-          type="info"
-          @click="handleDel(scope.row)"
-        >审核</el-button>
+          type="danger"
+          @click="handleApprove(scope.row,4)"
+        >取消</el-button>
+
       </template>
     </el-table-column>
   </el-table>
@@ -183,7 +185,7 @@
 
 <script>
   import {isOk,isPass,isFrom,getRealTime} from '@/utils/common'
-  import { list,del,tuijian,getShareTag,updateTag,addTag} from '@/api/spare'
+  import { list,del,tuijian,getShareTag,updateTag,addTag,approve} from '@/api/spare'
   import pagination from '@/components/pagination'
   export default {
     components: {
@@ -289,15 +291,30 @@
         return getRealTime(row, column, cellValue)
       },
       handleDel(res){
-        this.$confirm('确定推荐该分享, 是否继续?', '提示', {
+        this.$confirm('推荐该分享?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.itemTuijian(res.shareId)
+          this.itemTuijian(res)
 
         }).catch(() => {
+        });
+      },
 
+      handleApprove(res,type){
+        var self = this
+        this.$confirm((type==0?'审核通过':'取消')+'该分享?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          var data = res
+          data.shareId = res.shareId
+          data.shareState = type
+          self.itemApprove(data)
+
+        }).catch(() => {
         });
       },
 
@@ -318,6 +335,16 @@
           this.$message({
             type: 'success',
             message: '推荐成功'
+          });
+          this.onSearch();
+        })
+      },
+
+      itemApprove(val){
+        approve(val).then(res => {
+          this.$message({
+            type: 'success',
+            message: '操作成功'
           });
           this.onSearch();
         })

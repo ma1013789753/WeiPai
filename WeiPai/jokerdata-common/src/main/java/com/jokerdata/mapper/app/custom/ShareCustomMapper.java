@@ -5,6 +5,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jokerdata.entity.app.generator.Share;
 import com.jokerdata.parames.ShareIndexParams;
 import com.jokerdata.parames.vo.MonetListVo;
+import com.jokerdata.vo.CShareLog;
+import com.jokerdata.vo.MyPage;
+import com.jokerdata.vo.PShareLog;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -26,4 +29,8 @@ public interface ShareCustomMapper extends BaseMapper<Share> {
     IPage<MonetListVo> shareList(IPage<MonetListVo> sharePage, @Param("shareIndexParams") ShareIndexParams shareIndexParams);
 
     IPage<MonetListVo> shareMoneyList(IPage<MonetListVo> sharePage, @Param("shareIndexParams")ShareIndexParams shareIndexParams);
+
+    IPage<PShareLog> getSharePPage(@Param("page") MyPage page);
+
+    IPage<CShareLog> getShareCPage(@Param("page") MyPage page);
 }

@@ -60,11 +60,11 @@ public class ShareLogImpl extends ServiceImpl<ShareLogMapper, ShareLog> implemen
     public IPage<SpreadBeanVo> getSPreadList(IPage<SpreadBeanVo> shareListPage, Integer userId) {
         IPage<SpreadBeanVo> page = shareLogCustomMapper.getSPreadList( shareListPage, userId);
         page.getRecords().forEach(s->{
-            if(CommonUtil.isBase64(s.getShareContent())){
-                s.setShareContent(ShareUtil.Base64Decode(s.getShareContent()));
-            }
+//            if(CommonUtil.isBase64(s.getShareContent())){
+            s.setShareContent(ShareUtil.Base64Decode(s.getShareContent()));
+//            }
             s.setAddTime(ShareUtil.getTaxt(s.getAddTime()));
-            s.setContent(ShareUtil.Base64Decode(s.getContent()));
+            s.setContent((s.getContent()));
             s.setBackgroundImage(ShareUtil.getPic(s.getBackgroundImage()));
             s.setAvatarHd(ShareUtil.getPic(s.getAvatarHd()));
             s.setAvatarHd2(ShareUtil.getPic(s.getAvatarHd2()));

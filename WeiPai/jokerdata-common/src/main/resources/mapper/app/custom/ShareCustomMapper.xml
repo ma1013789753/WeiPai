@@ -35,17 +35,158 @@
         <result column="background_image" property="backgroundImage"/>
         <result column="short_url" property="shortUrl"/>
         <result column="share_img" property="shareImg"/>
-
-        <result column="account_avatar" property="account_avatar"/>
+        <result column="coin_max" property="coinMax"/>
+        <result column="coin_min" property="coinMin"/>
+        <result column="v_legalize" property="vLegalize"/>
+        <!--<result column="account_avatar" property="account_avatar"/>-->
         <result column="avatar_hd" property="avatar_hd"/>
         <result column="share_num" property="share_num"/>
     </resultMap>
 
+    <resultMap id="shareLogMap" type="com.jokerdata.vo.PShareLog">
+        <id column="lg_id" property="lgId"/>
+        <result column="lg_member_id" property="lgMemberId"/>
+        <result column="lg_member_name" property="lgMemberName"/>
+        <result column="lg_admin_name" property="lgAdminName"/>
+        <result column="lg_type" property="lgType"/>
+        <result column="lg_av_amount" property="lgAvAmount"/>
+        <result column="lg_freeze_amount" property="lgFreezeAmount"/>
+        <result column="lg_add_time" property="lgAddTime"/>
+        <result column="lg_desc" property="lgDesc"/>
+        <result column="lg_from_data" property="lgFromData"/>
+        <association property="shareLog" javaType="com.jokerdata.entity.app.generator.ShareLog">
+            <id column="sl_id" property="slId"/>
+            <result column="user_id" property="userId"/>
+            <result column="share_id" property="shareId"/>
+            <result column="share_coin" property="shareCoin"/>
+            <result column="share_money" property="shareMoney"/>
+            <result column="share_state" property="shareState"/>
+            <result column="add_time" property="addTime"/>
+            <result column="check_time" property="checkTime"/>
+            <result column="is_pass" property="isPass"/>
+            <result column="reward_type" property="rewardType"/>
+            <result column="content" property="content"/>
+            <result column="account_id" property="accountId"/>
+            <result column="math_id" property="mathId"/>
+            <result column="mid" property="mid"/>
+            <result column="master_id" property="masterId"/>
+            <result column="log_id" property="logId"/>
+        </association>
+        <association property="share" javaType="com.jokerdata.entity.app.generator.Share">
+            <id column="share_id" property="shareId"/>
+            <result column="user_id" property="userId"/>
+            <result column="user_name" property="userName"/>
+            <result column="account_id" property="accountId"/>
+            <result column="share_content" property="shareContent"/>
+            <result column="share_image" property="shareImage"/>
+            <result column="share_type" property="shareType"/>
+            <result column="share_url" property="shareUrl"/>
+            <result column="share_coin" property="shareCoin"/>
+            <result column="share_num" property="shareNum"/>
+            <result column="have_shared_num" property="haveSharedNum"/>
+            <result column="total_coin" property="totalCoin"/>
+            <result column="is_original" property="isOriginal"/>
+            <result column="add_time" property="addTime"/>
+            <result column="tag_id" property="tagId"/>
+            <result column="tag_name" property="tagName"/>
+            <result column="share_state" property="shareState"/>
+            <result column="share_extra_coin" property="shareExtraCoin"/>
+            <result column="share_status" property="shareStatus"/>
+            <result column="share_video" property="shareVideo"/>
+            <result column="wb_id" property="wbId"/>
+            <result column="see_num" property="seeNum"/>
+            <result column="share_recommend" property="shareRecommend"/>
+            <result column="share_num_true" property="shareNumTrue"/>
+            <result column="original_coin" property="originalCoin"/>
+            <result column="from_app" property="fromApp"/>
+            <result column="expires" property="expires"/>
+            <result column="json" property="json"/>
+            <result column="cancel_nums" property="cancelNums"/>
+            <result column="background_image" property="backgroundImage"/>
+            <result column="short_url" property="shortUrl"/>
+            <result column="share_img" property="shareImg"/>
+            <result column="coin_max" property="coinMax"/>
+            <result column="coin_min" property="coinMin"/>
+            <result column="cost_num" property="costNum"/>
+            <result column="account_name" property="accountName"/>
+            <result column="account_avatar" property="accountAvatar"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="shareCLogMap" type="com.jokerdata.vo.CShareLog">
+        <id column="log_id" property="logId"/>
+        <result column="log_user_id" property="logUserId"/>
+        <result column="log_user_name" property="logUserName"/>
+        <result column="log_admin_id" property="logAdminId"/>
+        <result column="log_admin_name" property="logAdminName"/>
+        <result column="log_type" property="logType"/>
+        <result column="log_av_coin" property="logAvCoin"/>
+        <result column="log_freeze_coin" property="logFreezeCoin"/>
+        <result column="log_mark" property="logMark"/>
+        <result column="add_time" property="addTime"/>
+        <association property="shareLog" javaType="com.jokerdata.entity.app.generator.ShareLog">
+            <id column="sl_id" property="slId"/>
+            <result column="user_id" property="userId"/>
+            <result column="share_id" property="shareId"/>
+            <result column="share_coin" property="shareCoin"/>
+            <result column="share_money" property="shareMoney"/>
+            <result column="share_state" property="shareState"/>
+            <result column="add_time" property="addTime"/>
+            <result column="check_time" property="checkTime"/>
+            <result column="is_pass" property="isPass"/>
+            <result column="reward_type" property="rewardType"/>
+            <result column="content" property="content"/>
+            <result column="account_id" property="accountId"/>
+            <result column="math_id" property="mathId"/>
+            <result column="mid" property="mid"/>
+            <result column="master_id" property="masterId"/>
+            <result column="log_id" property="logId"/>
+        </association>
+        <association property="share" javaType="com.jokerdata.entity.app.generator.Share">
+            <id column="share_id" property="shareId"/>
+            <result column="user_id" property="userId"/>
+            <result column="user_name" property="userName"/>
+            <result column="account_id" property="accountId"/>
+            <result column="share_content" property="shareContent"/>
+            <result column="share_image" property="shareImage"/>
+            <result column="share_type" property="shareType"/>
+            <result column="share_url" property="shareUrl"/>
+            <result column="share_coin" property="shareCoin"/>
+            <result column="share_num" property="shareNum"/>
+            <result column="have_shared_num" property="haveSharedNum"/>
+            <result column="total_coin" property="totalCoin"/>
+            <result column="is_original" property="isOriginal"/>
+            <result column="add_time" property="addTime"/>
+            <result column="tag_id" property="tagId"/>
+            <result column="tag_name" property="tagName"/>
+            <result column="share_state" property="shareState"/>
+            <result column="share_extra_coin" property="shareExtraCoin"/>
+            <result column="share_status" property="shareStatus"/>
+            <result column="share_video" property="shareVideo"/>
+            <result column="wb_id" property="wbId"/>
+            <result column="see_num" property="seeNum"/>
+            <result column="share_recommend" property="shareRecommend"/>
+            <result column="share_num_true" property="shareNumTrue"/>
+            <result column="original_coin" property="originalCoin"/>
+            <result column="from_app" property="fromApp"/>
+            <result column="expires" property="expires"/>
+            <result column="json" property="json"/>
+            <result column="cancel_nums" property="cancelNums"/>
+            <result column="background_image" property="backgroundImage"/>
+            <result column="short_url" property="shortUrl"/>
+            <result column="share_img" property="shareImg"/>
+            <result column="coin_max" property="coinMax"/>
+            <result column="coin_min" property="coinMin"/>
+            <result column="cost_num" property="costNum"/>
+            <result column="account_name" property="accountName"/>
+            <result column="account_avatar" property="accountAvatar"/>
+        </association>
+    </resultMap>
 
     <select id="moneyList" resultMap="BaseResultMap">
 
-        SELECT share_id,a.user_id,user_name,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time,
-			share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image
+        SELECT share_id,a.user_id,b.account_name as user_name,b.v_legalize,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time,
+			share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image,coin_max,coin_min
 	    FROM g_share a
         RIGHT JOIN g_user_account b
         ON a.`account_id` = b.account_id
@@ -58,8 +199,8 @@
 
     <select id="userShareList" resultMap="BaseResultMap">
 
-        SELECT share_id,a.user_id,user_name,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time,
-			share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image
+        SELECT share_id,a.user_id,b.account_name as user_name,b.v_legalize,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time,
+			share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image,coin_max,coin_min
 	    FROM g_share a
         RIGHT JOIN g_user_account b
         ON a.`account_id` = b.account_id
@@ -71,7 +212,7 @@
 
     <select id="shareList" resultMap="BaseResultMap">
 
-        SELECT share_id,a.user_id,user_name,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time,
+        SELECT share_id,a.user_id,b.account_name as user_name,b.v_legalize,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time,
 			share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image,a.coin_max,a.coin_min
 	    FROM g_share a
         RIGHT JOIN g_user_account b
@@ -97,8 +238,8 @@
 
     <select id="moneyMore" resultMap="BaseResultMap">
 
-        SELECT share_id,a.user_id,user_name,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time,
-			share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image
+        SELECT share_id,a.user_id,b.account_name as user_name,b.v_legalize,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time,
+			share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image,coin_max,coin_min
 	    FROM g_share a
         RIGHT JOIN g_user_account b
         ON a.`account_id` = b.account_id
@@ -111,8 +252,8 @@
 
     <select id="tuiJianList" resultMap="BaseResultMap">
 
-        SELECT share_id,a.user_id,user_name,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time,
-        share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image
+        SELECT share_id,a.user_id,b.account_name as user_name,b.v_legalize,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time,
+        share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image,coin_max,coin_min
         FROM g_share a
         RIGHT JOIN g_user_account b
         ON a.`account_id` = b.account_id
@@ -124,8 +265,8 @@
 
     <select id="shareMoneyList" resultMap="BaseResultMap">
 
-        SELECT share_id,a.user_id,user_name,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time,
-        share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image
+        SELECT share_id,a.user_id,b.account_name as user_name,b.v_legalize,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time,
+        share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image,coin_max,coin_min
         FROM g_share a
         RIGHT JOIN g_user_account b
         ON a.`account_id` = b.account_id
@@ -150,5 +291,48 @@
         <if test="shareIndexParams.is_rich == 1">
             , a.share_coin desc
         </if>
+    </select>
+
+    <select id="getSharePPage" resultMap="shareLogMap">
+        SELECT
+        *
+        FROM
+        g_share g
+        INNER JOIN
+        g_share_log h
+        ON g.`share_id` = h.`share_id`
+        INNER JOIN g_pd_log p
+        ON p.`lg_id` = h.`log_id`
+        WHERE g.`share_status` = 1
+        AND g.`share_state` = 0
+        <if test="page.search1 != ''">
+            and g.share_id = #{page.search1}
+        </if>
+        <if test="page.search2 != ''">
+            and h.is_pass = #{page.search2}
+        </if>
+        ORDER BY g.`share_id` DESC
+    </select>
+
+
+    <select id="getShareCPage" resultMap="shareCLogMap">
+        SELECT
+        *
+        FROM
+        g_share g
+        INNER JOIN
+        g_share_log h
+        ON g.`share_id` = h.`share_id`
+        INNER JOIN g_coin_log p
+        ON p.`log_id` = h.`log_id`
+        WHERE g.`share_status` = 0
+        AND g.`share_state` = 0
+        <if test="page.search1 != ''">
+           and g.share_id = #{page.search1}
+        </if>
+        <if test="page.search2 != ''">
+           and h.is_pass = #{page.search2}
+        </if>
+        ORDER BY g.`share_id` DESC
     </select>
 </mapper>

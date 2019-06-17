@@ -6,6 +6,7 @@ import com.jokerdata.jokerdatapassageway.common.config.ProxyConfig;
 import com.jokerdata.jokerdatapassageway.common.uitls.ProxyUtils;
 import com.jokerdata.jokerdatapassageway.service.ProxyIpService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,20 +33,21 @@ public class ProxyIpServiceImpl implements ProxyIpService {
         Map proIpMap = new HashMap();
         try {
             String ipstr = "";
-            for(int i=0;i<3;i++){
+            for(int i=0;i<1;i++){
                 ipstr = HttpClientUtil.doGet(proxyConfig.getAPI_URL());
                 log.info("get proxyIp api response: {} ",ipstr);
                 if ("".equals(ipstr)) {
                     continue;
                 }
+
                 Map ip = JsonUtils.jsonToPojo(ipstr,Map.class);
                 if ((int)ip.get("code") == 1) {
                     continue;
                 }
                 List data = (List)ip.get("data");
                 Map ipdata = (Map)data.get(0);
-                boolean ipavailable = checkIpavailable((String)ipdata.get("ip"), (int)ipdata.get("port"));
-                if(ipavailable){
+//                boolean ipavailable = checkIpavailable((String)ipdata.get("ip"), (int)ipdata.get("port"));
+                if(true){
                     proIpMap.put("ip",ipdata.get("ip"));
                     proIpMap.put("port",ipdata.get("port"));
                     log.info("get proxyIp ip:{} ",proIpMap);

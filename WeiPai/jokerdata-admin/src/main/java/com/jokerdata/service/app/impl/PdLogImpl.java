@@ -8,6 +8,7 @@ import com.jokerdata.vo.MyPage;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 
 /**
  * <p>
@@ -22,4 +23,8 @@ public class PdLogImpl extends ServiceImpl<PdLogMapper, PdLog> implements PdLogS
     @Resource
     PdLogMapper targetMapper;
 
+    @Override
+    public BigDecimal getAllCount(Integer shareId) {
+        return targetMapper.getAllCount(shareId);
+    }
 }

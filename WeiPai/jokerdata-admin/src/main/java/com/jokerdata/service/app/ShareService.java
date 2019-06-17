@@ -5,6 +5,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.jokerdata.entity.app.generator.Share;
 import com.jokerdata.parames.ShareIndexParams;
 import com.jokerdata.parames.vo.MonetListVo;
+import com.jokerdata.vo.CShareLog;
+import com.jokerdata.vo.MyPage;
+import com.jokerdata.vo.PShareLog;
 
 /**
  * <p>
@@ -31,4 +34,7 @@ public interface ShareService extends IService<Share> {
 
     IPage<MonetListVo> parseData(IPage<MonetListVo> page);
 
+    IPage<PShareLog> getPPage(MyPage page);
+
+    IPage<CShareLog> getCPage(MyPage page);
 }

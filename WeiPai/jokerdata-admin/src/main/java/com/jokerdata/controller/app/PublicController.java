@@ -115,7 +115,10 @@ public class PublicController {
         if((new Date().getTime()/1000-Long.parseLong(sms.getAddTime()))>5*60){
             return ApiResult.error("验证码已过期");
         }
-        User user = new User();
+        User user = userService.getUserByMobile(parames.getMobile());
+        if(user!=null){
+            return ApiResult.error("此手机号已注册");
+        }
         user.setUserMobile(parames.getMobile());
         user.setUserPassword(MD5.MD5Encode(parames.getPassword(),"utf-8"));
         user.setUserName("手机用户"+parames.getMobile().substring(7));
@@ -128,7 +131,7 @@ public class PublicController {
         if(!parames.getRepassword().equals(parames.getPassword())){
             return ApiResult.error("确认密码不正确");
         }
-        String valiteSms = smsService.valiteSms(parames.getMobile(),parames.getRepassword(),"2");
+        String valiteSms = smsService.valiteSms(parames.getMobile(),parames.getSms(),"2");
         if(!"1".equals(valiteSms)){
             return ApiResult.error(valiteSms);
         }
@@ -244,7 +247,7 @@ public class PublicController {
             SystemMsgvo sys = ShareUtil.beanToBean(systemMsg,SystemMsgvo.class);
             sys.setAddTime(systemMsg.getAddTime());
             if(sys.getIsBase64()==1){
-                sys.setNoticeContent(new String(Base64.getDecoder().decode(sys.getNoticeContent())));
+                sys.setNoticeContent(ShareUtil.Base64Decode(sys.getNoticeContent()));
             }
             list.add(sys);
         });

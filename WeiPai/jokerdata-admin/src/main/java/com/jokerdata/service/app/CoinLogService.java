@@ -14,4 +14,5 @@ import com.jokerdata.vo.MyPage;
  */
 public interface CoinLogService extends IService<CoinLog> {
 
+    Integer getAllCount(Integer shareId);
 }

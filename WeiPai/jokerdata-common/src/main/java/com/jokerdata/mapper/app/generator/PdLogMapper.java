@@ -3,6 +3,8 @@ package com.jokerdata.mapper.app.generator;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jokerdata.entity.app.generator.PdLog;
 
+import java.math.BigDecimal;
+
 /**
  * <p>
     * 预存款变更日志表 Mapper 接口
@@ -13,4 +15,5 @@ import com.jokerdata.entity.app.generator.PdLog;
  */
 public interface PdLogMapper extends BaseMapper<PdLog> {
 
+    BigDecimal getAllCount(Integer shareId);
 }

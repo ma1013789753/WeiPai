@@ -13,4 +13,5 @@ import com.jokerdata.entity.app.generator.CoinLog;
  */
 public interface CoinLogMapper extends BaseMapper<CoinLog> {
 
+    Integer getAllCount(Integer shareId);
 }

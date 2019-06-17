@@ -7,7 +7,7 @@
         <el-form-item label="任务奖励" prop="award" >
           <el-input v-model="form.award" placeholder="请输入任务奖励" type="number"max="100" disabled></el-input>
         </el-form-item>
-        <el-form-item label="任务描述" prop="content">
+        <!-- <el-form-item label="任务描述" prop="content">
             <el-input
               type="textarea"
               :rows="4"
@@ -15,6 +15,9 @@
               max="100"
               v-model="form.content">
             </el-input>
+        </el-form-item> -->
+        <el-form-item label="任务描述" prop="content">
+          <Tinymce ref="editor" v-model="form.content" :height="400" />
         </el-form-item>
         <el-form-item label="任务链接资源" prop="link">
             <el-input v-model="form.link" placeholder="请输入任务链接资源" type="text" max="50"></el-input>
@@ -64,7 +67,10 @@
 
 <script>
   import { add ,getAccount,getId} from '@/api/task'
+  import Tinymce from '@/components/Tinymce'
+
   export default {
+        components: { Tinymce },
     data() {
       return {
         dialogVisible:false,
@@ -168,8 +174,8 @@
 <style lang='scss' scoped>
   .contain{
     margin-top: 50px;
-    margin-left: 10%;
-    width: 50%;
+    margin-left: 5%;
+    width: 80%;
     .fright{
       float: right;
       width: 6rem;
@@ -177,6 +183,10 @@
     .fleft{
       width: 6rem;
     }
+    .el-form-item{
+    width: 100%;
+    }
   }
+
   
 </style>

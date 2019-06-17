@@ -18,6 +18,14 @@ export function ranking(data) {
   })
 }
 
+// 加V
+export function legalize(data) {
+  return request({ 
+    url: '/customer/legalize?accId='+data,
+    method: 'post',
+  })
+}
+
 // 冻结
 export function freeze(data) {
   return request({

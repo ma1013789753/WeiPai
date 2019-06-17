@@ -264,13 +264,115 @@ export const asyncRouterMap = [
 
 
       {
-        path: 'record',
+        path: 'precord',
         component: () => import('@/views/spare/sparerecord/index'),
+        name: 'precord',
+        meta: {
+          resources: 'precord'
+        }
+      },
+      {
+        path: 'crecord',
+        component: () => import('@/views/spare/sparecrecord/index'),
+        name: 'crecord',
+        meta: {
+          resources: 'crecord'
+        }
+      }
+    ]
+  },
+  {
+    path: '/maintain',
+    component: Layout,
+    name: 'maintain',
+    meta: {
+      resources: 'maintain',
+      title: '任务派发'
+    },
+    children: [
+      {
+        path: 'manager',
+        component: Common,
+        redirect: {name:'managerlist'},
+        name: 'manager',
+        meta: {
+          resources: 'manager'
+        },
+        children: [
+          {
+            path: 'list',
+            hidden: true,
+            component: () =>import('@/views/maintain/manager/index'),
+            name:'managerlist',
+          },
+          {
+            path: 'add',
+            hidden: true,
+            component: () =>import('@/views/maintain/manager/add'),
+            name:'add',
+            meta: {
+              title: '新增派单'
+            },
+          },
+          {
+            path: 'edit',
+            hidden: true,
+            component: () =>import('@/views/maintain/manager/edit'),
+            name:'edit',
+            meta: {
+              title: '编辑派单'
+            },
+          },
+
+        ]
+      },
+      {
+        path: 'list',
+        component: Common,
+        redirect: {name:'acceptlist'},
+        meta: {
+          resources: 'list'
+        },
+        children: [
+          {
+            path: 'acceptlist',
+            hidden: true,
+            component: () =>import('@/views/maintain/list/index'),
+            name:'acceptlist',
+            meta: {
+              title: '接单列表'
+            },
+          },
+          {
+            path: 'acceptadd',
+            hidden: true,
+            component: () =>import('@/views/maintain/list/add'),
+            name:'acceptadd',
+            meta: {
+              title: '新增'
+            },
+          },
+          {
+            path: 'acceptedit',
+            hidden: true,
+            component: () =>import('@/views/maintain/list/edit'),
+            name:'acceptedit',
+            meta: {
+              title: '编辑'
+            },
+          },
+
+        ]
+      },
+      {
+        path: 'record',
+        component: () => import('@/views/maintain/list/index'),
         name: 'record',
         meta: {
           resources: 'record'
         }
       }
+      
     ]
   },
   
@@ -501,216 +603,7 @@ export const asyncRouterMap = [
     ]
   },
 
-  {
-    path: '/maintain',
-    component: Layout,
-    name: 'maintain',
-    meta: {
-      resources: 'maintain',
-      title: '任务派发'
-    },
-    children: [
-      {
-        path: 'manager',
-        component: Common,
-        redirect: {name:'managerlist'},
-        name: 'manager',
-        meta: {
-          resources: 'manager'
-        },
-        children: [
-          {
-            path: 'list',
-            hidden: true,
-            component: () =>import('@/views/maintain/manager/index'),
-            name:'managerlist',
-          },
-          {
-            path: 'add',
-            hidden: true,
-            component: () =>import('@/views/maintain/manager/add'),
-            name:'add',
-            meta: {
-              title: '新增派单'
-            },
-          },
-          {
-            path: 'edit',
-            hidden: true,
-            component: () =>import('@/views/maintain/manager/edit'),
-            name:'edit',
-            meta: {
-              title: '编辑派单'
-            },
-          },
-
-        ]
-      },
-      {
-        path: 'list',
-        component: Common,
-        redirect: {name:'acceptlist'},
-        meta: {
-          resources: 'list'
-        },
-        children: [
-          {
-            path: 'acceptlist',
-            hidden: true,
-            component: () =>import('@/views/maintain/list/index'),
-            name:'acceptlist',
-            meta: {
-              title: '接单列表'
-            },
-          },
-          {
-            path: 'acceptadd',
-            hidden: true,
-            component: () =>import('@/views/maintain/list/add'),
-            name:'acceptadd',
-            meta: {
-              title: '新增'
-            },
-          },
-          {
-            path: 'acceptedit',
-            hidden: true,
-            component: () =>import('@/views/maintain/list/edit'),
-            name:'acceptedit',
-            meta: {
-              title: '编辑'
-            },
-          },
-
-        ]
-      },
-      {
-        path: 'record',
-        component: () => import('@/views/maintain/list/index'),
-        name: 'record',
-        meta: {
-          resources: 'record'
-        }
-      }
-      
-    ]
-  },
-  {
-    path: '/external',
-    component: Layout,
-    name: 'external',
-    meta: {
-      resources: 'external',
-      title: '保养管理'
-    },
-    children: [
-      {
-        path: 'manager',
-        component: () => import('@/views/external/manager/index'),
-        name: 'manager',
-        meta: {
-          resources: 'manager'
-        }
-      },
-      {
-        path: 'list',
-        component: () => import('@/views/external/list/index'),
-        name: 'list',
-        meta: {
-          resources: 'list'
-        }
-      },
-      {
-        path: 'record',
-        component: () => import('@/views/external/list/index'),
-        name: 'record',
-        meta: {
-          resources: 'record'
-        }
-      }
-      
-    ]
-  },
-  {
-    path: '/produce',
-    component: Layout,
-    name: 'produce',
-    meta: {
-      resources: 'produce',
-      title: '生产管理'
-    },
-    children: [
-      {
-        path: 'manager',
-        component: () => import('@/views/produce/manager/index'),
-        name: 'manager',
-        meta: {
-          resources: 'manager'
-        }
-      },
-      {
-        path: 'list',
-        component: () => import('@/views/produce/list/index'),
-        name: 'list',
-        meta: {
-          resources: 'list'
-        }
-      },
-      {
-        path: 'schdule',
-        component: () => import('@/views/produce/schdule/index'),
-        name: 'schdule',
-        meta: {
-          resources: 'schdule'
-        }
-      },
-      {
-        path: 'upload',
-        component: () => import('@/views/produce/upload/index'),
-        name: 'upload',
-        meta: {
-          resources: 'upload'
-        }
-      }
-    ]
-  },
-
-  {
-    path: '/sys',
-    component: Layout,
-    name: 'sys',
-    meta: {
-      resources: 'sys',
-      title: '基础设置'
-    },
-    children: [
-      {
-        path: 'manager',
-        component: () => import('@/views/sys/manager/index'),
-        name: 'manager',
-        meta: {
-          resources: 'manager'
-        }
-      },
-      {
-        path: 'type',
-        component: () => import('@/views/sys/type/index'),
-        name: 'type',
-        meta: {
-          resources: 'type'
-        }
-      },
-      {
-        path: 'state',
-        component: () => import('@/views/sys/state/index'),
-        name: 'state',
-        meta: {
-          resources: 'state'
-        }
-      }
-    ]
-  },
-
+ 
   {
     path: '/job',
     component: Layout,

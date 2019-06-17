@@ -9,6 +9,7 @@ import com.jokerdata.entity.app.generator.GzhTag;
 import com.jokerdata.entity.app.generator.Sign;
 import com.jokerdata.entity.app.generator.UserAccount;
 import com.jokerdata.service.admin.CustomerService;
+import com.jokerdata.service.app.UserAccountService;
 import com.jokerdata.vo.MyPage;
 import com.jokerdata.vo.Result;
 import io.swagger.annotations.Api;
@@ -34,6 +35,9 @@ public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private UserAccountService userAccountService;
 
     @Login
     @PostMapping(value = "/getPage",produces = "application/json;charset=UTF-8")
@@ -173,6 +177,21 @@ public class CustomerController {
     public Result getAccounts(@RequestBody MyPage page,@RequestParam int accType, @RequestParam int accState){
         MyPage<UserAccount> accountPage = customerService.getAccountPage(page,accType,accState);
         return Result.success(accountPage);
+    }
+
+    @Login
+    @PostMapping(value = "/legalize",produces = "application/json;charset=UTF-8")
+    @ApiOperation(value = "认证",notes = "")
+    public Result legalize(@RequestParam int accId){
+
+        UserAccount account = userAccountService.getById(accId);
+        account.setVLegalize("1");
+
+        if( !userAccountService.updateById(account) ){
+            throw new MyException("操作失败", ConstCode.CODE_404);
+        }
+
+        return Result.success();
     }
 
     @Login

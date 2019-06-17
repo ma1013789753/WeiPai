@@ -101,7 +101,7 @@ public class UserAccount extends Model<UserAccount> {
     /**
      * 微博账号V认证 0未认证 ,1已认证
      */
-    private Boolean vLegalize;
+    private String vLegalize;
 
     /**
      * 公众号标签id

@@ -90,6 +90,10 @@ public class SharePController {
             if(stringObjectMap.get("share_video")!=null){
                 stringObjectMap.put("share_video", JSON.parseObject(stringObjectMap.get("share_video").toString()));
             }
+            if(stringObjectMap.get("share_image")!=null){
+                stringObjectMap.put("share_image", JSON.parseArray(stringObjectMap.get("share_image").toString()));
+            }
+
         });
         Map<String,Object> result = new HashMap<>();
         result.put("list",monList);
@@ -107,18 +111,20 @@ public class SharePController {
 
         Share share = shareService.getOne(new QueryWrapper<Share>().eq("share_id",share_id));
         UserAccount userAccount = userAccountService.getOne(new QueryWrapper<UserAccount>().eq("account_id",share.getAccountId()));
+        share.setUserName(userAccount.getUserName());
         Map<String,Object> data = ShareUtil.toLowBean(share);
         data.put("account_avatar", ShareUtil.getPic(userAccount.getAccountAvatar()));
         data.put("avatar_hd",  ShareUtil.getPic(ShareUtil.URL+userAccount.getAvatarHd()));
         data.put("account_name",userAccount.getAccountName());
+        data.put("v_legalize",userAccount.getVLegalize());
         data.put("ratio",((double)share.getHaveSharedNum())/((double)share.getShareNum())*100+"");
-        if(!"0".equals(share.getExpires())&& !StringUtils.isEmpty(share.getShareVideo())){
+        if(!StringUtils.isEmpty(share.getShareVideo())){
             //要做一个获取视频的东西
             data.put("share_video",JSON.parse(share.getShareVideo()));
         }
-        if(!StringUtils.isEmpty(share.getJson())){
-            //转JSON 不需要吧
-        }
+//        if(!StringUtils.isEmpty(share.getShareVideo())){
+//            //转JSON 不需要吧
+//        }
         if(!StringUtils.isEmpty(share.getShareImage())){
             data.put("share_image",JSON.parse(share.getShareImage()));
         }
@@ -129,12 +135,12 @@ public class SharePController {
             data.put("background_image", ShareUtil.URL+"/Upload/money_push.jpg");
         }
         data.put("add_time_text", ShareUtil.getTaxt(share.getAddTime()));
-        data.put("share_content",new String(Base64Utils.decode(share.getShareContent().getBytes())));
+        data.put("share_content",ShareUtil.Base64Decode(share.getShareContent()));
         if(!StringUtils.isEmpty(share.getShareImg())){
             data.put("share_img", ShareUtil.URL+share.getShareImg());
         }
          if("2".equals(share.getShareType())){
-            data.put("account_name",new String(Base64Utils.decode(userAccount.getAccountName().getBytes())));
+            data.put("account_name",ShareUtil.Base64Decode(userAccount.getAccountName()));
         }
         List<Map<String, Object>> userList = shareLogService.getshareInfoUser(share.getShareId());
         data.put("user_list",userList);

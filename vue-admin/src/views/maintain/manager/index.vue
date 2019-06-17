@@ -33,6 +33,7 @@
         <el-table-column prop="link" label="任务附件" show-overflow-tooltip ></el-table-column>
         <el-table-column  prop="state" label="任务状态" :formatter="getIsPass">
         </el-table-column>
+        <el-table-column prop="endTime" label="截止日期" width="150px" > </el-table-column>
         <el-table-column prop="createTime" label="创建时间" width="150px" > </el-table-column>
         <el-table-column label="操作" width="150" fixed="right" align="center"> 
           <template slot-scope="scope">

@@ -10,7 +10,7 @@ import javax.validation.constraints.NotEmpty;
 @Data
 public class ShareWBParam {
 
-    private int share_coin;
+    private double share_coin;
     @NotBlank
     private String wtoken;
     private int share_num;
@@ -19,8 +19,8 @@ public class ShareWBParam {
     private int tag_id;
     @NotEmpty
     private String share_url;
-
-    private String free;
+    private String json;
+    private Double free;
 
     private String t;
     private String jweibo;

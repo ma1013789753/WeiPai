@@ -13,6 +13,8 @@ export function isReward(row, column, cellValue){
 }
 
 
+
+
 //0未接单1已接单,2待审核，3已完成，4审核失败
 export function isProcess(row, column, cellValue){
     if(cellValue==0){
@@ -34,12 +36,13 @@ export function isProcess(row, column, cellValue){
 
 
 
+
 export function isFrom(row, column, cellValue){
     if(cellValue==1){
         return '微博';
     }
     return '公众号'
-}
+};
 
 export function isPass(row, column, cellValue){
     if(cellValue==0){
@@ -56,6 +59,21 @@ export function isPass(row, column, cellValue){
     }
     if(cellValue==4){
         return '取消';
+    }
+}
+
+export function ApproveState(row, column, cellValue){
+    if(cellValue==0){
+        return '审核中';
+    }
+    if(cellValue==1){
+        return '审核通过';
+    }
+    if(cellValue==2){
+        return '审核失败';
+    }
+    if(cellValue==3){
+        return '无需审核';
     }
 }
 

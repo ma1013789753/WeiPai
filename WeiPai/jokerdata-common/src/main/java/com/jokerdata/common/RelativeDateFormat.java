@@ -17,13 +17,7 @@ public class RelativeDateFormat {
     private static final String ONE_DAY_AGO = "天前";
     private static final String ONE_MONTH_AGO = "月前";
     private static final String ONE_YEAR_AGO = "年前";
- 
-    public static void main(String[] args) throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:m:s");
-        Date date = format.parse("2013-11-11 18:35:35");
-        System.out.println(format(date));
-    }
- 
+
     public static String format(Date date) {
         long delta = new Date().getTime() - date.getTime();
         if (delta < 1L * ONE_MINUTE) {

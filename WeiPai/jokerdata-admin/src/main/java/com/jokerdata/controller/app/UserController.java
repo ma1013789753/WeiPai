@@ -1,6 +1,7 @@
 package com.jokerdata.controller.app;
 
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -12,6 +13,7 @@ import com.jokerdata.common.MD5;
 import com.jokerdata.common.annotation.Auth;
 import com.jokerdata.common.exception.ApiException;
 import com.jokerdata.common.utils.CommonUtil;
+import com.jokerdata.common.utils.HttpUtil;
 import com.jokerdata.common.utils.RequestHolder;
 import com.jokerdata.entity.Jweibo;
 import com.jokerdata.entity.app.generator.*;
@@ -21,15 +23,13 @@ import com.jokerdata.service.app.*;
 import com.jokerdata.service.common.WeiBoService;
 import com.jokerdata.vo.ApiResult;
 import com.jokerdata.vo.Result;
+import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Base64Utils;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -171,9 +171,17 @@ public class UserController {
         return ApiResult.error("功能未实现");
     }
 
-    @GetMapping(value = "/add_weibo_t", produces = "application/json;charset=UTF-8")
+    /**
+     * 发布互推
+     * @param key
+     * @param param
+     * @return
+     */
+    @PostMapping(value = "/add_weibo_t", produces = "application/json;charset=UTF-8")
     @Auth(value = true)
     public ApiResult add_weibo_t(String key, @Validated ShareWBParam param) {
+        System.out.println("\"-----------\" = " + "-----------");
+        System.out.println("param = " + param.getJweibo());
         User user = RequestHolder.getUser();
         ShareTag shareTag = shareTagService.getById(param.getTag_id());
         UserAccount account = userAccountService.getOne(new QueryWrapper<UserAccount>().eq("access_token",param.getWtoken()));
@@ -182,7 +190,7 @@ public class UserController {
                 return ApiResult.error("积分数量不够");
             }
         }else if("2".equals(param.getT())){
-            if(param.getShare_num()*Double.parseDouble(param.getFree())>=user.getAvailablePredeposit().doubleValue()){
+            if(param.getShare_num()*(param.getFree())>=user.getAvailablePredeposit().doubleValue()){
                 return ApiResult.error("现金数量不够");
             }
         }else{
@@ -191,8 +199,9 @@ public class UserController {
 
 
 //        Result result =  weiBoService.getWeiBoByUrl(param.getShare_url());//获取微博内容
-        Jweibo jweibo = new Gson().fromJson(param.getJweibo(),Jweibo.class);
-
+//        Jweibo jweibo = new Gson().fromJson(param.getJweibo().trim(),Jweibo.class);
+        JSONObject result = JSON.parseObject(param.getJweibo());
+        Jweibo jweibo = new Gson().fromJson(result.toJSONString(),Jweibo.class);
         Config config = configService.getById(4);
 
         Share share = new Share();
@@ -202,14 +211,15 @@ public class UserController {
         share.setShareNum(param.getShare_num());
         share.setHaveSharedNum(0);
         share.setAddTime(new Date().getTime()/1000+"");
+        share.setJson(param.getJson());
         share.setTagId(shareTag.getTagId());
         share.setTagName(shareTag.getTagName());
-        share.setShareState("1");//审核中
+        share.setShareState("0");//审核中
         share.setShareExtraCoin(Integer.parseInt(config.getConfigContent()));
         if("1".equals(param.getT())){
             share.setIsOriginal(param.getIs_original());
-            share.setTotalCoin(param.getShare_coin()*param.getShare_num());
-            share.setShareCoin(param.getShare_coin());
+            share.setTotalCoin(Integer.parseInt(param.getShare_coin()+"")*param.getShare_num());
+            share.setShareCoin(Integer.parseInt(param.getShare_coin()+""));
             share.setShareStatus("0");//积分
         }else{
             share.setIsOriginal("0");
@@ -220,14 +230,22 @@ public class UserController {
         //[{"thumbnail_pic":"http:\/\/wx4.sinaimg.cn\/thumbnail\/7196008bgy1fwhr6vif76j205h06ot91.jpg","bmiddle_pic":"http:\/\/wx4.sinaimg.cn\/bmiddle\/7196008bgy1fwhr6vif76j205h06ot91.jpg","original_pic":"http:\/\/wx4.sinaimg.cn\/large\/7196008bgy1fwhr6vif76j205h06ot91.jpg"}]
         JSONArray array = new JSONArray();
         if(jweibo.getImages()!=null && jweibo.getImages().size()>0){
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("thumbnail_pic",jweibo.getImages().get(0));
-            jsonObject.put("bmiddle_pic",jweibo.getImages().get(0));
-            jsonObject.put("original_pic",jweibo.getImages().get(0));
-            array.add(jsonObject);
+            for (int i = 0; i < jweibo.getImages().size(); i++) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("thumbnail_pic",jweibo.getImages().get(i));
+                jsonObject.put("bmiddle_pic",jweibo.getImages().get(i));
+                jsonObject.put("original_pic",jweibo.getImages().get(i));
+                array.add(jsonObject);
+            }
             share.setShareImage(array.toJSONString());
             share.setShareImg(jweibo.getImages().get(0));
+            share.setBackgroundImage(jweibo.getImages().get(0));
+        }
 
+        if(jweibo.getVideo()!=null && jweibo.getVideo().size()>0){
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("stream_url",jweibo.getVideo().get(0));
+            share.setShareVideo(jsonObject.toJSONString());
         }
         //{"stream_url":"https:\/\/f.us.sinaimg.cn\/003MWVRvlx07lVFb2ALC01040200jGdd0k010.mp4?label=mp4_ld&template=640x360.28&Expires=1540297113&ssig=XfNObpjnnY&KID=unistore,video","stream_url_hd":"http:\/\/f.us.sinaimg.cn\/003yPaLelx07lVFb0EQ801040200mCkV0k010.mp4?label=mp4_hd&template=640x360.28&Expires=1540297113&ssig=vounBhmXPO&KID=unistore,video","duration":233,"size":5390585,"bitrate":175,"prefetch_size":164102,"label":"mp4_hd","url":"https:\/\/wx2.sinaimg.cn\/orj480\/9148eae4ly1ft52xmcjcpj20hs0a0jrs.jpg","width":640,"height":360,"content2":"#\u6b27\u7f8e\u97f3\u4e50[\u8d85\u8bdd]# \n\u300aWithout You\u300b\u662f\u82f1\u56fd\u8457\u540d\u6447\u6eda\u4e50\u961f\uff08\u574f\u624b\u6307\u4e50\u961f\uff09\u53d1\u884c\u4e8e1970\u5e74\u7684\u4e00\u9996\u6b4c\u66f2\uff0c\u6536\u5f55\u5728\u4e13\u8f91\u300aNo Dice\u300b\u4e2d\u3002\u8fd9\u9996\u6b4c\u771f\u6b63\u6d41\u884c\u59cb\u4e8e1972\u5e74Harry Nilsson\u7684\u7ffb\u5531\u3002\u6b64\u540e\u6709\u8d85\u8fc7180\u540d\u7684\u827a\u672f\u5bb6\u5f55\u5236\u8fc7\u6b64\u6b4c\uff0c\u5e76\u591a\u6b21\u6210\u4e3a\u5404\u56fd\u97f3\u4e50\u6392\u884c\u699c\u7684\u51a0\u519b\u6b4c\u66f2\u3002\u6b64"}
         if (jweibo.getVideo()!=null && jweibo.getVideo().size()>0){
@@ -237,18 +255,61 @@ public class UserController {
         }
         //微博内容
         share.setShareUrl(param.getShare_url());
-        share.setShareContent(ShareUtil.Base64Encode(jweibo.getText()));
+        String content = jweibo.getText();
+        content = content.replaceAll("\\/n/","");
+        share.setShareContent(ShareUtil.Base64Encode(content));
         share.setShareType("1");
         share.setWbId(jweibo.getId());
         share.setBackgroundImage("");
         share.setShortUrl("");
         share.setFromApp(1);
-
-        if(shareService.save(share)){
+        //插入成功
+        if(!shareService.save(share)){
             return ApiResult.success();
         };
-        return ApiResult.error("失败");
+        share = shareService.getOne(new QueryWrapper<Share>().eq("add_time",share.getAddTime()));
+        //冻结资金
+        //积分
+        if("1".equals(param.getT())){
+            CoinLog coinLog = new CoinLog();
+            coinLog.setLogUserId(String.valueOf(user.getUserId()));
+            coinLog.setLogUserName(user.getUserName());
+            coinLog.setLogType("task_freeze");
+            coinLog.setLogAvCoin(new BigDecimal(-share.getTotalCoin()));
+            coinLog.setLogMark("发布冻结积分");
+            coinLog.setAddTime(new Date().getTime()/1000);
+            coinLog.setLogMark(share.getShareId()+"");
+            if(!coinLogService.save(coinLog)){
+                throw new ApiException("更新失败");
+            }
+            user.setUserCoin(user.getUserCoin()-share.getTotalCoin());
+            if(!userService.updateById(user)){
+                throw new ApiException("更新失败");
+            }
+        }else{
+            //现金
+            PdLog pdLog = new PdLog();
+            pdLog.setLgMemberId(user.getUserId());
+            pdLog.setLgMemberName(user.getUserName());
+            pdLog.setLgType("task_freeze");
+            pdLog.setLgAvAmount(new BigDecimal(-param.getShare_num()*(param.getFree())));
+            pdLog.setLgAddTime(new Date().getTime()/1000);
+            pdLog.setLgDesc(share.getShareId()+"");
+            if(!pdLogService.save(pdLog)){
+                throw new ApiException("更新失败");
+            }
+
+            user.setAvailablePredeposit(user.getAvailablePredeposit().add(pdLog.getLgAvAmount()));
+            if(!userService.updateById(user)){
+                throw new ApiException("更新失败");
+            }
+        }
+
+
+        return ApiResult.success();
     }
+
+
 
     @GetMapping(value = "/user_info", produces = "application/json;charset=UTF-8")
     @Auth(value = true)
@@ -305,7 +366,7 @@ public class UserController {
 
         Map<String, Object> result = new HashMap<>();
         result.put("list", data);
-        result.put("user_coin", user.getCoinTotal());
+        result.put("user_coin", user.getUserCoin());
         return PageResule.success(result).setPage((Page) coinIPage);
 
     }
@@ -646,14 +707,14 @@ public class UserController {
         }
         //更新用户金额
         user.setUserCoin(user.getUserCoin()-num);
-        user.setAvailablePredeposit(new BigDecimal(user.getAvailablePredeposit().doubleValue()+num/1000));
+        user.setAvailablePredeposit(new BigDecimal(user.getAvailablePredeposit().doubleValue()+num/100));
 
         CoinLog coinLog = new CoinLog();
         coinLog.setAddTime(new Date().getTime()/1000);
         coinLog.setLogUserId(user.getUserId()+"");
         coinLog.setLogUserName(user.getUserName());
         coinLog.setLogType("with_draw");
-        coinLog.setLogAvCoin(new BigDecimal(num));
+        coinLog.setLogAvCoin(new BigDecimal(-num));
         if(!coinLogService.save(coinLog)){
             throw new ApiException("");
         }
@@ -661,7 +722,7 @@ public class UserController {
         pdLog.setLgMemberId(user.getUserId());
         pdLog.setLgMemberName(user.getUserName());
         pdLog.setLgType("with_draw");
-        pdLog.setLgAvAmount(new BigDecimal(num/1000));
+        pdLog.setLgAvAmount(new BigDecimal(num/100));
         pdLog.setLgAddTime(new Date().getTime()/1000);
         if(!pdLogService.save(pdLog)){
             throw new ApiException("");
@@ -674,7 +735,7 @@ public class UserController {
     }
 
     //详情
-    @GetMapping(value = "/add_befor", produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "/add_befor", produces = "application/json;charset=UTF-8")
     @Auth(value = true)
     public ApiResult add_befor(String key,String url,String is_wb,String token) {
         User user = RequestHolder.getUser();
@@ -684,13 +745,23 @@ public class UserController {
         }
         if("1".equals(is_wb)){
             // TODO: 2019/6/2 0002 爬虫获取的微博内容
-            Jweibo jweibo = new Jweibo();
-            jweibo.setId("111111");
-            List<String> pics = new ArrayList<>();
-            pics.add("https://wx4.sinaimg.cn/mw690/671a8fcdly1g3mshztli1j20fu0aidgm.jpg");
-            jweibo.setText("【利物浦崛起最大倚仗  要與美斯搶金球？】\n" +
-                    "利物浦2-0擊敗熱刺，捧得歐聯的獎盃。此役，利物浦完成了零封，雲迪積克領銜的防線沒有給哈利簡尼、孫興慜留下太多的機會");
-            jweibo.setImages(pics);
+            String data = HttpUtil.GetRequest(url);
+            if(StringUtils.isEmpty(data)){
+                return ApiResult.error("获取失败");
+            }
+            JSONObject jsonObject = JSON.parseObject(data);
+            if(jsonObject.getIntValue("status")!=200){
+                return ApiResult.error("获取失败");
+            }
+            Jweibo jweibo = new Gson().fromJson(jsonObject.getString("data"),Jweibo.class);
+//            jweibo.setVideo(null);
+//            Jweibo jweibo = new Jweibo();
+//            jweibo.setId("111111");
+//            List<String> pics = new ArrayList<>();
+//            pics.add("https://wx4.sinaimg.cn/mw690/671a8fcdly1g3mshztli1j20fu0aidgm.jpg");
+//            jweibo.setText("【利物浦崛起最大倚仗  要與美斯搶金球？】\n" +
+//                    "利物浦2-0擊敗熱刺，捧得歐聯的獎盃。此役，利物浦完成了零封，雲迪積克領銜的防線沒有給哈利簡尼、孫興慜留下太多的機會");
+//            jweibo.setImages(pics);
             UserAccount account = userAccountService.getOne(new QueryWrapper<UserAccount>().eq("access_token",token));
             Map<String,Object> map = new HashMap<>();
             map.put("user",ShareUtil.toLowBean(account));
