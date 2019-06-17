@@ -198,11 +198,17 @@ public class WeiboServiceImpl implements WeiboService {
                     for(String pagek:pageInfo.keySet()) {
                         if ("video".equals(pageInfo.get("type"))) {
                             //视频播放地址
-                            List<String> finalvideoList = new ArrayList<String>();
-                            HashMap<String, Object> videoList = (HashMap<String, Object>)pageInfo.get("urls");
-                            for (String v:videoList.keySet()) {
-                                finalvideoList.add((String) videoList.get(v));
-                                weibo.setVideo(finalvideoList);
+//                            List<String> finalvideoList = new ArrayList<String>();
+//                            HashMap<String, Object> videoList = (HashMap<String, Object>)pageInfo.get("urls");
+//                            for (String v:videoList.keySet()) {
+//                                finalvideoList.add((String) videoList.get(v));
+//                                weibo.setVideo(finalvideoList);
+//                            }
+                            if(pageInfo.get("page_pic") != null){
+                            List<String> videoPagePic = new ArrayList<String>();
+                            HashMap<String, Object> videoPicList = (HashMap<String, Object>)pageInfo.get("page_pic");
+                            videoPagePic.add((String) videoPicList.get("url"));
+                            weibo.setVideo(videoPagePic);
                             }
                         }
                     }
