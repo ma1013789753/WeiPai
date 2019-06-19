@@ -20,10 +20,8 @@ import com.jokerdata.entity.app.generator.*;
 import com.jokerdata.parames.*;
 import com.jokerdata.parames.vo.PageResule;
 import com.jokerdata.service.app.*;
-import com.jokerdata.service.common.WeiBoService;
+import com.jokerdata.service.common.WeiboService;
 import com.jokerdata.vo.ApiResult;
-import com.jokerdata.vo.Result;
-import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -84,14 +82,15 @@ public class UserController {
     @Autowired
     SmsService smsService;
 
-    @Autowired
-    WeiBoService weiBoService;
 
     @Autowired
     ConfigService configService;
 
     @Autowired
     ShareService shareService;
+
+    @Autowired
+    WeiboService weiboService;
 
     @GetMapping(value = "/weibo_list", produces = "application/json;charset=UTF-8")
     @Auth(value = true)
@@ -745,23 +744,12 @@ public class UserController {
         }
         if("1".equals(is_wb)){
             // TODO: 2019/6/2 0002 爬虫获取的微博内容
-            String data = HttpUtil.GetRequest(url);
-            if(StringUtils.isEmpty(data)){
+            Jweibo data = weiboService.pickDataByUrl(url);
+            if(data == null){
                 return ApiResult.error("获取失败");
             }
-            JSONObject jsonObject = JSON.parseObject(data);
-            if(jsonObject.getIntValue("status")!=200){
-                return ApiResult.error("获取失败");
-            }
-            Jweibo jweibo = new Gson().fromJson(jsonObject.getString("data"),Jweibo.class);
-//            jweibo.setVideo(null);
-//            Jweibo jweibo = new Jweibo();
-//            jweibo.setId("111111");
-//            List<String> pics = new ArrayList<>();
-//            pics.add("https://wx4.sinaimg.cn/mw690/671a8fcdly1g3mshztli1j20fu0aidgm.jpg");
-//            jweibo.setText("【利物浦崛起最大倚仗  要與美斯搶金球？】\n" +
-//                    "利物浦2-0擊敗熱刺，捧得歐聯的獎盃。此役，利物浦完成了零封，雲迪積克領銜的防線沒有給哈利簡尼、孫興慜留下太多的機會");
-//            jweibo.setImages(pics);
+
+            Jweibo jweibo = data;
             UserAccount account = userAccountService.getOne(new QueryWrapper<UserAccount>().eq("access_token",token));
             Map<String,Object> map = new HashMap<>();
             map.put("user",ShareUtil.toLowBean(account));

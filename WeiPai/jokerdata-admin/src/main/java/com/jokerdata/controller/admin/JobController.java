@@ -1,133 +1,117 @@
 package com.jokerdata.controller.admin;
 
-import com.jokerdata.common.JsonUtils;
-import com.jokerdata.common.annotation.Login;
 import com.jokerdata.entity.admin.custom.ScheduleJob;
-import com.jokerdata.service.admin.JobService;
+import com.jokerdata.service.common.ScheduleJobService;
 import com.jokerdata.vo.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
- * job任务控制器
+ * 定时任务控制器
  * </p>
- *
  * @author aozhang
  * @since 2019-5-1
  */
 @RestController
 @RequestMapping("/job")
-@Api(value = "JobController",description  = "job调度")
+@Api(value = "JobController",description  = "job控制")
 @Slf4j
 public class JobController {
 
     @Autowired
-    private JobService jobService;
+    ScheduleJobService scheduleJobService;
 
+    @PostMapping(value = "/add",produces = "application/json;charset=UTF-8")
+    @ApiOperation(value = "添加定时任务",notes = "")
+    public Result addScheduleJob(@RequestBody ScheduleJob job) {
+        log.info("add/update job params {}",job);
+        try {
+            scheduleJobService.saveOrUpdateShareJob(job);
+            return Result.success("操作成功");
+        } catch (Exception e) {
+            log.error("add/update Job ex:", e);
+            return Result.error500("操作失败");
+        }
 
-    @Login
-    @GetMapping("/getList")
-    @ApiOperation(value = "获取job列表",notes = "")
-    public Result getJobList(){
-        List<ScheduleJob> jobList = jobService.getAllJobs();
+    }
+
+    @RequestMapping("/getAllJobs")
+    public Result getAllJobs() throws SchedulerException {
+        List<ScheduleJob> jobList = scheduleJobService.getAllJobs();
         return Result.success("success",jobList);
     }
 
-    @Login
-    @PostMapping(value = "/add",produces = "application/json;charset=UTF-8")
-    @ApiOperation(value = "添加/修改job",notes = "")
-    public Result addJob(@RequestBody ScheduleJob scheduleJob){
-        try {
-            String res = jobService.saveOrupdate(scheduleJob);
-            Result r = JsonUtils.jsonToPojo(res,Result.class);
-            return r;
-        } catch (Exception e) {
-            log.error("add Job ex:", e);
-            return Result.error500("add error!");
-        }
-
-    }
-
-    @Login
     @PostMapping(value = "/run",produces = "application/json;charset=UTF-8")
-    @ApiOperation(value = "添加/修改job",notes = "")
-    public Result runJob(@RequestBody ScheduleJob scheduleJob){
+    @ApiOperation(value = "手动运行定时job",notes = "")
+    public Result runScheduleJob(@RequestBody ScheduleJob job) {
+        log.info("run job params {}",job);
         try {
-            String res = jobService.runJob(scheduleJob);
-            Result r = JsonUtils.jsonToPojo(res,Result.class);
-            return r;
+            scheduleJobService.runJobOnce(job);
+            return Result.success("操作成功");
         } catch (Exception e) {
-            log.error("run Job ex:", e);
-            return Result.error500("run job error!");
+            log.error("runJob ex:", e);
+            return Result.error500("操作失败");
         }
 
     }
 
-    @Login
     @PostMapping(value = "/pause",produces = "application/json;charset=UTF-8")
     @ApiOperation(value = "暂停job",notes = "")
-    public Result pauseJob(@RequestBody ScheduleJob scheduleJob){
+    public Result pauseScheduleJob(@RequestBody ScheduleJob job) {
+        log.info("pause job params {}",job);
         try {
-            String res = jobService.pauseJob(scheduleJob);
-            Result r = JsonUtils.jsonToPojo(res,Result.class);
-            return r;
+            scheduleJobService.pauseJob(job);
+            return Result.success("暂停成功");
         } catch (Exception e) {
-            log.error("pause Job ex:", e);
-            return Result.error500("pause job error!");
+            log.error("pauseJob ex:", e);
+            return Result.error500("操作失败");
         }
 
     }
 
-    @Login
     @PostMapping(value = "/resume",produces = "application/json;charset=UTF-8")
     @ApiOperation(value = "恢复job",notes = "")
-    public Result resumeJob(@RequestBody ScheduleJob scheduleJob){
+    public Result resumeScheduleJob(@RequestBody ScheduleJob job) {
+        log.info("resume job params {}",job);
         try {
-            String res = jobService.resumeJob(scheduleJob);
-            Result r = JsonUtils.jsonToPojo(res,Result.class);
-            return r;
+            scheduleJobService.resumeJob(job);
+            return Result.success("执行成功");
         } catch (Exception e) {
             log.error("resume Job ex:", e);
-            return Result.error500("resume job error!");
+            return Result.error500("执行失败");
         }
-
     }
 
-    @Login
     @PostMapping(value = "/delete",produces = "application/json;charset=UTF-8")
     @ApiOperation(value = "删除job",notes = "")
-    public Result deleteJob(@RequestBody ScheduleJob scheduleJob){
+    public Result deleteScheduleJob(@RequestBody ScheduleJob job) {
+        log.info("delete job params {}",job);
         try {
-            String res = jobService.deleteJob(scheduleJob);
-            Result r = JsonUtils.jsonToPojo(res,Result.class);
-            return r;
+            scheduleJobService.deleteJob(job);
+            return Result.success("执行成功");
         } catch (Exception e) {
             log.error("delete Job ex:", e);
-            return Result.error500("delete job error!");
+            return Result.error500("执行失败");
         }
-
     }
 
-    @Login
-    @PostMapping(value = "/getByName",produces = "application/json;charset=UTF-8")
+    @GetMapping(value = "/getByName")
     @ApiOperation(value = "获取指定job",notes = "")
-    public Result getJob(@RequestBody Map<String, String> map){
+    public Result getScheduleJobByName(String jobName) {
+        log.info("job params {}",jobName);
         try {
-            String res = jobService.getJobByName(map.get("jobName"));
-            Result r = JsonUtils.jsonToPojo(res,Result.class);
-            return r;
+            ScheduleJob job = scheduleJobService.getJobByName(jobName);
+            return Result.success("执行成功",job);
         } catch (Exception e) {
             log.error("get Job ex:", e);
-            return Result.error500("get job error!");
+            return Result.error500("执行失败");
         }
-
     }
-
 }
