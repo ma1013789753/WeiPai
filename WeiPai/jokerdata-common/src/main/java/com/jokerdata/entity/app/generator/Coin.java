@@ -70,17 +70,17 @@ public class Coin extends Model<Coin> {
     /**
      * 添加时间
      */
-    private Integer addTime;
+    private Long addTime;
 
     /**
      * 支付状态 0未支付1支付
      */
-    private Boolean payState;
+    private String payState;
 
     /**
      * 支付时间
      */
-    private Integer payTime;
+    private Long payTime;
 
     /**
      * 管理员名

@@ -1,5 +1,6 @@
 package com.jokerdata.controller.app;
 
+import com.alibaba.druid.util.StringUtils;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
@@ -8,26 +9,37 @@ import com.alipay.api.request.AlipayOpenPublicTemplateMessageIndustryModifyReque
 import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.response.AlipayOpenPublicTemplateMessageIndustryModifyResponse;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jokerdata.common.config.AlipayConfig;
 import com.jokerdata.common.exception.ApiException;
+import com.jokerdata.entity.app.generator.Coin;
+import com.jokerdata.service.app.CoinService;
+import com.jokerdata.vo.ApiResult;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static cn.jiguang.common.connection.IHttpClient.CHARSET;
 import static com.alipay.api.AlipayConstants.APP_ID;
 
 @RestController
-@RequestMapping("/alipay")
+@RequestMapping("/Notify")
 @Transactional(rollbackFor = ApiException.class)
 public class AliPayController {
-
+    @Autowired
+    private CoinService coinService;
 
     @GetMapping(value = "/alipay_orderinfo",produces = "application/json;charset=UTF-8")
     @Transactional(propagation = Propagation.REQUIRED)
-    public String getAliPayOrderStr(String orderTest) {
+    public ApiResult getAliPayOrderStr(String order_sn) {
+
+        Coin coin = coinService.getOne(new QueryWrapper<Coin>().eq("order_sn",order_sn));
 
         //最终返回加签之后的，app需要传给支付宝app的订单信息字符串
         String orderString = "";
@@ -46,11 +58,11 @@ public class AliPayController {
 
             //业务参数传入,可以传很多，参考API
             //model.setPassbackParams(URLEncoder.encode(request.getBody().toString())); //公用参数（附加数据）
-//            model.setBody(orderTest.getBody());                       //对一笔交易的具体描述信息。如果是多种商品，请将商品描述字符串累加传给body。
-//            model.setSubject(orderTest.getSubjecy());                 //商品名称
-            model.setOutTradeNo("dsjfhsdjfads90323");           //商户订单号(自动生成)
+            model.setBody("商品购买");                       //对一笔交易的具体描述信息。如果是多种商品，请将商品描述字符串累加传给body。
+            model.setSubject("商品");                 //商品名称
+            model.setOutTradeNo(coin.getOrderSn());           //商户订单号(自动生成)
 //            // model.setTimeoutExpress("30m");     			  //交易超时时间
-            model.setTotalAmount("asd");         //支付金额
+            model.setTotalAmount("0.01");         //支付金额
             model.setProductCode("QUICK_MSECURITY_PAY");        	  //销售产品码（固定值）
             ali_request.setBizModel(model);
 
@@ -60,12 +72,16 @@ public class AliPayController {
             // 这里和普通的接口调用不同，使用的是sdkExecute
             AlipayTradeAppPayResponse alipayTradeAppPayResponse = alipayClient.sdkExecute(ali_request); //返回支付宝订单信息(预处理)
             orderString=alipayTradeAppPayResponse.getBody();//就是orderString 可以直接给APP请求，无需再做处理。
-
+            if(StringUtils.isEmpty(orderString)){
+                return ApiResult.error("失败");
+            }
         } catch (AlipayApiException e) {
             e.printStackTrace();
+            return ApiResult.error("失败");
         }
-
-        return orderString;
+        Map<String,String> data = new HashMap<>();
+        data.put("orderinfo",orderString);
+        return ApiResult.success(data);
     }
 
 }
