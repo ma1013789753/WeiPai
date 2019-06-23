@@ -2,11 +2,18 @@ package com.jokerdata.service.common.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jokerdata.common.JsonUtils;
+import com.jokerdata.common.exception.ApiException;
+import com.jokerdata.controller.admin.CLogController;
+import com.jokerdata.controller.admin.PLogController;
 import com.jokerdata.entity.Jweibo;
 import com.jokerdata.entity.admin.generator.TshareLog;
+import com.jokerdata.entity.app.generator.*;
 import com.jokerdata.mapper.admin.generator.TshareLogMapper;
+import com.jokerdata.service.app.*;
 import com.jokerdata.service.common.ProxyIpService;
 import com.jokerdata.service.common.WeiboService;
+import com.jokerdata.vo.CShareLog;
+import com.jokerdata.vo.PShareLog;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Connection;
@@ -15,8 +22,12 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -33,13 +44,34 @@ import java.util.*;
  */
 @Slf4j
 @Service
+//@Transactional(rollbackFor = ApiException.class)
 public class WeiboServiceImpl implements WeiboService {
+    Logger logger = LoggerFactory.getLogger(WeiboServiceImpl.class);
 
     @Resource
     private TshareLogMapper tshareLogMapper;
 
     @Autowired
     private ProxyIpService proxyIpService;
+
+    @Autowired
+    private ShareService shareService;
+
+    @Autowired
+    private ShareLogService shareLogService;
+    @Autowired
+    private PdLogService pdLogService;
+    @Autowired
+    private CoinLogService coinLogService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private CLogController cLogController;
+
+    @Autowired
+    private PLogController pLogController;
 
     @Override
     public Jweibo pickDataByUrl(String url) {
@@ -81,29 +113,55 @@ public class WeiboServiceImpl implements WeiboService {
      */
     @Override
     public void crawlingShareData() {
-        QueryWrapper<TshareLog> query = new QueryWrapper<>();
-        query.eq("platform",0);
-        query.eq("share_status",0);
-        List<TshareLog> shareList = tshareLogMapper.selectList(query);
-        if (shareList != null && shareList.size() > 0) {
-            Map<String, Object> proIp = proxyIpService.getProxyIp();
-            for (TshareLog slog:shareList) {
-                log.info("start crawling data for {}",slog.getShareUrl());
-                try {
-                    Jweibo shareWeibo = getWeiboData(slog.getShareUrl(),(String)proIp.get("ip"),(int)proIp.get("port"));
-                    if (slog.getAccountId().equals(shareWeibo.getUserId()+"") && slog.getShareId().equals(shareWeibo.getRetweeted().getId())) {
-                        slog.setShareStatus("1");
-                        slog.setForwardContent(shareWeibo.getText());
-                        slog.setUpdateTime(new Date());
-                        tshareLogMapper.updateById(slog);
-                    }
-                }catch (Exception e){
-                    log.error("loop crawling data error {}",e.getMessage());
-                    continue;
-                }
+        QueryWrapper<Share> shareQueryWrapper = new QueryWrapper<>();
+        shareQueryWrapper.eq("share_type",1);//微博
+        shareQueryWrapper.eq("share_state",0);//進行中
+        List<Share> shareList = shareService.list(shareQueryWrapper);
+        shareList.forEach(share -> {
+            QueryWrapper<ShareLog> shareLogQueryWrapper = new QueryWrapper<>();
+            shareLogQueryWrapper.eq("share_id",share.getShareId());
+            shareLogQueryWrapper.eq("is_pass","0");
+            List<ShareLog> shareLogs = shareLogService.list(shareLogQueryWrapper);
+            shareLogs.forEach(shareLog -> {
+                Map<String, Object> proIp = proxyIpService.getProxyIp();
 
-            }
-        }
+                Jweibo shareWeibo = getWeiboData(shareLog.getContent(),(String)proIp.get("ip"),(int)proIp.get("port"));
+
+                if(share.getShareStatus().equals("0")){
+                    CoinLog coinLog = coinLogService.getById(shareLog.getLogId());
+                    CShareLog cShareLog = new CShareLog();
+                    BeanUtils.copyProperties(coinLog, cShareLog);
+                    cShareLog.setShare(share);
+                    cShareLog.setShareLog(shareLog);
+                    if(shareWeibo != null && !StringUtils.isEmpty(shareWeibo.getId()) && share.getWbId().equals(shareWeibo.getRetweeted().getId())){
+                        logger.error(shareLog.toString()+"——————获取成功");
+                        cLogController.approve(cShareLog);
+                    }else{
+                        logger.error(shareLog.toString()+"——————未获取到相关转发内容");
+                        cLogController.approveFail(cShareLog);
+
+                    }
+                }
+                //现金
+                if(share.getShareStatus().equals("1")){
+                    PdLog pdLog = pdLogService.getById(shareLog.getLogId());
+                    PShareLog pShareLog = new PShareLog();
+                    BeanUtils.copyProperties(pdLog, pShareLog);
+                    pShareLog.setShare(share);
+                    pShareLog.setShareLog(shareLog);
+                    if(shareWeibo != null && !StringUtils.isEmpty(shareWeibo.getId()) && share.getWbId().equals(shareWeibo.getRetweeted().getId())){
+                        logger.error(shareLog.toString()+"——————获取成功");
+                        pLogController.approve(pShareLog);
+                    }else{
+                        logger.error(shareLog.toString()+"——————未获取到相关转发内容");
+                        pLogController.approveFail(pShareLog);
+
+                    }
+                }
+            });
+        });
+
+
 
     }
 

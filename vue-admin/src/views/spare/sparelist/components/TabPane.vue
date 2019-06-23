@@ -43,7 +43,7 @@
     <el-table-column v-if="this.type != 2" prop="haveSharedNum" label="已分享" show-overflow-tooltip></el-table-column>
     <el-table-column v-if="this.type == 1" prop="shareCoin" label="现金总额">
       <template slot-scope="scope">
-        <span> {{scope.row.shareCoin | formatDecimal}}</span>
+        <span> {{scope.row.shareNum*scope.row.coinMax | formatDecimal}}</span>
       </template>
     </el-table-column>
     <el-table-column v-if="this.type == 0" prop="totalCoin" label="积分总额">
@@ -296,7 +296,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.itemTuijian(res)
+          this.itemTuijian(res.shareId)
 
         }).catch(() => {
         });

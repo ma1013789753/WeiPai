@@ -119,6 +119,7 @@ public class PublicController {
         if(user!=null){
             return ApiResult.error("此手机号已注册");
         }
+        user = new User();
         user.setUserMobile(parames.getMobile());
         user.setUserPassword(MD5.MD5Encode(parames.getPassword(),"utf-8"));
         user.setUserName("手机用户"+parames.getMobile().substring(7));

@@ -72,14 +72,11 @@ public class CLogController {
         if(!shareLogService.updateById(log)){
            throw new ApiException("更新失败");
         }
-
         CoinLog coinLog = cShareLog;
         coinLog.setLogType("task_income");
-
         if(!coinLogService.updateById(coinLog)){
             throw new ApiException("更新失败");
         }
-
         //更新用户积分
         User user = userService.getById(cShareLog.getShareLog().getUserId());
         user.setUserCoin(user.getUserCoin()+coinLog.getLogAvCoin().intValue());
@@ -87,12 +84,10 @@ public class CLogController {
         if(!userService.updateById(user)){
             throw new ApiException("金额更新失败");
         }
-
-
         //是否完成
         Share share = cShareLog.getShare();
-        share.setShareNumTrue(share.getShareNumTrue()+1);
-        if(share.getShareNumTrue()>=share.getShareNum()){
+        share.setHaveSharedNum(share.getHaveSharedNum()+1);
+        if(share.getHaveSharedNum()>=share.getShareNum()){
 
             CoinLog coinCash = coinLogService.getOne(new QueryWrapper<CoinLog>()
                     .eq("log_type","task_freeze")
@@ -101,16 +96,6 @@ public class CLogController {
             if(coinCash==null){
                 throw new ApiException("不存在");
             }
-            //查看花了多少
-            Integer count = coinLogService.getAllCount(share.getShareId());
-            if(count == null ){
-                throw new ApiException("错误");
-            }
-
-            coinCash.setLogType("task_outcome");
-            if(!coinLogService.updateById(coinCash)){
-                throw new ApiException("更新失败");
-            }
 
             //设置结束
             share.setShareState("3");
@@ -118,10 +103,35 @@ public class CLogController {
             if(!shareService.updateById(share)){
                 throw new ApiException("更新失败");
             }
+
+            //查看花了多少
+            Double count = Double.valueOf(share.getOriginalCoin());
+            if(count == null ||count == 0 ){
+                throw new ApiException("错误");
+            }
+            //积分消耗光 直接更新记录表
+            coinCash.setLogType("task_outcome");
+            if(!coinLogService.updateById(coinCash)){
+                throw new ApiException("更新失败");
+            }
+
+            if(count < share.getTotalCoin()){
+                //返还积分
+                coinCash.setLogId(null);
+                coinCash.setAddTime((long) new Date().getSeconds());
+                coinCash.setLogAvCoin(coinCash.getLogAvCoin().subtract(new BigDecimal(count)));
+                coinCash.setLogType("refound");
+                if(!coinLogService.save(coinCash)){
+                    throw new ApiException("更新失败");
+                }
+                User send = userService.getById(share.getUserId());
+                send.setUserCoin(user.getUserCoin()+(coinCash.getLogAvCoin().subtract(new BigDecimal(count))).intValue());
+                if(!userService.updateById(send)){
+                    throw new ApiException("更新失败");
+                }
+
+            }
         }
-
-
-
         return Result.success();
     }
 

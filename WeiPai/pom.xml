@@ -63,6 +63,11 @@
             <artifactId>alipay-sdk-java</artifactId>
             <version>3.7.89.ALL</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.wxpay</groupId>
+            <artifactId>wxpay-sdk</artifactId>
+            <version>0.0.3</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

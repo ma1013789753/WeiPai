@@ -15,7 +15,9 @@ import com.jokerdata.common.exception.ApiException;
 import com.jokerdata.common.utils.CommonUtil;
 import com.jokerdata.common.utils.HttpUtil;
 import com.jokerdata.common.utils.RequestHolder;
+import com.jokerdata.entity.JsonRootBean;
 import com.jokerdata.entity.Jweibo;
+import com.jokerdata.entity.app.custom.UserInfoBean;
 import com.jokerdata.entity.app.generator.*;
 import com.jokerdata.parames.*;
 import com.jokerdata.parames.vo.PageResule;
@@ -28,7 +30,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Base64Utils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -158,9 +163,32 @@ public class UserController {
 
     @GetMapping(value = "/band_weibo", produces = "application/json;charset=UTF-8")
     @Auth(value = true)
-    public ApiResult band_weibo(String key) {
+    public ApiResult band_weibo(String key,  String user_info) {
+        User user = RequestHolder.getUser();
+        UserInfoBean userInfoBean = new Gson().fromJson(user_info,UserInfoBean.class);
+        UserAccount userAccount = new UserAccount();
+        userAccount.setUserId(user.getUserId());
+        userAccount.setAccountName(userInfoBean.getAccount_name());
+        userAccount.setAccountAvatar(userInfoBean.getAccount_avatar());
+        userAccount.setUid(userInfoBean.getUid());
+        userAccount.setAccessToken(userInfoBean.getWtoken());
+        userAccount.setAvatarHd(userInfoBean.getAvatar_hd());
+        userAccount.setAccountState(0);
+        userAccount.setAddTime(new Date().getTime()/1000+"");
+//        userAccount.setAccountLimit()
+        userAccount.setAccType(0);
+        userAccount.setFollowNum(userInfoBean.getFollow_num());
+        userAccount.setVLegalize("0");
+        userAccount.setLocation(userInfoBean.getLocation());
+        userAccount.setGender(userInfoBean.getGender());
+        userAccount.setFriendsCount(userInfoBean.getFriends_count());
+        userAccount.setStatusesCount(userInfoBean.getStatuses_count());
+        userAccount.setCreatedAt(userInfoBean.getCreated_at());
 
-        return ApiResult.error("功能未实现");
+        if(!userAccountService.save(userAccount)){
+            return ApiResult.error("保存失败");
+        }
+        return ApiResult.success("");
     }
 
     @GetMapping(value = "/weibo_news_list", produces = "application/json;charset=UTF-8")
@@ -214,11 +242,11 @@ public class UserController {
         share.setTagId(shareTag.getTagId());
         share.setTagName(shareTag.getTagName());
         share.setShareState("0");//审核中
-        share.setShareExtraCoin(Integer.parseInt(config.getConfigContent()));
+//        share.setShareExtraCoin(Integer.parseInt(config.getConfigContent()));
         if("1".equals(param.getT())){
             share.setIsOriginal(param.getIs_original());
-            share.setTotalCoin(Integer.parseInt(param.getShare_coin()+"")*param.getShare_num());
-            share.setShareCoin(Integer.parseInt(param.getShare_coin()+""));
+            share.setTotalCoin((int) (param.getShare_coin()*param.getShare_num()));
+            share.setShareCoin((int) param.getShare_coin());
             share.setShareStatus("0");//积分
         }else{
             share.setIsOriginal("0");
@@ -628,8 +656,9 @@ public class UserController {
         if(!"1".equals(flag)){
             return ApiResult.error(flag);
         }
-        user.setWechatOpenid(password.getWechat_openid());
-        user.setAlipayAccount(password.getAlipay_account());
+//        user.setWechatOpenid(password.getWechat_openid());
+//        user.setAlipayAccount(password.getAlipay_account());
+        user.setUserPayPwd(MD5.MD5Encode(password.getUser_pay_pwd(),"utf-8"));
         if(userService.updateById(user)){
             return ApiResult.success(1);
         }
@@ -761,24 +790,38 @@ public class UserController {
         return ApiResult.error("-1");
     }
 
-
-    public static void main(String[] args) {
-        String text = "【利物浦崛起最大倚仗  要與美斯搶金球？】\n" +
-                "利物浦2-0擊敗熱刺，捧得歐聯的獎盃。此役，利物浦完成了零封，雲迪積克領銜的防線沒有給哈利簡尼、孫興慜留下太多的機會";
-        String encode = null;
-        try {
-            encode = Base64Utils.encodeToString(text.getBytes("utf-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+    /**
+     * 实现文件上传
+     * */
+    @PostMapping(value = "/avatar_upload", produces = "application/json;charset=UTF-8")
+    @Auth(value = true)
+    public ApiResult avatar_upload(@RequestParam("key") String key, @RequestParam("pic")MultipartFile pic){
+        User user = RequestHolder.getUser();
+        if(pic.isEmpty()){
+            return ApiResult.error("文件错误");
         }
-        System.out.println(encode);
+        String fileName = pic.getOriginalFilename();
+        int size = (int) pic.getSize();
+        System.out.println(fileName + "-->" + size);
 
-        String decode = ShareUtil.Base64Decode(encode);
-        System.out.println(decode);
+        String path = "./Upload/avatar/avatar_"+user.getUserId()+"."+pic.getContentType() ;
+        File dest = new File(path + "/" + fileName);
+        if(!dest.getParentFile().exists()){ //判断文件父目录是否存在
+            dest.getParentFile().mkdir();
+        }
+        try {
+            pic.transferTo(dest); //保存文件
+            return ApiResult.success("");
+        } catch (IllegalStateException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return ApiResult.error("文件错误");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return ApiResult.error("文件错误");
+        }
     }
-
-
-
 
 
 

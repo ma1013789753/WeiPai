@@ -88,6 +88,11 @@ public class ShareController {
             return ApiResult.error("参数错误");
         }
         Share share = shareService.getById(share_id);
+        //微博
+        if(!share.getShareType().equals("1")){
+            return ApiResult.error("公众号转发失败");
+        }
+
         if(share.getHaveSharedNum()>= share.getShareNum()){
             return ApiResult.error("已达分享上限");
         }
@@ -97,6 +102,7 @@ public class ShareController {
         CoinLog coinLog = new CoinLog();
         //创建现金记录
         PdLog pdLog = new PdLog();
+
         if("0".equals(share.getShareStatus())){
             coinLog.setLogUserId(user.getUserId()+"");
             coinLog.setLogUserName(user.getUserName());
@@ -140,12 +146,15 @@ public class ShareController {
             shareLog.setShareMoney(new BigDecimal(0));
             shareLog.setRewardType(0);
             shareLog.setLogId(coinLog.getLogId()+"");
-
+            //实际消耗数量
+            share.setOriginalCoin(String.valueOf(Double.parseDouble(share.getOriginalCoin())+share.getShareCoin()));
         }else{
             shareLog.setShareMoney(pdLog.getLgAvAmount());
             shareLog.setShareCoin(0);
             shareLog.setRewardType(1);
             shareLog.setLogId(pdLog.getLgId()+"");
+            //实际消耗数量
+            share.setOriginalCoin(String.valueOf(Double.parseDouble(share.getOriginalCoin())+pdLog.getLgAvAmount().doubleValue()));
         }
         shareLog.setAddTime(new Date().getTime()/1000+"");
         shareLog.setIsPass(0);
@@ -156,6 +165,7 @@ public class ShareController {
         if(!shareLogService.save(shareLog)){
             throw new ApiException("保存失败");
         }
+
         share.setHaveSharedNum(share.getHaveSharedNum()+1);
         if(!shareService.updateById(share)){
             throw new ApiException("更新失败");

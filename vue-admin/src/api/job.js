@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 列表
 export function list() {
   return request({ 
-    url: '/job/getList',
+    url: '/job/getAllJobs',
     method: 'get'
   })
 }

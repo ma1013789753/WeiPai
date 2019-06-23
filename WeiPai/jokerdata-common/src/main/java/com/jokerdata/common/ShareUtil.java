@@ -2,6 +2,7 @@ package com.jokerdata.common;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -106,7 +107,9 @@ public class ShareUtil {
 
     //单个bean
     public static Map<String, Object> toLowBean(Object beanObj) {
-
+        if(beanObj == null){
+            return new HashMap<>();
+        }
         Map<String, Object> map = beanToMap(beanObj);
         Map<String, Object> map2 = new HashMap<>();
         map.keySet().forEach(s -> {

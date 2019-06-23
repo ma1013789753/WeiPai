@@ -105,7 +105,8 @@ public class PLogController {
                 throw new ApiException("不存在");
             }
             //查看花了多少
-            BigDecimal count = pdLogService.getAllCount(share.getShareId());
+            BigDecimal count = new BigDecimal(share.getOriginalCoin());
+
             if(count == null ){
                 throw new ApiException("错误");
             }
