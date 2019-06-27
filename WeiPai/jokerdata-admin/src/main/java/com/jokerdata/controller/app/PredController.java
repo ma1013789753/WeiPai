@@ -119,8 +119,8 @@ public class PredController {
             return ApiResult.error("余额不足");
         }
 
-        user.setAvailablePredeposit(user.getAvailablePredeposit().subtract(new BigDecimal(free)));
-        user.setFreezePredeposit(user.getFreezePredeposit().add(new BigDecimal(free)));
+        user.setAvailablePredeposit(user.getAvailablePredeposit().subtract(new BigDecimal(Double.parseDouble(money))));
+        user.setFreezePredeposit(user.getFreezePredeposit().add(new BigDecimal(Double.parseDouble(money))));
         if(!userService.updateById(user)){
             throw new ApiException("保存失败");
         }
@@ -146,8 +146,8 @@ public class PredController {
         pdLog.setLgMemberId(user.getUserId());
         pdLog.setLgMemberName(user.getUserName());
         pdLog.setLgType("cash_apply");
-        pdLog.setLgAvAmount(new BigDecimal(free));
-        pdLog.setLgFreezeAmount(new BigDecimal(free));
+        pdLog.setLgAvAmount(new BigDecimal(Double.parseDouble(money)));
+        pdLog.setLgFreezeAmount(new BigDecimal(Double.parseDouble(money)));
         pdLog.setLgAddTime((long) new Date().getSeconds());
         pdLog.setLgFromData(pdCash.getPdcId()+"");
 
