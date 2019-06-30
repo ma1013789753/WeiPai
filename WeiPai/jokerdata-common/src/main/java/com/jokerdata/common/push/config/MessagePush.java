@@ -12,10 +12,12 @@ public class MessagePush {
      */
     private String id;
 
+    private String type;
+
     /**
      * 消息分类
      */
-    private String type;
+    private String msgType;
 
     /**
      *消息标题
@@ -36,6 +38,10 @@ public class MessagePush {
      * 结束时间
      */
     private Date endTime;
+
+    private int awardType;
+
+    private Double data;
 
    private List<String> tags;
 }

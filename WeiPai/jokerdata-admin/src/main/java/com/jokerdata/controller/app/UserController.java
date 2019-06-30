@@ -22,6 +22,7 @@ import com.jokerdata.entity.app.generator.*;
 import com.jokerdata.parames.*;
 import com.jokerdata.parames.vo.PageResule;
 import com.jokerdata.service.app.*;
+import com.jokerdata.service.common.JpushService;
 import com.jokerdata.service.common.WeiboService;
 import com.jokerdata.vo.ApiResult;
 import org.apache.commons.lang3.StringUtils;
@@ -93,6 +94,9 @@ public class UserController {
 
     @Autowired
     ShareService shareService;
+
+    @Autowired
+    JpushService jpushService;
 
     @Autowired
     WeiboService weiboService;
@@ -207,8 +211,7 @@ public class UserController {
     @PostMapping(value = "/add_weibo_t", produces = "application/json;charset=UTF-8")
     @Auth(value = true)
     public ApiResult add_weibo_t(String key, @Validated ShareWBParam param) {
-        System.out.println("\"-----------\" = " + "-----------");
-        System.out.println("param = " + param.getJweibo());
+
         User user = RequestHolder.getUser();
         ShareTag shareTag = shareTagService.getById(param.getTag_id());
         UserAccount account = userAccountService.getOne(new QueryWrapper<UserAccount>().eq("access_token",param.getWtoken()));
@@ -223,10 +226,6 @@ public class UserController {
         }else{
             return ApiResult.error("参数错误");
         }
-
-
-//        Result result =  weiBoService.getWeiBoByUrl(param.getShare_url());//获取微博内容
-//        Jweibo jweibo = new Gson().fromJson(param.getJweibo().trim(),Jweibo.class);
         JSONObject result = JSON.parseObject(param.getJweibo());
         Jweibo jweibo = new Gson().fromJson(result.toJSONString(),Jweibo.class);
         Config config = configService.getById(4);
@@ -331,7 +330,7 @@ public class UserController {
                 throw new ApiException("更新失败");
             }
         }
-
+        jpushService.shareStart(share);
 
         return ApiResult.success();
     }
@@ -688,15 +687,6 @@ public class UserController {
     @Auth(value = true)
     public ApiResult count_num(String key) {
         User user = RequestHolder.getUser();
-
-//        List<Map<String,Object>> data = systemMsgService.listMaps(new QueryWrapper<SystemMsg>()
-//                .in("notice_type","shop","push","succ_master","succ_user","push_false")
-//                .eq("is_read",0)
-//                .eq("user_id",user.getUserId())
-//                .groupBy("notice_type")
-//                .select("notice_type","count(a.notice_id) as num")
-//        );
-
         List<Map<String,Object>> data = systemMsgService.countSum(user.getUserId());
 
         Long push = 0l;

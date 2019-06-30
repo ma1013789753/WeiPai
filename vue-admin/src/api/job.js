@@ -54,11 +54,10 @@ export function del(data) {
 }
 
 // 根据name获取job
-export function getJob(jobName) {
+export function getJob(data) {
   return request({ 
-    url: '/job/getByName',
-    method: 'post',
-    data:{jobName}
+    url: '/job/getByName?jobName='+data,
+    method: 'get',
   })
 }
 

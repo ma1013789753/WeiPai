@@ -104,7 +104,7 @@ public class JobController {
 
     @GetMapping(value = "/getByName")
     @ApiOperation(value = "获取指定job",notes = "")
-    public Result getScheduleJobByName(String jobName) {
+    public Result getScheduleJobByName(@RequestParam String jobName) {
         log.info("job params {}",jobName);
         try {
             ScheduleJob job = scheduleJobService.getJobByName(jobName);

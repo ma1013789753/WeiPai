@@ -22,9 +22,9 @@
             @click="handleLabel">互推标签</el-button>
           </el-col>
         <el-col :span="6" style="text-align: right">
-          <router-link class="inlineBlock" to="/spare/spareList/add">
+          <!-- <router-link class="inlineBlock" to="/spare/spareList/add">
             <el-button type="primary" icon="el-icon-circle-plus-outline">新增</el-button>
-          </router-link>
+          </router-link> -->
         </el-col>
       </el-row>
     </el-header>

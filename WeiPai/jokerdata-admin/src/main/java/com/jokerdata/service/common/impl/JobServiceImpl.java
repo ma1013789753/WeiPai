@@ -21,7 +21,7 @@ public class JobServiceImpl implements JobService {
                 shareJob(scheduleJob);
                 break;
             default:
-                new Exception("type error!");
+                new Exception("msgType error!");
         }
     }
 

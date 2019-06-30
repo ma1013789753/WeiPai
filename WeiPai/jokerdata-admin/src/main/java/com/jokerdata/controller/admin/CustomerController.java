@@ -10,6 +10,7 @@ import com.jokerdata.entity.app.generator.Sign;
 import com.jokerdata.entity.app.generator.UserAccount;
 import com.jokerdata.service.admin.CustomerService;
 import com.jokerdata.service.app.UserAccountService;
+import com.jokerdata.service.common.JpushService;
 import com.jokerdata.vo.MyPage;
 import com.jokerdata.vo.Result;
 import io.swagger.annotations.Api;
@@ -38,6 +39,9 @@ public class CustomerController {
 
     @Autowired
     private UserAccountService userAccountService;
+
+    @Autowired
+    private JpushService jpushService;
 
     @Login
     @PostMapping(value = "/getPage",produces = "application/json;charset=UTF-8")
@@ -224,6 +228,7 @@ public class CustomerController {
         if(res <= 0 ){
             throw new MyException("操作失败", ConstCode.CODE_404);
         }
+        jpushService.approveState(userAccount,1);
         return Result.success();
     }
 
@@ -235,6 +240,9 @@ public class CustomerController {
         if(res <= 0 ){
             throw new MyException("操作失败", ConstCode.CODE_404);
         }
+        UserAccount userAccount = userAccountService.getById(accId);
+        jpushService.approveState(userAccount,0);
+
         return Result.success();
     }
 

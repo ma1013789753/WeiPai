@@ -127,7 +127,7 @@ public class ShareImpl extends ServiceImpl<ShareCustomMapper, Share> implements 
                 if(!StringUtils.isEmpty(monetListVo.getShareImage())){
                     if("2".equals(monetListVo.getShareType())){
                         JSONArray img = JSON.parseArray(monetListVo.getShareImage());
-                        monetListVo.setBackgroundImage(img.getJSONObject(0).getString("data-src")+"="+img.getJSONObject(0).getString("data-type"));
+                        monetListVo.setBackgroundImage(img.getJSONObject(0).getString("data-src")+"="+img.getJSONObject(0).getString("data-msgType"));
                     }else{
                         JSONArray img = JSON.parseArray(monetListVo.getShareImage());
                         monetListVo.setBackgroundImage(img.getJSONObject(0).getString("original_pic"));

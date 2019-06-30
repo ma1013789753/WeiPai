@@ -89,22 +89,18 @@ public class jPushService implements IJPushService {
                         .setAlert(messagePush.getContent())
                         .setBadge(5)
                         .setSound("happy")
-                        .addExtra("from", "JPush")
+                        .addExtra("type", messagePush.getType())
                         .build())
                 .addPlatformNotification(AndroidNotification.newBuilder()
                         .setAlert(messagePush.getContent())
                         .setTitle(messagePush.getTitle())
-                        .addExtra("from", "JPush")
+                        .addExtra("type", messagePush.getType())
                         .build())
                 .build();
         PushPayload pushPayload =
                 PushPayload.newBuilder()
                         .setPlatform(Platform.all())
                         .setAudience(Audience.tag(messagePush.getTags()))
-//                        .setMessage(Message.newBuilder()
-//                                .setMsgContent(messagePush.getContent())
-//                                .setTitle(messagePush.getTitle())
-//                                .build())
                         .setNotification(notification)
                         .build();
         return pushPayload;

@@ -19,6 +19,8 @@ import com.jokerdata.parames.vo.UserInfo;
 import com.jokerdata.service.app.*;
 import com.jokerdata.service.common.AliSmsService;
 import com.jokerdata.vo.ApiResult;
+import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -227,7 +229,10 @@ public class PublicController {
 
 
     public ApiResult getUserToken(User user){
-        UserInfo userToken = ShareUtil.beanToBean(user,UserInfo.class);
+        UserInfo userToken = new UserInfo();
+        BeanUtils.copyProperties(user,userToken);
+
+//                ShareUtil.beanToBean(user,UserInfo.class);
         userToken.setUserAvatar(ShareUtil.getAvatar(userToken.getUserId()+""));
         UserToken token = userTokenService.getTokenByUserId(user.getUserId());
         userToken.setToken(token.getUserToken());

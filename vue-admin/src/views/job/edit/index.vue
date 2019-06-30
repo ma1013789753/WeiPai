@@ -73,6 +73,7 @@
         this.getJobByName()
       },
       getJobByName(){
+        
         getJob(this.form.jobName).then(res =>{
           this.form = res.data
         })

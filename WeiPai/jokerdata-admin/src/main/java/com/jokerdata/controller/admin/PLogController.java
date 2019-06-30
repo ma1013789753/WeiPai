@@ -13,6 +13,7 @@ import com.jokerdata.service.app.PdLogService;
 import com.jokerdata.service.app.ShareLogService;
 import com.jokerdata.service.app.ShareService;
 import com.jokerdata.service.app.UserService;
+import com.jokerdata.service.common.JpushService;
 import com.jokerdata.vo.MyPage;
 import com.jokerdata.vo.PShareLog;
 import com.jokerdata.vo.Result;
@@ -50,6 +51,9 @@ public class PLogController {
 
     @Autowired
     private PdLogService pdLogService;
+
+    @Autowired
+    private JpushService jpushService;
 
 
     @Login
@@ -135,13 +139,13 @@ public class PLogController {
             }
         }
 
-
+        jpushService.approveWeibo(pShareLog,1);
         return Result.success();
     }
 
     @Login
     @PostMapping(value = "/approveFail",produces = "application/json;charset=UTF-8")
-    @ApiOperation(value = "审核通过",notes = "")
+    @ApiOperation(value = "审核未通过",notes = "")
     public Result approveFail(@RequestBody PShareLog pShareLog){
         ShareLog log = pShareLog.getShareLog();
         log.setIsPass(2);
@@ -162,7 +166,7 @@ public class PLogController {
         if(!shareService.updateById(share)){
             throw new ApiException("更新失败");
         }
-
+        jpushService.approveWeibo(pShareLog,1);
         return Result.success();
     }
 

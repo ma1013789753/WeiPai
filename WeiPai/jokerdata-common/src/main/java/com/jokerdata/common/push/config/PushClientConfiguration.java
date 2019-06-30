@@ -18,10 +18,10 @@ public class PushClientConfiguration {
     Logger logger = LoggerFactory.getLogger(PushClientConfiguration.class);
 
     @Value("${jpush.MasterSecret}")
-    private String masterDriverSecret;
+    private String secret;
 
     @Value("${jpush.AppKey}")
-    private String driverAppKey;
+    private String appkey;
 
 
 
@@ -29,11 +29,11 @@ public class PushClientConfiguration {
      * 司机端推送
      * @return
      */
-    @Bean("pushDriverClient")
+    @Bean("pushClient")
     public JPushClient pushDriverClientFactory() {
-        logger.error("appkey",driverAppKey);
-        logger.error("MasterSecret",masterDriverSecret);
-        return new JPushClient(masterDriverSecret, driverAppKey);
+        logger.error("appkey",appkey);
+        logger.error("MasterSecret",secret);
+        return new JPushClient(secret, appkey);
     }
 
 

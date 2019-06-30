@@ -4,6 +4,7 @@ import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.jokerdata.common.ShareUtil;
 import com.jokerdata.common.annotation.Auth;
 import com.jokerdata.common.exception.ApiException;
@@ -13,6 +14,7 @@ import com.jokerdata.parames.vo.MonetListVo;
 import com.jokerdata.parames.vo.PageResule;
 import com.jokerdata.parames.vo.SpreadBeanVo;
 import com.jokerdata.service.app.*;
+import com.jokerdata.service.common.JpushService;
 import com.jokerdata.vo.ApiResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,7 +60,8 @@ public class ShareController {
     @Autowired
     private PdLogService pdLogService;
 
-
+    @Autowired
+    private JpushService jpushService;
 
     @GetMapping(value = "/share_list",produces = "application/json;charset=UTF-8")
     @Auth(value = true)
@@ -156,11 +159,14 @@ public class ShareController {
             //实际消耗数量
             share.setOriginalCoin(String.valueOf(Double.parseDouble(share.getOriginalCoin())+pdLog.getLgAvAmount().doubleValue()));
         }
+
         shareLog.setAddTime(new Date().getTime()/1000+"");
         shareLog.setIsPass(0);
         shareLog.setContent(content);
         shareLog.setAccountId(userAccount.getAccountId()+"");
         shareLog.setMasterId(share.getUserId());
+
+        jpushService.shareWeiBo(shareLog,share);
         //审核后要将logid记录进去
         if(!shareLogService.save(shareLog)){
             throw new ApiException("保存失败");
@@ -248,6 +254,4 @@ public class ShareController {
         return  ApiResult.error("失败");
     }
 
-    public static void main(String[] args) {
-    }
 }

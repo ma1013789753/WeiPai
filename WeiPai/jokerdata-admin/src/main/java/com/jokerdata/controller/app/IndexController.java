@@ -56,7 +56,7 @@ public class IndexController {
         messagePush.setTitle("哈哈哈");
         messagePush.setId("4333232123321");
         List<String> tags = new ArrayList<>();
-        tags.add("u_367");
+        tags.add("u_418");
         messagePush.setTags(tags);
         ijPushService.sendMessageToPersonal(messagePush);
 

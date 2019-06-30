@@ -15,12 +15,15 @@ import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -169,16 +172,16 @@ public class ShareUtil {
         //http://youdianshare.com/Upload/avatar/avatar_1.jpg?1558146561
 //        String str = "http://youdianshare.com/Upload/avatar/"+userId+".png";
         String str = "http://youdianshare.com/Upload/avatar/avatar_"+userId+".jpg";
-        HttpURLConnection urlcon2 = null;
+
         try {
             URL url = new URL(str);
-            urlcon2 = (HttpURLConnection) url.openConnection();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Long TotalSize=Long.parseLong(urlcon2.getHeaderField("Content-Length"));
-        if (TotalSize>0){
+            URLConnection uc = url.openConnection();
+            InputStream in = uc.getInputStream();
+            if (str.equalsIgnoreCase(uc.getURL().toString())){
+                in.close();
+            }
             return str;
+        } catch (IOException e) {
         }
         return "http://youdianshare.com/Upload/avatar/default.png";
 

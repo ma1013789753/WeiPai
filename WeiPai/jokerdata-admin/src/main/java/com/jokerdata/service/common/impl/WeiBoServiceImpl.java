@@ -113,6 +113,7 @@ public class WeiboServiceImpl implements WeiboService {
      */
     @Override
     public void crawlingShareData() {
+        System.out.println("\"开始抓取微博\" = " + "开始抓取微博");
         QueryWrapper<Share> shareQueryWrapper = new QueryWrapper<>();
         shareQueryWrapper.eq("share_type",1);//微博
         shareQueryWrapper.eq("share_state",0);//進行中
