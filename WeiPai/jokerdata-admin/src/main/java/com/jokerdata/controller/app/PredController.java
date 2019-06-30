@@ -70,14 +70,14 @@ public class PredController {
         if(StringUtils.isEmpty(money)){
             return ApiResult.error("参数错误");
         }
-        int cash = Integer.parseInt(money);
+        Double cash = Double.parseDouble(money);
         Config config = configService.getById(1);
         SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
         Random random = new Random();
         int ends = random.nextInt(99);
         String no = "CO"+sdf.format(new Date())+String.format("%02d",ends);
         OrderSnVo orderSnVo = new OrderSnVo();
-        orderSnVo.setCoin_amount(cash*Integer.parseInt(config.getConfigContent()));
+        orderSnVo.setCoin_amount((int) (cash*Integer.parseInt(config.getConfigContent())));
         orderSnVo.setRate(config.getConfigContent());
         orderSnVo.setOrder_amount(money);
         orderSnVo.setOrder_sn(no);
@@ -102,6 +102,10 @@ public class PredController {
     @Auth(value = true)
     public ApiResult cash_add(String key, String money,String alipay,String code,String name) {
         User user = RequestHolder.getUser();
+
+        if(StringUtils.isEmpty(user.getUserPayPwd())){
+            return ApiResult.error("请先设置您的支付密码");
+        }
 
         if(StringUtils.isEmpty(money)||StringUtils.isEmpty(alipay)||StringUtils.isEmpty(code)||StringUtils.isEmpty(name)){
             return ApiResult.error("参数错误");
@@ -134,10 +138,10 @@ public class PredController {
         pdCash.setPdcMemberId(user.getUserId());
         pdCash.setPdcMemberName(user.getUserName());
         pdCash.setPdcAmount(new BigDecimal(free));
-        pdCash.setPdcAddTime(new Date().getSeconds());
+        pdCash.setPdcAddTime((int) (new Date().getTime()/1000));
         pdCash.setPdcPaymentState(0);
         pdCash.setPdcBankNo(alipay);
-        pdCash.setPdcBankName(name);
+        pdCash.setPdcBankUser(name);
         if(!pdCashService.save(pdCash)){
             throw new ApiException("保存失败");
         }
@@ -148,7 +152,7 @@ public class PredController {
         pdLog.setLgType("cash_apply");
         pdLog.setLgAvAmount(new BigDecimal(Double.parseDouble(money)));
         pdLog.setLgFreezeAmount(new BigDecimal(Double.parseDouble(money)));
-        pdLog.setLgAddTime((long) new Date().getSeconds());
+        pdLog.setLgAddTime((new Date().getTime()/1000));
         pdLog.setLgFromData(pdCash.getPdcId()+"");
 
         if(!pdLogService.save(pdLog)){

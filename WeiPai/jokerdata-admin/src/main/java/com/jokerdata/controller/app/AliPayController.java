@@ -66,20 +66,18 @@ public class AliPayController {
             AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.APPID,
                     AlipayConfig.RSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET,
                     AlipayConfig.ALIPAY_PUBLIC_KEY,AlipayConfig.SIGNTYPE);
-
             //实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
             AlipayTradeAppPayRequest ali_request = new AlipayTradeAppPayRequest();
-
+            ali_request.setNotifyUrl(AlipayConfig.notify_url);
             //SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式
             AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-
             //业务参数传入,可以传很多，参考API
             //model.setPassbackParams(URLEncoder.encode(request.getBody().toString())); //公用参数（附加数据）
             model.setBody("商品购买");                       //对一笔交易的具体描述信息。如果是多种商品，请将商品描述字符串累加传给body。
             model.setSubject("商品");                 //商品名称
             model.setOutTradeNo(coin.getOrderSn());           //商户订单号(自动生成)
 //            // model.setTimeoutExpress("30m");     			  //交易超时时间
-            model.setTotalAmount("0.01");         //支付金额
+            model.setTotalAmount(coin.getOrderAmount().doubleValue()+"");         //支付金额
             model.setProductCode("QUICK_MSECURITY_PAY");        	  //销售产品码（固定值）
             ali_request.setBizModel(model);
 

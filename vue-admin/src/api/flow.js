@@ -9,6 +9,24 @@ export function cashList(data,type) {
   })
 }
 
+// 提现列表
+export function caseApprove(data) {
+  return request({ 
+    url: '/flow/caseApprove',
+    method: 'post',
+    data:data
+  })
+}
+
+// 提现列表
+export function caseFail(data) {
+  return request({ 
+    url: '/flow/caseFail?id='+data.id+"&mes="+data.msg,
+    method: 'get',
+    data:data
+  })
+}
+
 // 提现流水
 export function cashFlow(data) {
   return request({

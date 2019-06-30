@@ -72,11 +72,26 @@
       >
       </pagination>
     </el-footer>
+
+      <el-dialog title="拒绝理由" :visible.sync="dialogTableVisible">
+          <el-input
+            type="textarea"
+            :rows="2"
+            placeholder="请输入理由"
+            v-model="text">
+          </el-input>
+            <span slot="footer" class="dialog-footer">
+              <el-button @click="dialogTableVisible = false">取 消</el-button>
+              <el-button type="primary" @click="goFail">确 定</el-button>
+            </span>
+        </el-dialog>
   </el-container>
+
+
 </template>
 
 <script>
-  import { cashList} from '@/api/flow'
+  import { cashList,caseApprove,caseFail} from '@/api/flow'
   import { delay } from '@/utils/index'
   import pagination from '@/components/pagination'
   export default {
@@ -91,7 +106,9 @@
     },
     data() {
       return {
+        dialogTableVisible:false,
         currentRow:null,
+        text:'',
         data: [],
         values:[],
         page: {
@@ -100,6 +117,7 @@
           search2:"",
           total: 0
         },
+        pid:'',
         item: {
           uid:null
         },
@@ -110,13 +128,27 @@
     mounted() {},
     methods: {
       handleEdit(res){
-        this.sendParams(res.userId);
+        // alert(JSON.stringify(res))
+        this.sendParams(res.pdcId);
       },
       handleAcc(res){
-        this.accParams(res.userId);
+        this.dialogTableVisible = true
+        this.pid = res.pdcId
+      },
+      goFail(){
+          var data ={
+            id:this.pid,
+            mes:this.text
+          }
+          caseFail(data).then(res => {
+            this.dialogTableVisible = false
+              this.$refs.pagination.parentHandleclick(this.page);
+          }).catch(() => {
+
+          })
       },
       handleSign(res){
-        this.signParams(res.userId);
+        this.signParams(res.pdcMemberId);
       },
 
       //分页器自动调用
@@ -137,12 +169,18 @@
         this.$refs.pagination.parentHandleclick(this.page);
       },
       sendParams (res) {
-        this.$router.push({
-          name: 'deposit',
-          query: {
-            uid: res
-          }
+        caseApprove(res).then(res => {
+             this.$refs.pagination.parentHandleclick(this.page);
+        }).catch(() => {
+
         })
+
+        // this.$router.push({
+        //   name: 'deposit',
+        //   query: {
+        //     uid: res
+        //   }
+        // })
       },
 
     },
