@@ -78,7 +78,7 @@ public class WeiboServiceImpl implements WeiboService {
         Map<String, Object> proIp = proxyIpService.getProxyIp();
         Jweibo weibo = new Jweibo();
         try {
-            String jsonStr = getWeiboJsonStr(url,(String)proIp.get("ip"),(int)proIp.get("port"));
+            String jsonStr = getWeiboJsonStr(url,(String)proIp.get("ip"),Integer.parseInt(proIp.get("port").toString()));
             List<Map> rootNode = JsonUtils.jsonToList(jsonStr, Map.class);
             JweiboHandler(rootNode,weibo,null);
         } catch (Exception e) {

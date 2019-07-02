@@ -99,6 +99,12 @@ public class ShareController {
         if(share.getHaveSharedNum()>= share.getShareNum()){
             return ApiResult.error("已达分享上限");
         }
+        ShareLog shareLog1 = shareLogService.getOne(new QueryWrapper<ShareLog>().eq("account_id",account_id)
+                .eq("share_id",share_id)
+        );
+        if(shareLog1!=null){
+            return ApiResult.error("此账号已分享");
+        }
 
         UserAccount userAccount = userAccountService.getById(account_id);
         //创建coinLog记录

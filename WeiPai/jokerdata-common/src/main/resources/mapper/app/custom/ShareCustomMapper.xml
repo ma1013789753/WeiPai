@@ -218,6 +218,7 @@
         RIGHT JOIN g_user_account b
         ON a.`account_id` = b.account_id
         WHERE a.share_state = 0
+        and a.share_status = 0
         <if test="shareIndexParams.tag_id != null and shareIndexParams.tag_id != 0">
           and a.tag_id = #{shareIndexParams.tag_id}
         </if>

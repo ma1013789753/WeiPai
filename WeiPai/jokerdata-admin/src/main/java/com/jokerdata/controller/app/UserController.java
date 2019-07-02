@@ -767,6 +767,9 @@ public class UserController {
             if(data == null){
                 return ApiResult.error("获取失败");
             }
+            if(data.getRetweeted()!=null && !StringUtils.isEmpty(data.getRetweeted().getId()) ){
+                data.setId(data.getRetweeted().getId());
+            }
 
             Jweibo jweibo = data;
             UserAccount account = userAccountService.getOne(new QueryWrapper<UserAccount>().eq("access_token",token));

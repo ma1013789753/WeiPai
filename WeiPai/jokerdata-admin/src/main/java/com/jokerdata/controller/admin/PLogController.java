@@ -98,8 +98,7 @@ public class PLogController {
 
         //是否完成
         Share share = pShareLog.getShare();
-        share.setShareNumTrue(share.getShareNumTrue()+1);
-        if(share.getShareNumTrue()>=share.getShareNum()){
+        if(share.getHaveSharedNum()>=share.getShareNum()){
 
             PdLog pdCash = pdLogService.getOne(new QueryWrapper<PdLog>()
                     .eq("lg_type","task_freeze")
