@@ -61,7 +61,7 @@ public class TokenServiceImpl implements TokenService {
         tokenBean.setUserId(userId);
         tokenBean.setToken(token);
         tokenBean.setSysUser(sysUser);
-        redisTemplate.opsForValue().set(userId,tokenBean,30,TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set(userId,tokenBean,60,TimeUnit.MINUTES);
         return token;
     }
 
