@@ -65,7 +65,7 @@ public class AuthToken {
         }
         UserToken userToken = userTokenService.getUserByToken(key);
         if(userToken == null){
-            throw new ApiException("请重新登录");
+            throw new ApiException("请登录");
         }
         User user = userService.getById(userToken.getUserId());
         if(user.getUserState().equals("1")){

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -86,6 +87,18 @@ public class TaskLogController {
 
         if(!userService.updateById(user)){
             throw  new ApiException("更新失败");
+        }
+        taskLog = taskLogService.getById(taskVo.getId());
+        List<TaskLog> datas = taskLogService.list(new QueryWrapper<TaskLog>().eq("t_id",taskLog.getTId())
+                            .in("state",new String[]{"0","1"})
+        );
+        if(datas==null || datas.size()==0){
+            Task tsak = new Task();
+            tsak.setId(taskLog.getTId());
+            tsak.setState(2);
+            if(!taskService.updateById(tsak)){
+                throw  new ApiException("更新失败");
+            }
         }
         return Result.success();
     }

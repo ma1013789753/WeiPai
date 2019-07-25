@@ -280,6 +280,7 @@ public class PublicController {
         }
 
         Article article = articleService.getOne(queryWrapper);
+        article.setArticleContent(ShareUtil.htmlEncode(article.getArticleContent()));
         Map<String,Object> map = new HashMap<>();
         map.put("article_info", ShareUtil.toLowBean(article));
         return ApiResult.success(map);

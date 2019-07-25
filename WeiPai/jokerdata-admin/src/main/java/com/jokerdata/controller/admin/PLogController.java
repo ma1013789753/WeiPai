@@ -98,6 +98,9 @@ public class PLogController {
 
         //是否完成
         Share share = pShareLog.getShare();
+        if(share.getShareState().equals("4")){
+            return Result.success();
+        }
         if(share.getHaveSharedNum()>=share.getShareNum()){
 
             PdLog pdCash = pdLogService.getOne(new QueryWrapper<PdLog>()
@@ -160,6 +163,9 @@ public class PLogController {
         }
 
         Share share = pShareLog.getShare();
+        if(share.getShareState().equals("4")){
+            return Result.success();
+        }
         share.setHaveSharedNum(share.getHaveSharedNum()-1);
 
         if(!shareService.updateById(share)){

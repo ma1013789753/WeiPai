@@ -52,6 +52,9 @@ public class PredController {
     private CoinService coinService;
 
     @Autowired
+    private CoinLogService coinLogService;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
@@ -154,7 +157,6 @@ public class PredController {
         pdLog.setLgFreezeAmount(new BigDecimal(Double.parseDouble(money)));
         pdLog.setLgAddTime((new Date().getTime()/1000));
         pdLog.setLgFromData(pdCash.getPdcId()+"");
-
         if(!pdLogService.save(pdLog)){
             throw new ApiException("保存失败");
         }
@@ -180,6 +182,26 @@ public class PredController {
         Coin coin = coinService.getOne(new QueryWrapper<Coin>().eq("order_sn",order_sn));
         if(coin == null){
             return ApiResult.error("查询失败");
+        }
+        if(user.getAvailablePredeposit().doubleValue()< coin.getOrderAmount().doubleValue()){
+            return ApiResult.error("钱包余额不足");
+        }
+        user.setAvailablePredeposit(user.getAvailablePredeposit().subtract(coin.getOrderAmount()));
+        user.setCoinTotal(user.getCoinTotal().intValue()+coin.getCoinAmount());
+        user.setUserCoin(user.getUserCoin()+coin.getCoinAmount());
+        userService.updateById(user);
+        coin.setPayState("1");
+        coinService.updateById(coin);
+
+        CoinLog coinLog = new CoinLog();
+        coinLog.setAddTime(new Date().getTime()/1000);
+        coinLog.setLogUserId(user.getUserId()+"");
+        coinLog.setLogUserName(user.getUserName());
+        coinLog.setLogAvCoin(new BigDecimal(coin.getCoinAmount()));
+        coinLog.setLogType("recharge");
+        ;
+        if(!coinLogService.save(coinLog)){
+            throw new ApiException("保存失败");
         }
 
         return ApiResult.success("成功");

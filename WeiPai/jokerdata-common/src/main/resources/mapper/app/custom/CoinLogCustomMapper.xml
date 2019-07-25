@@ -3,7 +3,6 @@
 <mapper namespace="com.jokerdata.mapper.app.generator.CoinLogMapper">
 
    <select id="getAllCount" resultType="java.lang.Integer">
-
         SELECT
         SUM(p.`log_av_coin`)
         FROM
@@ -13,10 +12,8 @@
         ON g.`share_id` = h.`share_id`
         INNER JOIN g_coin_log p
         ON p.`log_id` = h.`log_id`
-        WHERE g.`share_status` = 0
-        AND g.`share_state` = 0
-        AND g.`share_id` = #{shareId}
-        AND p.`log_type` = 'task_income'
+        WHERE g.`share_id` = #{shareId}
+        and h.is_pass != 2
         ORDER BY g.`share_id` DESC
 
 

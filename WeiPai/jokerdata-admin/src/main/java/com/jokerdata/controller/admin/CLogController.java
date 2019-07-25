@@ -86,6 +86,9 @@ public class CLogController {
         }
         //是否完成
         Share share = cShareLog.getShare();
+        if(share.getShareState().equals("4")){
+            return Result.success();
+        }
         if(share.getHaveSharedNum()>=share.getShareNum()){
 
             CoinLog coinCash = coinLogService.getOne(new QueryWrapper<CoinLog>()
@@ -102,34 +105,6 @@ public class CLogController {
             if(!shareService.updateById(share)){
                 throw new ApiException("更新失败");
             }
-//
-//            //查看花了多少
-//            Double count = Double.valueOf(share.getOriginalCoin());
-//            if(count == null ||count == 0 ){
-//                throw new ApiException("错误");
-//            }
-//            //积分消耗光 直接更新记录表
-//            coinCash.setLogType("task_outcome");
-//            if(!coinLogService.updateById(coinCash)){
-//                throw new ApiException("更新失败");
-//            }
-//
-//            if(count < share.getTotalCoin()){
-//                //返还积分
-//                coinCash.setLogId(null);
-//                coinCash.setAddTime((long) new Date().getTime()/1000);
-//                coinCash.setLogAvCoin(coinCash.getLogAvCoin().subtract(new BigDecimal(count)));
-//                coinCash.setLogType("refound");
-//                if(!coinLogService.save(coinCash)){
-//                    throw new ApiException("更新失败");
-//                }
-//                User send = userService.getById(share.getUserId());
-//                send.setUserCoin(user.getUserCoin()+(coinCash.getLogAvCoin().subtract(new BigDecimal(count))).intValue());
-//                if(!userService.updateById(send)){
-//                    throw new ApiException("更新失败");
-//                }
-//
-//            }
         }
         return Result.success();
     }
@@ -152,6 +127,9 @@ public class CLogController {
         }
 
         Share share = cShareLog.getShare();
+        if(share.getShareState().equals("4")){
+            return Result.success();
+        }
         share.setHaveSharedNum(share.getHaveSharedNum()-1);
 
         if(!shareService.updateById(share)){

@@ -78,7 +78,7 @@
             type="textarea"
             :rows="2"
             placeholder="请输入理由"
-            v-model="text">
+            v-model="mes">
           </el-input>
             <span slot="footer" class="dialog-footer">
               <el-button @click="dialogTableVisible = false">取 消</el-button>
@@ -108,7 +108,7 @@
       return {
         dialogTableVisible:false,
         currentRow:null,
-        text:'',
+        mes:"",
         data: [],
         values:[],
         page: {
@@ -136,13 +136,14 @@
         this.pid = res.pdcId
       },
       goFail(){
+          var self = this
           var data ={
-            id:this.pid,
-            mes:this.text
+            id: self.pid,
+            mes: self.mes
           }
           caseFail(data).then(res => {
-            this.dialogTableVisible = false
-              this.$refs.pagination.parentHandleclick(this.page);
+            self.dialogTableVisible = false
+              self.$refs.pagination.parentHandleclick(self.page);
           }).catch(() => {
 
           })

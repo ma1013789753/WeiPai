@@ -83,13 +83,18 @@
     <select id="selectUserListVo" resultMap="BaseResultMap3">
 
         SELECT
-        a.user_id,a.share_id,a.account_id,c.avatar_hd , a.`sl_id`
-        FROM g_share_log AS a
-        LEFT JOIN g_user_account AS c ON c.account_id =  a.account_id
-        LEFT JOIN g_share_log g ON g.share_id = a.share_id
-        WHERE a.`share_id` = #{i} AND a.sl_id &lt; g.sl_id
-        GROUP BY a.user_id,a.share_id,a.account_id,c.avatar_hd,sl_id
-        ORDER BY `sl_id`  DESC
+          a.user_id,
+          a.share_id,
+          a.account_id,
+          c.avatar_hd,
+          a.`sl_id`
+        FROM
+          g_share_log AS a
+          LEFT JOIN g_user_account AS c
+            ON c.account_id = a.account_id
+        WHERE a.`share_id` = #{i}
+          AND a.is_pass != 2
+        ORDER BY `sl_id` DESC
         LIMIT 0,4
     </select>
 
@@ -97,10 +102,9 @@
         SELECT a.user_id,a.share_id,a.account_id,c.avatar_hd,a.sl_id
         FROM g_share_log a
         LEFT JOIN g_user_account c ON c.account_id=a.account_id
-        LEFT JOIN g_share_log g ON g.share_id = a.share_id  AND a.sl_id &lt; g.sl_id
-        WHERE a.share_id =#{shareId}
-        GROUP BY a.user_id,a.share_id,a.account_id,c.avatar_hd,a.sl_id
-        HAVING COUNT(g.share_id) &lt;=  4
+        WHERE a.share_id = #{shareId}
+        AND a.is_pass != 2
+
         ORDER BY a.sl_id DESC
     </select>
 
@@ -110,6 +114,8 @@
         g_share_log a
         LEFT JOIN g_user_account c ON c.account_id=a.account_id
         WHERE a.share_id = #{share_id}
+                AND a.is_pass != 2
+
         ORDER BY sl_id DESC
     </select>
 

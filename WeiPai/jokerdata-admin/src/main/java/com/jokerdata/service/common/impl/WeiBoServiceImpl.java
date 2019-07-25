@@ -2,6 +2,7 @@ package com.jokerdata.service.common.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jokerdata.common.JsonUtils;
+import com.jokerdata.common.ShareUtil;
 import com.jokerdata.common.exception.ApiException;
 import com.jokerdata.controller.admin.CLogController;
 import com.jokerdata.controller.admin.PLogController;
@@ -26,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,6 +70,9 @@ public class WeiboServiceImpl implements WeiboService {
     private UserService userService;
 
     @Autowired
+    private UserAccountService userAccountService;
+
+    @Autowired
     private CLogController cLogController;
 
     @Autowired
@@ -103,7 +108,7 @@ public class WeiboServiceImpl implements WeiboService {
             shareHandler(rootNode,weibo,null);
         } catch (Exception e) {
             log.error("getWeiboData() error!");
-            e.printStackTrace();
+            return weibo;
         }
         return weibo;
     }
@@ -112,11 +117,12 @@ public class WeiboServiceImpl implements WeiboService {
      * 定时批量抓取转发微博
      */
     @Override
+    @Async
     public void crawlingShareData() {
-        System.out.println("\"开始抓取微博\" = " + "开始抓取微博");
+        logger.error("\"开始抓取微博\" = " + "开始抓取微博");
         QueryWrapper<Share> shareQueryWrapper = new QueryWrapper<>();
         shareQueryWrapper.eq("share_type",1);//微博
-        shareQueryWrapper.eq("share_state",0);//進行中
+        shareQueryWrapper.in("share_state","0","4");//進行中
         List<Share> shareList = shareService.list(shareQueryWrapper);
         shareList.forEach(share -> {
             QueryWrapper<ShareLog> shareLogQueryWrapper = new QueryWrapper<>();
@@ -124,41 +130,55 @@ public class WeiboServiceImpl implements WeiboService {
             shareLogQueryWrapper.eq("is_pass","0");
             List<ShareLog> shareLogs = shareLogService.list(shareLogQueryWrapper);
             shareLogs.forEach(shareLog -> {
-                Map<String, Object> proIp = proxyIpService.getProxyIp();
-
-                Jweibo shareWeibo = getWeiboData(shareLog.getContent(),(String)proIp.get("ip"),(int)proIp.get("port"));
-
-                if(share.getShareStatus().equals("0")){
-                    CoinLog coinLog = coinLogService.getById(shareLog.getLogId());
-                    CShareLog cShareLog = new CShareLog();
-                    BeanUtils.copyProperties(coinLog, cShareLog);
-                    cShareLog.setShare(share);
-                    cShareLog.setShareLog(shareLog);
-                    if(shareWeibo != null && !StringUtils.isEmpty(shareWeibo.getId()) && share.getWbId().equals(shareWeibo.getRetweeted().getId())){
-                        logger.error(shareLog.toString()+"——————获取成功");
-                        cLogController.approve(cShareLog);
-                    }else{
-                        logger.error(shareLog.toString()+"——————未获取到相关转发内容");
-                        cLogController.approveFail(cShareLog);
-
-                    }
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-                //现金
-                if(share.getShareStatus().equals("1")){
-                    PdLog pdLog = pdLogService.getById(shareLog.getLogId());
-                    PShareLog pShareLog = new PShareLog();
-                    BeanUtils.copyProperties(pdLog, pShareLog);
-                    pShareLog.setShare(share);
-                    pShareLog.setShareLog(shareLog);
-                    if(shareWeibo != null && !StringUtils.isEmpty(shareWeibo.getId()) && share.getWbId().equals(shareWeibo.getRetweeted().getId())){
-                        logger.error(shareLog.toString()+"——————获取成功");
-                        pLogController.approve(pShareLog);
-                    }else{
-                        logger.error(shareLog.toString()+"——————未获取到相关转发内容");
-                        pLogController.approveFail(pShareLog);
+                        logger.error("\"开始抓取微博\" = " + shareLog.toString());
+                        Map<String, Object> proIp = proxyIpService.getProxyIp();
+                        UserAccount userAccount = userAccountService.getById(shareLog.getAccountId());
+                        Jweibo shareWeibo = null;
+                        logger.error("shareLog.getContent()"+shareLog.getContent());
+                        if(ShareUtil.verifyUrl(shareLog.getContent())){
+                            shareWeibo = getWeiboData(shareLog.getContent(),(String)proIp.get("ip"),(int)proIp.get("port"));
+                        }
+                        //积分
+                        if(share.getShareStatus().equals("0")){
+                            CoinLog coinLog = coinLogService.getById(shareLog.getLogId());
+                            CShareLog cShareLog = new CShareLog();
+                            BeanUtils.copyProperties(coinLog, cShareLog);
+                            cShareLog.setShare(share);
+                            cShareLog.setShareLog(shareLog);
+                            if(shareWeibo != null &&
+                                    shareWeibo.getRetweeted()!=null &&
+                                    !StringUtils.isEmpty(shareWeibo.getId()) &&
+                                    share.getWbId().equals(shareWeibo.getRetweeted().getId())
+                                    && shareWeibo.getUserId()==Long.valueOf(userAccount.getUid())){
+                                logger.error(shareLog.toString()+"——————获取成功");
+                                cLogController.approve(cShareLog);
+                            }else{
+                                logger.error(shareLog.toString()+"——————未获取到相关转发内容");
+                                cLogController.approveFail(cShareLog);
 
-                    }
-                }
+                            }
+                        }
+                        //现金
+                        if(share.getShareStatus().equals("1")){
+                            PdLog pdLog = pdLogService.getById(shareLog.getLogId());
+                            PShareLog pShareLog = new PShareLog();
+                            BeanUtils.copyProperties(pdLog, pShareLog);
+                            pShareLog.setShare(share);
+                            pShareLog.setShareLog(shareLog);
+                            if(shareWeibo != null && shareWeibo.getRetweeted()!=null && !StringUtils.isEmpty(shareWeibo.getId()) && share.getWbId().equals(shareWeibo.getRetweeted().getId())){
+                                logger.error(shareLog.toString()+"——————获取成功");
+                                pLogController.approve(pShareLog);
+                            }else{
+                                logger.error(shareLog.toString()+"——————未获取到相关转发内容");
+                                pLogController.approveFail(pShareLog);
+
+                            }
+                        }
             });
         });
 
@@ -316,7 +336,7 @@ public class WeiboServiceImpl implements WeiboService {
                 weibo.setId((String) statusNode.get("id"));
                 weibo.setText((String)statusNode.get("text"));
                 HashMap<String, Object> userInfo = (HashMap<String, Object>) statusNode.get("user");
-                weibo.setUserId((long)userInfo.get("id"));
+                weibo.setUserId(((Number)userInfo.get("id")).longValue());
                 //是否是原创微博
                 if (statusNode.get("retweeted_status")!=null) {
                     HashMap<String, Object> retweetedInfo = (HashMap<String, Object>) statusNode.get("retweeted_status");
@@ -326,7 +346,7 @@ public class WeiboServiceImpl implements WeiboService {
 
         } catch (Exception e) {
             log.error("shareHandler error!");
-            e.printStackTrace();
+            return weibo;
         }
         return weibo;
     }

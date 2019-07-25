@@ -12,10 +12,8 @@
         ON g.`share_id` = h.`share_id`
         INNER JOIN g_pd_log p
         ON p.`lg_id` = h.`log_id`
-        WHERE g.`share_status` = 1
-        AND g.`share_state` = 0
-        AND g.`share_id` = #{shareId}
-        AND p.`lg_type` = 'task_income'
+        WHERE g.`share_id` = #{shareId}
+        and h.is_pass != 2
         ORDER BY g.`share_id` DESC
     </select>
 

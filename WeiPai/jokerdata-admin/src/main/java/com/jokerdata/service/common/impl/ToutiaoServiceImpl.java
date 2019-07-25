@@ -2,6 +2,7 @@ package com.jokerdata.service.common.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jokerdata.common.JsonUtils;
+import com.jokerdata.common.ShareUtil;
 import com.jokerdata.entity.Jweibo;
 import com.jokerdata.entity.admin.generator.TshareLog;
 
@@ -48,6 +49,8 @@ public class ToutiaoServiceImpl implements ToutiaoService {
         try {
             Map<String,String> m = getToutiaoContent(url,(String)proIp.get("ip"),(int)proIp.get("port"));
             String jsonStr = m.get("json");
+            jsonStr = ShareUtil.htmlEncode(jsonStr);
+            jsonStr = jsonStr.replaceAll("(\\.slice\\((.+?)\\))", "");
             jsonStr = jsonStr.replaceAll("\'", "\"");
             jsonStr = jsonStr.replaceAll("(\\w+)(\\s*: \\s*)", "\\\"$1\\\"$2");
             jsonStr = jsonStr.replaceAll("\r|\n|\\s", "").replaceAll(",\\}", "\\}");

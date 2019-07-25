@@ -57,12 +57,12 @@
       </template>
     </el-table-column>
     <el-table-column  prop="shareState" label="互推状态" :formatter="getIsPass"></el-table-column>
-    <el-table-column  prop="isOriginal" label="是否原创">
-      <template slot-scope="scope">
-        <el-tag v-if="scope.row.isOriginal == 0" type="danger">{{getIsOk(0,0,scope.row.isOriginal)}}</el-tag>
-        <el-tag v-else > {{getIsOk(0,0,scope.row.isOriginal)}}</el-tag>
-      </template>
-    </el-table-column>
+<!--    <el-table-column  prop="isOriginal" label="是否原创">-->
+<!--      <template slot-scope="scope">-->
+<!--        <el-tag v-if="scope.row.isOriginal == 0" type="danger">{{getIsOk(0,0,scope.row.isOriginal)}}</el-tag>-->
+<!--        <el-tag v-else > {{getIsOk(0,0,scope.row.isOriginal)}}</el-tag>-->
+<!--      </template>-->
+<!--    </el-table-column>-->
     <el-table-column  prop="shareRecommend" label="是否推荐" :formatter="getIsOk"></el-table-column>
     <el-table-column  prop="tagName" label="标签" ></el-table-column>
     <el-table-column  prop="coinMax" label="最高奖励">
@@ -84,12 +84,12 @@
           v-if="scope.row.shareState != 1 "
           @click="handleShow(scope.row)"
         >查看</el-button>
-        <el-button
-          size="mini"
-          type="primary"
-          v-if="scope.row.shareState != 1 "
-          @click="handleEdit(scope.row)"
-        >编辑</el-button>
+<!--        <el-button-->
+<!--          size="mini"-->
+<!--          type="primary"-->
+<!--          v-if="scope.row.shareState != 1 "-->
+<!--          @click="handleEdit(scope.row)"-->
+<!--        >编辑</el-button>-->
         <el-button
           size="mini"
           type="warning"
@@ -105,7 +105,7 @@
 
         <el-button
           size="mini"
-          v-if="scope.row.shareState == 1"
+          v-if="scope.row.shareState == 0"
           type="danger"
           @click="handleApprove(scope.row,4)"
         >取消</el-button>

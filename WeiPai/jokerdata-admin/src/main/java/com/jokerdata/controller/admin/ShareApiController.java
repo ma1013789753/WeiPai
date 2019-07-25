@@ -11,6 +11,7 @@ import com.jokerdata.common.exception.ApiException;
 import com.jokerdata.common.exception.MyException;
 import com.jokerdata.common.utils.ConstCode;
 import com.jokerdata.common.utils.RequestHolder;
+import com.jokerdata.controller.app.ShareController;
 import com.jokerdata.entity.app.generator.*;
 import com.jokerdata.parames.vo.MonetListVo;
 import com.jokerdata.parames.vo.PageResule;
@@ -18,10 +19,9 @@ import com.jokerdata.parames.vo.SpreadBeanVo;
 import com.jokerdata.service.admin.CustomShareService;
 import com.jokerdata.service.admin.CustomShareTagService;
 import com.jokerdata.service.app.*;
-import com.jokerdata.vo.ApiResult;
-import com.jokerdata.vo.MyPage;
-import com.jokerdata.vo.Result;
+import com.jokerdata.vo.*;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -66,6 +66,14 @@ public class ShareApiController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ShareLogService shareLogService;
+
+    @Autowired
+    private CLogController cLogController;
+
+    @Autowired
+    private PLogController pLogController;
 
     @Login
     @PostMapping(value = "/getPage",produces = "application/json;charset=UTF-8")
@@ -91,19 +99,43 @@ public class ShareApiController {
     @PostMapping(value = "/approve",produces = "application/json;charset=UTF-8")
     @ApiOperation(value = "审核订单",notes = "")
     public Result approve(@RequestBody Share param){
-
+        User user = userService.getById(param.getUserId());
         //通过
         if("0".equals(param.getShareState())){
             if(!shareService.updateById(param)){
                 throw new ApiException("更新失败");
             }
         }
-        //现金 取消
-        if("4".equals(param.getShareState())&&"1".equals(param.getShareStatus())){
-            if(!shareService.updateById(param)){
-                throw new ApiException("更新失败");
-            }
 
+        if(param.getShareStatus().equals("0")){
+            //更新发布者积分
+            CoinLog coinLog = new CoinLog();
+            coinLog.setLogUserId(user.getUserId()+"");
+            coinLog.setLogUserName(user.getUserName());
+            coinLog.setLogType("refound");
+            coinLog.setLogAvCoin(new BigDecimal((param.getShareCoin())*(param.getShareNum()-param.getHaveSharedNum())));
+            coinLog.setLogFreezeCoin(new BigDecimal(0));
+            coinLog.setAddTime(new Date().getTime()/1000);
+            coinLogService.save(coinLog);
+
+            user.setUserCoin(user.getUserCoin()+coinLog.getLogAvCoin().intValue());
+            userService.updateById(user);
+            //更新所有转发者积分
+            QueryWrapper<ShareLog> shareLogQueryWrapper = new QueryWrapper<>();
+            shareLogQueryWrapper.eq("share_id",param.getShareId());
+            shareLogQueryWrapper.eq("is_pass","0");
+            List<ShareLog> shareLogs = shareLogService.list(shareLogQueryWrapper);
+            shareLogs.forEach(shareLog -> {
+                CoinLog userCoinLog = coinLogService.getById(shareLog.getLogId());
+                CShareLog cShareLog = new CShareLog();
+                BeanUtils.copyProperties(userCoinLog, cShareLog);
+                cShareLog.setShare(param);
+                cShareLog.setShareLog(shareLog);
+                cLogController.approve(cShareLog);
+            });
+        }
+
+        if(param.getShareStatus().equals("1")){
             PdLog pdCash = pdLogService.getOne(new QueryWrapper<PdLog>()
                     .eq("lg_type","task_freeze")
                     .eq("lg_desc",param.getShareId())
@@ -111,17 +143,22 @@ public class ShareApiController {
             if(pdCash==null){
                 throw new ApiException("不存在");
             }
+            //查看花了多少
+            BigDecimal count = new BigDecimal(param.getOriginalCoin());
 
+            if(count == null ){
+                throw new ApiException("错误");
+            }
+            //退还金额
             PdLog refunt = new PdLog();
             refunt.setLgType("refund");
             refunt.setLgMemberId(pdCash.getLgMemberId());
             refunt.setLgMemberName(pdCash.getLgMemberName());
             refunt.setLgAddTime(new Date().getTime()/1000);
-            refunt.setLgAvAmount(pdCash.getLgAvAmount());
+            refunt.setLgAvAmount(new BigDecimal(-pdCash.getLgAvAmount().doubleValue()).subtract(count));
             if(!pdLogService.save(refunt)){
                 throw new ApiException("更新失败");
             }
-
             User target = userService.getById(param.getUserId());
             target.setAvailablePredeposit(target.getAvailablePredeposit().add(refunt.getLgAvAmount()));
 
@@ -129,38 +166,21 @@ public class ShareApiController {
                 throw new ApiException("更新失败");
             }
 
-        }
 
-        //积分 取消
-        if("4".equals(param.getShareState())&&"0".equals(param.getShareStatus())){
+            //更新所有转发者积分
+            QueryWrapper<ShareLog> shareLogQueryWrapper = new QueryWrapper<>();
+            shareLogQueryWrapper.eq("share_id",param.getShareId());
+            shareLogQueryWrapper.eq("is_pass","0");
+            List<ShareLog> shareLogs = shareLogService.list(shareLogQueryWrapper);
+            shareLogs.forEach(shareLog -> {
+                PdLog pdLog = pdLogService.getById(shareLog.getLogId());
+                PShareLog pShareLog = new PShareLog();
+                BeanUtils.copyProperties(pdLog, pShareLog);
+                pShareLog.setShare(param);
+                pShareLog.setShareLog(shareLog);
+                pLogController.approve(pShareLog);
+            });
 
-            if(!shareService.updateById(param)){
-                throw new ApiException("更新失败");
-            }
-
-            CoinLog coinCash = coinLogService.getOne(new QueryWrapper<CoinLog>()
-                    .eq("log_type","task_freeze")
-                    .eq("log_mark",param.getShareId())
-            );
-            if(coinCash==null){
-                throw new ApiException("不存在");
-            }
-            coinCash.setLogType("task_cancel");
-
-            CoinLog coinLog = coinCash;
-            coinLog.setLogId(null);
-            coinLog.setLogAvCoin(new BigDecimal(-coinCash.getLogAvCoin().intValue()));
-            coinLog.setAddTime(new Date().getTime()/1000);
-            if(!coinLogService.save(coinLog)){
-                throw new ApiException("更新失败");
-            }
-
-            User target = userService.getById(param.getUserId());
-            target.setUserCoin(target.getUserCoin()+coinLog.getLogAvCoin().intValue());
-
-            if(!userService.updateById(target)){
-                throw new ApiException("更新失败");
-            }
 
         }
         return Result.success("保存失败");

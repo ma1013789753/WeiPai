@@ -92,4 +92,6 @@ public class ShareLog extends Model<ShareLog> {
         return this.slId;
     }
 
+
+
 }

@@ -23,6 +23,7 @@ import com.jokerdata.parames.*;
 import com.jokerdata.parames.vo.PageResule;
 import com.jokerdata.service.app.*;
 import com.jokerdata.service.common.JpushService;
+import com.jokerdata.service.common.ToutiaoService;
 import com.jokerdata.service.common.WeiboService;
 import com.jokerdata.vo.ApiResult;
 import org.apache.commons.lang3.StringUtils;
@@ -101,6 +102,9 @@ public class UserController {
     @Autowired
     WeiboService weiboService;
 
+    @Autowired
+    ToutiaoService toutiaoService;
+
     @GetMapping(value = "/weibo_list", produces = "application/json;charset=UTF-8")
     @Auth(value = true)
     public ApiResult weibo_list(String key) {
@@ -111,6 +115,7 @@ public class UserController {
         List<Map<String, Object>> dataA = new ArrayList<>();
         List<Map<String, Object>> dataB = new ArrayList<>();
         List<Map<String, Object>> dataC = new ArrayList<>();
+        List<Map<String, Object>> dataD = new ArrayList<>();
         data.forEach(userAccount -> {
             if (ShareUtil.isExit(userAccount.get("account_limit"))) {
                 userAccount.put("time_text", ShareUtil.getTaxt(userAccount.get("account_limit").toString()));
@@ -128,49 +133,67 @@ public class UserController {
                 userAccount.put("account_name", ShareUtil.Base64Decode(userAccount.get("account_name").toString()));
 
             }
+        });
 
-            data.forEach(stringObjectMap -> {
-                String accType = userAccount.get("acc_type").toString();
-                switch (accType) {
-                    case "0":
-                        dataA.add(stringObjectMap);
-                        break;
-                    case "1":
-                        dataB.add(stringObjectMap);
-                        break;
-                    case "2":
-                        dataC.add(stringObjectMap);
-                        break;
-
-                }
-            });
-            if (dataB.size() > 0) {
-
-                List<Map<String, Object>> tag = gzhTagService.listMaps(new QueryWrapper<GzhTag>()
-                        .select("tag_id", "tag_name").orderByDesc("tag_sort")
-                );
-                dataB.forEach(stringObjectMap -> {
-                    stringObjectMap.put("tag_name", tag.get(Integer.parseInt(stringObjectMap.get("gzh_tag_id").toString())) != null ? tag.get(Integer.parseInt(stringObjectMap.get("gzh_tag_id").toString())) : "");
-                });
+        data.forEach(stringObjectMap -> {
+            int accType = (int) stringObjectMap.get("acc_type");
+            switch (accType) {
+                case 0:
+                    dataA.add(stringObjectMap);
+                    break;
+                case 1:
+                    dataB.add(stringObjectMap);
+                    break;
+                case 2:
+                    dataC.add(stringObjectMap);
+                    break;
+                case 3:
+                    dataD.add(stringObjectMap);
+                    break;
 
             }
-
         });
+        if (dataB.size() > 0) {
+
+            List<Map<String, Object>> tag = gzhTagService.listMaps(new QueryWrapper<GzhTag>()
+                    .select("tag_id", "tag_name").orderByDesc("tag_sort")
+            );
+            dataB.forEach(stringObjectMap -> {
+                if(stringObjectMap.containsKey("gzh_tag_id")){
+                    int a = (int) stringObjectMap.get("gzh_tag_id");
+                    Object o =  tag.get((Integer) stringObjectMap.get("gzh_tag_id"));
+                    stringObjectMap.put("tag_name", tag.get((Integer) stringObjectMap.get("gzh_tag_id")) != null ? tag.get(Integer.parseInt(stringObjectMap.get("gzh_tag_id").toString())) : "");
+                }
+            });
+
+        }
+
+
         Map<String, Object> result = new HashMap<>();
         result.put("weibo_list", dataA);
         result.put("public_list", dataB);
         result.put("wechat_list", dataC);
-
+        result.put("toutiao_list", dataD);
 
         return ApiResult.success(result);
     }
 
-    @GetMapping(value = "/band_weibo", produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "/band_weibo", produces = "application/json;charset=UTF-8")
     @Auth(value = true)
-    public ApiResult band_weibo(String key,  String user_info) {
+    public ApiResult band_weibo(@RequestParam String key,  @RequestParam String user_info) {
         User user = RequestHolder.getUser();
+        user_info = user_info.trim();
         UserInfoBean userInfoBean = new Gson().fromJson(user_info,UserInfoBean.class);
+
+
         UserAccount userAccount = new UserAccount();
+
+        userAccount = userAccountService.getOne(new QueryWrapper<UserAccount>().eq("access_token",userInfoBean.getWtoken())
+            .eq("user_id",user.getUserId())
+        );
+        if(userAccount==null){
+            userAccount = new UserAccount();
+        }
         userAccount.setUserId(user.getUserId());
         userAccount.setAccountName(userInfoBean.getAccount_name());
         userAccount.setAccountAvatar(userInfoBean.getAccount_avatar());
@@ -189,7 +212,7 @@ public class UserController {
         userAccount.setStatusesCount(userInfoBean.getStatuses_count());
         userAccount.setCreatedAt(userInfoBean.getCreated_at());
 
-        if(!userAccountService.save(userAccount)){
+        if(!userAccountService.saveOrUpdate(userAccount)){
             return ApiResult.error("保存失败");
         }
         return ApiResult.success("");
@@ -779,6 +802,55 @@ public class UserController {
             map.put("Jweibo",jweibo);
             return ApiResult.success(map);
         }
+        if("3".equals(is_wb)){
+            // TODO: 2019/6/2 0002 爬虫获取的微博内容
+            Jweibo data = toutiaoService.pickToutiaoByUrl(url);
+            if(data == null){
+                return ApiResult.error("获取失败");
+            }
+            if(data.getRetweeted()!=null && !StringUtils.isEmpty(data.getRetweeted().getId()) ){
+                data.setId(data.getRetweeted().getId());
+            }
+
+            Jweibo jweibo = data;
+            UserAccount account = userAccountService.getOne(new QueryWrapper<UserAccount>().eq("access_token",token));
+            Map<String,Object> map = new HashMap<>();
+            map.put("user",ShareUtil.toLowBean(account));
+            //此处需要数据
+            map.put("Jweibo",jweibo);
+            return ApiResult.success(map);
+        }
+
+        return ApiResult.error("-1");
+    }
+
+    //详情
+    @PostMapping(value = "/toutiao_add_befor", produces = "application/json;charset=UTF-8")
+    @Auth(value = true)
+    public ApiResult toutiao_add_befor(String key,String url,String is_wb,String token) {
+        User user = RequestHolder.getUser();
+
+        if(StringUtils.isEmpty(url)||StringUtils.isEmpty(token)){
+            return ApiResult.error("参数错误");
+        }
+        if("1".equals(is_wb)){
+            // TODO: 2019/6/2 0002 爬虫获取的微博内容
+            Jweibo data = weiboService.pickDataByUrl(url);
+            if(data == null){
+                return ApiResult.error("获取失败");
+            }
+            if(data.getRetweeted()!=null && !StringUtils.isEmpty(data.getRetweeted().getId()) ){
+                data.setId(data.getRetweeted().getId());
+            }
+
+            Jweibo jweibo = data;
+            UserAccount account = userAccountService.getOne(new QueryWrapper<UserAccount>().eq("access_token",token));
+            Map<String,Object> map = new HashMap<>();
+            map.put("user",ShareUtil.toLowBean(account));
+            //此处需要数据
+            map.put("Jweibo",jweibo);
+            return ApiResult.success(map);
+        }
 
         return ApiResult.error("-1");
     }
@@ -786,25 +858,29 @@ public class UserController {
     /**
      * 实现文件上传
      * */
-    @PostMapping(value = "/avatar_upload", produces = "application/json;charset=UTF-8")
-    @Auth(value = true)
-    public ApiResult avatar_upload(@RequestParam("key") String key, @RequestParam("pic")MultipartFile pic){
-        User user = RequestHolder.getUser();
+    @PostMapping(value = "/files_upload", produces = "application/json;charset=UTF-8")
+//    @Auth(value = true)
+    public ApiResult avatar_upload( @RequestParam("pic")MultipartFile pic){
+//        User user = RequestHolder.getUser();
         if(pic.isEmpty()){
             return ApiResult.error("文件错误");
         }
         String fileName = pic.getOriginalFilename();
         int size = (int) pic.getSize();
         System.out.println(fileName + "-->" + size);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String file = sdf.format(new Date());
 
-        String path = "./Upload/avatar/avatar_"+user.getUserId()+"."+pic.getContentType() ;
+//        String path = "./www/phpwind/Upload/Pictures/file"+user.getUserId()+"."+pic.getContentType() ;
+        String path = System.getProperty("user.dir")+"/www/phpwind/Upload/Pictures/"+file;
         File dest = new File(path + "/" + fileName);
         if(!dest.getParentFile().exists()){ //判断文件父目录是否存在
-            dest.getParentFile().mkdir();
+            dest.getParentFile().mkdirs();
         }
         try {
             pic.transferTo(dest); //保存文件
-            return ApiResult.success("");
+            return ApiResult.success("http://youdianshare.com/Upload/Pictures/2019-07-21/IMG_20190720_212717.jpg");
+//            return ApiResult.success("./Upload/Pictures/"+file+"/"+fileName);
         } catch (IllegalStateException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -817,7 +893,31 @@ public class UserController {
     }
 
 
+    /**
+     * 积分提现
+     * @return
+     */
+    @GetMapping(value = "/tt_band", produces = "application/json;charset=UTF-8")
+    @Auth(value = true)
+    public ApiResult ttBind(String key, @Validated TTBindPms ttBindPms){
+        User user = RequestHolder.getUser();
 
+        UserAccount userAccount = new UserAccount();
+        userAccount.setUserId(user.getUserId());
+        userAccount.setAccountName(ttBindPms.getWechat_name());
+        userAccount.setAccountAvatar(ttBindPms.getAvatarPic());
+        userAccount.setAvatarHd(ttBindPms.getAvatarPic());
+        userAccount.setAccountState(0);
+        userAccount.setAddTime(new Date().getTime()/1000+"");
+        userAccount.setAccType(3);
+        userAccount.setFollowNum(Integer.valueOf(ttBindPms.getFollow_num()));
+        userAccount.setNumScreen(ttBindPms.getNum_screen());
+        userAccount.setGzhTagId(Integer.valueOf(ttBindPms.getTag_id()));
+        if(!userAccountService.save(userAccount)){
+            throw new ApiException("更新失败");
+        }
+        return ApiResult.success();
+    }
 
 
 

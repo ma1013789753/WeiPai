@@ -9,6 +9,8 @@ import com.jokerdata.common.ShareUtil;
 import com.jokerdata.common.annotation.Auth;
 import com.jokerdata.common.exception.ApiException;
 import com.jokerdata.common.utils.RequestHolder;
+import com.jokerdata.controller.admin.CLogController;
+import com.jokerdata.controller.admin.PLogController;
 import com.jokerdata.entity.app.generator.*;
 import com.jokerdata.parames.vo.MonetListVo;
 import com.jokerdata.parames.vo.PageResule;
@@ -16,6 +18,9 @@ import com.jokerdata.parames.vo.SpreadBeanVo;
 import com.jokerdata.service.app.*;
 import com.jokerdata.service.common.JpushService;
 import com.jokerdata.vo.ApiResult;
+import com.jokerdata.vo.CShareLog;
+import com.jokerdata.vo.PShareLog;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +30,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -62,6 +68,12 @@ public class ShareController {
 
     @Autowired
     private JpushService jpushService;
+
+    @Autowired
+    private CLogController cLogController;
+
+    @Autowired
+    private PLogController pLogController;
 
     @GetMapping(value = "/share_list",produces = "application/json;charset=UTF-8")
     @Auth(value = true)
@@ -101,6 +113,7 @@ public class ShareController {
         }
         ShareLog shareLog1 = shareLogService.getOne(new QueryWrapper<ShareLog>().eq("account_id",account_id)
                 .eq("share_id",share_id)
+                .notIn("is_pass",2)
         );
         if(shareLog1!=null){
             return ApiResult.error("此账号已分享");
@@ -229,35 +242,98 @@ public class ShareController {
             return  ApiResult.error("不存在");
 
         }
-        if("2".equals(share.getShareStatus())){
-            return  ApiResult.error("已取消");
-        }
+//        if("2".equals(share.getShareStatus())){
+//            return  ApiResult.error("已取消");
+//        }
         if(1 != (share.getFromApp())){
             return  ApiResult.error("仅客户端发布的任务可取消");
         }
-
-        if(share.getHaveSharedNum()< share.getShareNum()){
+        share = shareService.getOne(new QueryWrapper<Share>().eq("share_id",share_id));
+        share.setShareState("4");
+        if( !shareService.updateById(share)){
+            throw new ApiException("更新失败");
+        }
+        final Share shareTarget = share;
+        if(share.getShareStatus().equals("0")){
+            //更新发布者积分
             CoinLog coinLog = new CoinLog();
             coinLog.setLogUserId(user.getUserId()+"");
             coinLog.setLogUserName(user.getUserName());
             coinLog.setLogType("refound");
-            coinLog.setLogAvCoin(new BigDecimal(Long.parseLong(share.getOriginalCoin())*(share.getShareNum()-share.getHaveSharedNum())));
+            coinLog.setLogAvCoin(new BigDecimal((share.getShareCoin())*(share.getShareNum()-share.getHaveSharedNum())));
             coinLog.setLogFreezeCoin(new BigDecimal(0));
             coinLog.setAddTime(new Date().getTime()/1000);
+            coinLogService.save(coinLog);
 
             user.setUserCoin(user.getUserCoin()+coinLog.getLogAvCoin().intValue());
             userService.updateById(user);
-            coinLogService.save(coinLog);
+            //更新所有转发者积分
+            QueryWrapper<ShareLog> shareLogQueryWrapper = new QueryWrapper<>();
+            shareLogQueryWrapper.eq("share_id",share.getShareId());
+            shareLogQueryWrapper.eq("is_pass","0");
+            List<ShareLog> shareLogs = shareLogService.list(shareLogQueryWrapper);
+            shareLogs.forEach(shareLog -> {
+                CoinLog userCoinLog = coinLogService.getById(shareLog.getLogId());
+                CShareLog cShareLog = new CShareLog();
+                BeanUtils.copyProperties(userCoinLog, cShareLog);
+                cShareLog.setShare(shareTarget);
+                cShareLog.setShareLog(shareLog);
+                cLogController.approve(cShareLog);
+            });
         }
 
-        share = shareService.getOne(new QueryWrapper<Share>().eq("share_id",share_id));
-        share.setShareState("4");
-       ;
+        if(share.getShareStatus().equals("1")){
+            PdLog pdCash = pdLogService.getOne(new QueryWrapper<PdLog>()
+                    .eq("lg_type","task_freeze")
+                    .eq("lg_desc",share.getShareId())
+            );
+            if(pdCash==null){
+                throw new ApiException("不存在");
+            }
+            //查看花了多少
+            BigDecimal count = new BigDecimal(share.getOriginalCoin());
 
-        if( shareService.updateById(share)){
-            return ApiResult.success();
+            if(count == null ){
+                throw new ApiException("错误");
+            }
+            //退还金额
+            PdLog refunt = new PdLog();
+            refunt.setLgType("refund");
+            refunt.setLgMemberId(pdCash.getLgMemberId());
+            refunt.setLgMemberName(pdCash.getLgMemberName());
+            refunt.setLgAddTime(new Date().getTime()/1000);
+            refunt.setLgAvAmount(new BigDecimal(-pdCash.getLgAvAmount().doubleValue()).subtract(count));
+            if(!pdLogService.save(refunt)){
+                throw new ApiException("更新失败");
+            }
+            User target = userService.getById(user.getUserId());
+            target.setAvailablePredeposit(target.getAvailablePredeposit().add(refunt.getLgAvAmount()));
+
+            if(!userService.updateById(target)){
+                throw new ApiException("更新失败");
+            }
+
+
+            //更新所有转发者积分
+            QueryWrapper<ShareLog> shareLogQueryWrapper = new QueryWrapper<>();
+            shareLogQueryWrapper.eq("share_id",share.getShareId());
+            shareLogQueryWrapper.eq("is_pass","0");
+            List<ShareLog> shareLogs = shareLogService.list(shareLogQueryWrapper);
+            shareLogs.forEach(shareLog -> {
+                PdLog pdLog = pdLogService.getById(shareLog.getLogId());
+                PShareLog pShareLog = new PShareLog();
+                BeanUtils.copyProperties(pdLog, pShareLog);
+                pShareLog.setShare(shareTarget);
+                pShareLog.setShareLog(shareLog);
+                pLogController.approve(pShareLog);
+            });
+
+
         }
-        return  ApiResult.error("失败");
+
+
+
+        return  ApiResult.success("");
     }
 
 }

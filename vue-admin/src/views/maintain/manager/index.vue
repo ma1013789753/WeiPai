@@ -35,7 +35,7 @@
         </el-table-column>
         <el-table-column prop="endTime" label="截止日期" width="150px" > </el-table-column>
         <el-table-column prop="createTime" label="创建时间" width="150px" > </el-table-column>
-        <el-table-column label="操作" width="150" fixed="right" align="center"> 
+        <el-table-column label="操作" width="150" fixed="right" align="center">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -52,7 +52,7 @@
       </el-table>
     </el-main>
     <el-footer height="40">
-        <pagination ref="pagination" :total="page.pages" @pageChange="getList"></pagination>
+        <pagination ref="pagination" :total="page.total" @pageChange="getList"></pagination>
     </el-footer>
   </el-container>
 </template>
@@ -76,7 +76,7 @@ export default {
           search2:"",
           search3:"",
           search4:"",
-
+          total:0
         },
         item: {
           shareId:null
@@ -112,7 +112,7 @@ export default {
             this.itemTuijian(res.shareId)
 
         }).catch(() => {
-       
+
         });
     },
     handleCurrentChange(val){
@@ -132,7 +132,7 @@ export default {
           type: 'success',
           message: '删除成功'
         });
-        this.onSearch();  
+        this.onSearch();
       })
     },
     itemTuijian(val){
@@ -142,7 +142,7 @@ export default {
           type: 'success',
           message: '推荐成功'
         });
-        this.onSearch();  
+        this.onSearch();
       })
     },
     //分页器自动调用
@@ -151,6 +151,7 @@ export default {
       list(page).then(res => {
         this.tabledata = res.data.records
         this.page.pages = res.data.pages
+        this.page.total = res.data.total
       })
     },
     //搜索时调用分页器的功能

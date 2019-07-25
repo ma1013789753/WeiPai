@@ -230,7 +230,9 @@ public class TaskController {
         pdLog.setLgAddTime(new Date().getTime()/1000);
         pdLog.setLgDesc("派单收入");
         pdLog.setLgFromData(id);
-        pdLogService.save(pdLog);
+        if(!pdLogService.save(pdLog)){
+            throw  new ApiException("更新失败");
+        }
 
         return ApiResult.success(data);
 
