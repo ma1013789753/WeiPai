@@ -75,37 +75,37 @@ public class Test {
         String jsonStr = str.replaceAll(" ","");
         jsonStr = ShareUtil.htmlEncode(jsonStr);
         jsonStr = jsonStr.replaceAll("(\\.slice\\((.+?)\\))", "");
-        jsonStr = jsonStr.replaceAll("\'", "\"");
+        jsonStr = jsonStr.replaceAll("\'", "").replaceAll("\"","").replaceAll("“","");
         jsonStr = jsonStr.replaceAll("(\\w+)(\\s*: \\s*)", "\\\"$1\\\"$2");
-//        jsonStr = jsonStr.replaceAll("\r|\n|\\s", "").replaceAll(",\\}", "\\}");
+        jsonStr = jsonStr.replaceAll("\r|\n|\\s", "").replaceAll(",\\}", "\\}");
+        //统一格式化
+        jsonStr = jsonStr.replaceAll("\\[","\n[\n").replaceAll("\\]","\n]\n");
+        jsonStr = jsonStr.replaceAll("\\{","\n{\n").replaceAll("\\}","\n}\n");
+        jsonStr = jsonStr.replaceAll(",",",\n");
         String[] strs = jsonStr.split("\n");
         String data = "";
         for (String str:strs) {
-            if(str.contains(":")&&!str.endsWith("{")){
+            if(str.contains(":")){
                 String[] map = str.split(":");
-                String key = map[0];
-                String value = map[1];
-                value = value.replaceAll("\'","");
-                value = value.replaceAll("\"","");
-                value = value.replaceAll("”","");
-                value = value.replaceAll("“","");
-                if(value.endsWith(",")){
-                    value = value.replaceAll(",","");
-                    value = "\""+value+"\"";
-                    data += ("\""+key+"\""+":"+value+",\n");
+                if(map.length==2){
+                    String key = map[0];
+                    String value = map[1];
+                    if(value.endsWith(",")){
+                        value = value.replaceAll(",","");
+                        value = "\""+value+"\"";
+                        data += ("\""+key+"\""+":"+value+",\n");
+                    }else{
+                        value = "\""+value+"\"";
+                        data += ("\""+key+"\""+":"+value+"\n");
+                    }
                 }else{
-                    value = "\""+value+"\"";
-                    data += ("\""+key+"\""+":"+value+"\n");
+                    System.out.println(str+"----------------");
                 }
 
 
-            }else if(str.contains(":")&&str.endsWith("{")){
-                String[] map = str.split(":");
-                String key = map[0];
-                String value = map[1];
-                data += ("\""+key+"\""+":"+value+"\n");
+
             }else{
-                data += str+"\n";
+                data += str;
             }
 
         }

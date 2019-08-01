@@ -33,7 +33,14 @@
     </el-table-column>
     <el-table-column width="80px" label="用户ID" prop="userId"></el-table-column>
     <el-table-column width="130px" label="用户名称" prop="userName" show-overflow-tooltip="true"></el-table-column>
+    <el-table-column width="130px" label="粉丝数" prop="followNum" show-overflow-tooltip="true"></el-table-column>
     <el-table-column width="120px" label="头条号" prop="uid" show-overflow-tooltip="true"></el-table-column>
+    <el-table-column width="110px" label="截图">
+      <template slot-scope="scope">
+        <div></div>
+        <img :src="scope.row.numScreen" style="width: 80px;height:80px"/>
+      </template>
+    </el-table-column>
     <el-table-column width="110px" label="状态">
       <template slot-scope="scope">
         <el-tag v-if="scope.row.accountState == 1"> {{scope.row.accountState | accStatusFilter}}</el-tag>
@@ -72,6 +79,11 @@
           <img style="width: 100px; height: 100px;border-radius:50%;"
                :src="form.accountAvatar">
         </el-form-item>
+        <el-col :span="18">
+          <el-form-item label="粉丝截图" prop="followNum">
+            <img :src="form.numScreen"/>
+          </el-form-item>
+        </el-col>
 
         <el-col :span="18">
         <el-form-item label="账号名称" prop="accountName">
@@ -85,6 +97,7 @@
           <el-input v-model="form.gender" disabled></el-input>
         </el-form-item>
         </el-col>
+
 
         <el-col :span="12">
         <el-form-item label="粉丝数" prop="followNum">

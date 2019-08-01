@@ -15,8 +15,5 @@ public class TTBindPms {
     @NotEmpty
     String num_screen;
     @NotEmpty
-    String avatarPic;
-
-    @NotEmpty
     String tag_id;
 }

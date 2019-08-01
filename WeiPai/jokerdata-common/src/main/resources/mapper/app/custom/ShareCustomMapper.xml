@@ -186,7 +186,7 @@
     <select id="moneyList" resultMap="BaseResultMap">
 
         SELECT share_id,a.user_id,b.account_name as user_name,b.v_legalize,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time,
-			share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image,coin_max,coin_min
+			share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image,coin_max,coin_min,short_url
 	    FROM g_share a
         RIGHT JOIN g_user_account b
         ON a.`account_id` = b.account_id
@@ -200,7 +200,7 @@
     <select id="userShareList" resultMap="BaseResultMap">
 
         SELECT share_id,a.user_id,b.account_name as user_name,b.v_legalize,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time,
-			share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image,coin_max,coin_min
+			share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image,coin_max,coin_min,short_url
 	    FROM g_share a
         RIGHT JOIN g_user_account b
         ON a.`account_id` = b.account_id
@@ -213,7 +213,7 @@
     <select id="shareList" resultMap="BaseResultMap">
 
         SELECT share_id,a.user_id,b.account_name as user_name,b.v_legalize,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time,
-			share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image,a.coin_max,a.coin_min
+			share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image,a.coin_max,a.coin_min,short_url
 	    FROM g_share a
         RIGHT JOIN g_user_account b
         ON a.`account_id` = b.account_id
@@ -240,7 +240,7 @@
     <select id="moneyMore" resultMap="BaseResultMap">
 
         SELECT share_id,a.user_id,b.account_name as user_name,b.v_legalize,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time,
-			share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image,coin_max,coin_min
+			share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image,coin_max,coin_min,short_url
 	    FROM g_share a
         RIGHT JOIN g_user_account b
         ON a.`account_id` = b.account_id
@@ -254,7 +254,7 @@
     <select id="tuiJianList" resultMap="BaseResultMap">
 
         SELECT share_id,a.user_id,b.account_name as user_name,b.v_legalize,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time,
-        share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image,coin_max,coin_min
+        share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image,coin_max,coin_min,short_url
         FROM g_share a
         RIGHT JOIN g_user_account b
         ON a.`account_id` = b.account_id
@@ -267,7 +267,7 @@
     <select id="shareMoneyList" resultMap="BaseResultMap">
 
         SELECT share_id,a.user_id,b.account_name as user_name,b.v_legalize,a.account_id,share_content,share_image,share_state,share_video,wb_id,account_avatar,avatar_hd,a.add_time,
-        share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image,coin_max,coin_min
+        share_coin,share_num,have_shared_num,total_coin,is_original,share_num_true,share_status,share_type,json,background_image,coin_max,coin_min,short_url
         FROM g_share a
         RIGHT JOIN g_user_account b
         ON a.`account_id` = b.account_id

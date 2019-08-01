@@ -104,7 +104,7 @@ public class ShareController {
         }
         Share share = shareService.getById(share_id);
         //微博
-        if(!share.getShareType().equals("1")){
+        if(!share.getShareType().equals("1") && !share.getShareType().equals("3")){
             return ApiResult.error("公众号转发失败");
         }
 

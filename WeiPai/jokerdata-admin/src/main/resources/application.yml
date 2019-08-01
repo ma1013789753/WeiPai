@@ -48,3 +48,5 @@ jpush:
 #IP代理接口配置
 proxyip:
   API_URL: http://webapi.http.zhimacangku.com/getip?num=3&type=2&pro=&city=0&yys=0&port=1&time=1&ts=0&ys=0&cs=0&lb=1&sb=0&pb=4&mr=1&regions=
+logging:
+  config: classpath:log4j2.yml

@@ -30,8 +30,8 @@ public class WXPayController {
     @Autowired
     private CoinService coinService;
 
-    @GetMapping(value = "/alipay_orderinfo",produces = "application/json;charset=UTF-8")
-    @Transactional(propagation = Propagation.REQUIRED)
+//    @GetMapping(value = "/alipay_orderinfo",produces = "application/json;charset=UTF-8")
+//    @Transactional(propagation = Propagation.REQUIRED)
     public ApiResult getAliPayOrderStr(String order_sn) {
 
         Coin coin = coinService.getOne(new QueryWrapper<Coin>().eq("order_sn",order_sn));

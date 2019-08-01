@@ -2,6 +2,7 @@ package com.jokerdata.service.common.impl;
 
 import com.jokerdata.entity.admin.custom.ScheduleJob;
 import com.jokerdata.service.common.JobService;
+import com.jokerdata.service.common.ToutiaoService;
 import com.jokerdata.service.common.WeiboService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ public class JobServiceImpl implements JobService {
     @Autowired
     private WeiboService weiboService;
 
+    @Autowired
+    private ToutiaoService toutiaoService;
     @Override
     public void jobHandle(ScheduleJob scheduleJob) {
         switch (scheduleJob.getJobType()) {
@@ -32,7 +35,7 @@ public class JobServiceImpl implements JobService {
                 weiboService.crawlingShareData();
                 break;
             case "share-toutiao":
-                weiboService.crawlingShareData();
+                toutiaoService.crawlingToutiaoShare();
                 break;
             case "share-income":
                 weiboService.crawlingShareData();

@@ -25,4 +25,6 @@ public class ShareWBParam {
     private String t;
     private String jweibo;
 
+    private String type;
+
 }

@@ -109,9 +109,13 @@ public class UserController {
     @Auth(value = true)
     public ApiResult weibo_list(String key) {
         User user = RequestHolder.getUser();
-        List<Map<String, Object>> data = userAccountService.listMaps(new QueryWrapper<UserAccount>()
+        List<UserAccount> datas = userAccountService.list(new QueryWrapper<UserAccount>()
                 .eq("user_id", user.getUserId())
         );
+        List<Map<String, Object>> data = new ArrayList<>();
+        datas.forEach(userAccount->{
+            data.add(ShareUtil.toLowBean(userAccount));
+        });
         List<Map<String, Object>> dataA = new ArrayList<>();
         List<Map<String, Object>> dataB = new ArrayList<>();
         List<Map<String, Object>> dataC = new ArrayList<>();
@@ -237,7 +241,7 @@ public class UserController {
 
         User user = RequestHolder.getUser();
         ShareTag shareTag = shareTagService.getById(param.getTag_id());
-        UserAccount account = userAccountService.getOne(new QueryWrapper<UserAccount>().eq("access_token",param.getWtoken()));
+        UserAccount account = userAccountService.getOne(new QueryWrapper<UserAccount>().eq("account_id",param.getWtoken()));
         if("1".equals(param.getT())){
             if(param.getShare_num()*param.getShare_coin()>=user.getUserCoin()){
                 return ApiResult.error("积分数量不够");
@@ -307,10 +311,17 @@ public class UserController {
         String content = jweibo.getText();
         content = content.replaceAll("\\/n/","");
         share.setShareContent(ShareUtil.Base64Encode(content));
-        share.setShareType("1");
+        share.setShareType(param.getType());
         share.setWbId(jweibo.getId());
         share.setBackgroundImage("");
-        share.setShortUrl("");
+        if(share.getShareType().equals("3")){
+            String url = share.getShareUrl();
+            url = url.split("/\\?")[0];
+            url = url.substring(url.lastIndexOf("/")+1);
+            share.setShortUrl(url);
+        }else{
+            share.setShortUrl("");
+        }
         share.setFromApp(1);
         //插入成功
         if(!shareService.save(share)){
@@ -795,7 +806,7 @@ public class UserController {
             }
 
             Jweibo jweibo = data;
-            UserAccount account = userAccountService.getOne(new QueryWrapper<UserAccount>().eq("access_token",token));
+            UserAccount account = userAccountService.getOne(new QueryWrapper<UserAccount>().eq("account_id",token));
             Map<String,Object> map = new HashMap<>();
             map.put("user",ShareUtil.toLowBean(account));
             //此处需要数据
@@ -813,7 +824,12 @@ public class UserController {
             }
 
             Jweibo jweibo = data;
-            UserAccount account = userAccountService.getOne(new QueryWrapper<UserAccount>().eq("access_token",token));
+            List<String> pics = jweibo.getImages();
+            for (int i = 0; i < pics.size(); i++) {
+                pics.set(i,"http:"+pics.get(i));
+            }
+            jweibo.setImages(pics);
+            UserAccount account = userAccountService.getOne(new QueryWrapper<UserAccount>().eq("account_id",token));
             Map<String,Object> map = new HashMap<>();
             map.put("user",ShareUtil.toLowBean(account));
             //此处需要数据
@@ -824,36 +840,6 @@ public class UserController {
         return ApiResult.error("-1");
     }
 
-    //详情
-    @PostMapping(value = "/toutiao_add_befor", produces = "application/json;charset=UTF-8")
-    @Auth(value = true)
-    public ApiResult toutiao_add_befor(String key,String url,String is_wb,String token) {
-        User user = RequestHolder.getUser();
-
-        if(StringUtils.isEmpty(url)||StringUtils.isEmpty(token)){
-            return ApiResult.error("参数错误");
-        }
-        if("1".equals(is_wb)){
-            // TODO: 2019/6/2 0002 爬虫获取的微博内容
-            Jweibo data = weiboService.pickDataByUrl(url);
-            if(data == null){
-                return ApiResult.error("获取失败");
-            }
-            if(data.getRetweeted()!=null && !StringUtils.isEmpty(data.getRetweeted().getId()) ){
-                data.setId(data.getRetweeted().getId());
-            }
-
-            Jweibo jweibo = data;
-            UserAccount account = userAccountService.getOne(new QueryWrapper<UserAccount>().eq("access_token",token));
-            Map<String,Object> map = new HashMap<>();
-            map.put("user",ShareUtil.toLowBean(account));
-            //此处需要数据
-            map.put("Jweibo",jweibo);
-            return ApiResult.success(map);
-        }
-
-        return ApiResult.error("-1");
-    }
 
     /**
      * 实现文件上传
@@ -897,16 +883,22 @@ public class UserController {
      * 积分提现
      * @return
      */
-    @GetMapping(value = "/tt_band", produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "/tt_band", produces = "application/json;charset=UTF-8")
     @Auth(value = true)
     public ApiResult ttBind(String key, @Validated TTBindPms ttBindPms){
         User user = RequestHolder.getUser();
 
         UserAccount userAccount = new UserAccount();
         userAccount.setUserId(user.getUserId());
-        userAccount.setAccountName(ttBindPms.getWechat_name());
-        userAccount.setAccountAvatar(ttBindPms.getAvatarPic());
-        userAccount.setAvatarHd(ttBindPms.getAvatarPic());
+        Jweibo jweibo = toutiaoService.pickToutiaoByUrl(ttBindPms.getWechat_name());
+        if(StringUtils.isEmpty(jweibo.getId())){
+            throw new ApiException("获取信息失败");
+        }
+
+        userAccount.setAccountName(jweibo.getScreenName());
+        userAccount.setAccountAvatar("http://"+jweibo.getProfileImage());
+        userAccount.setAvatarHd("http://"+jweibo.getProfileImage());
+        userAccount.setUid(String.valueOf(jweibo.getUserId()));
         userAccount.setAccountState(0);
         userAccount.setAddTime(new Date().getTime()/1000+"");
         userAccount.setAccType(3);
