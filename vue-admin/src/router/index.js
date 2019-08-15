@@ -372,10 +372,10 @@ export const asyncRouterMap = [
           resources: 'record'
         }
       }
-      
+
     ]
   },
-  
+
   {
     path: '/enduser',
     component: Layout,
@@ -603,7 +603,7 @@ export const asyncRouterMap = [
     ]
   },
 
- 
+
   {
     path: '/job',
     component: Layout,
@@ -612,43 +612,89 @@ export const asyncRouterMap = [
       resources: 'job',
       title: '任务调度'
     },
-    children: [
-  {
-    path: '/joblist',
-    component: Common,
-    redirect: {name:'listJob'},
-    name: 'list',
-    meta: {
-      resources: 'list'
-    },
-    children: [
-      {
-        path: 'list',
-        hidden: true,
-        component: () => import('@/views/job/list/index'),
-        name: 'listJob',
-      },
-      {
-        path: 'add',
-        hidden: true,
-        component: () => import('@/views/job/add/index'),
-        name: 'addjob',
-        meta: {
-          resources: 'add'
-        }
-      },
-      {
-        path: 'edit',
-        hidden: true,
-        component: () => import('@/views/job/edit/index'),
-        name: 'editjob',
-        meta: {
-          resources: 'edit'
-        }
-      }
+    children: [{
+                path: '/joblist',
+                component: Common,
+                redirect: {name:'listJob'},
+                name: 'list',
+                meta: {
+                  resources: 'list'
+                },
+                children: [
+                  {
+                    path: 'list',
+                    hidden: true,
+                    component: () => import('@/views/job/list/index'),
+                    name: 'listJob',
+                  },
+                  {
+                    path: 'add',
+                    hidden: true,
+                    component: () => import('@/views/job/add/index'),
+                    name: 'addjob',
+                    meta: {
+                      resources: 'add'
+                    }
+                  },
+                  {
+                    path: 'edit',
+                    hidden: true,
+                    component: () => import('@/views/job/edit/index'),
+                    name: 'editjob',
+                    meta: {
+                      resources: 'edit'
+                    }
+                  }
 
-    ]
-  }]},
+                ]
+            }]
+  },
+
+  {
+    path: '/shop',
+    component: Layout,
+    name: 'shop',
+    meta: {
+      resources: 'shop',
+      title: '商品管理'
+    },
+    children: [{
+      path: '/shoplist',
+      component: Common,
+      redirect: {name:'shoplist'},
+      name: 'list',
+      meta: {
+        resources: 'list'
+      },
+      children: [
+        {
+          path: 'list',
+          hidden: true,
+          component: () => import('@/views/shop/list/index'),
+          name: 'shoplist',
+        },
+        {
+          path: 'add',
+          hidden: true,
+          component: () => import('@/views/shop/list/add'),
+          name: 'addshop',
+          meta: {
+            resources: 'add'
+          }
+        },
+        {
+          path: 'edit',
+          hidden: true,
+          component: () => import('@/views/shop/list/edit'),
+          name: 'editshop',
+          meta: {
+            resources: 'edit'
+          }
+        }
+
+      ]
+    }]
+  },
 
 
 
@@ -669,7 +715,7 @@ export const asyncRouterMap = [
           resources: 'list'
         }
       },
-      
+
     ]
   },
 
@@ -713,6 +759,6 @@ export const asyncRouterMap = [
   }
 
 
-  
+
 
 ]

@@ -865,8 +865,8 @@ public class UserController {
         }
         try {
             pic.transferTo(dest); //保存文件
-            return ApiResult.success("http://youdianshare.com/Upload/Pictures/2019-07-21/IMG_20190720_212717.jpg");
-//            return ApiResult.success("./Upload/Pictures/"+file+"/"+fileName);
+//            return ApiResult.success("http://youdianshare.com/Upload/Pictures/"+file+"/"+fileName);
+            return ApiResult.success("./Upload/Pictures/"+file+"/"+fileName);
         } catch (IllegalStateException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

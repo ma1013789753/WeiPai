@@ -39,7 +39,7 @@ passageway:
   DELETE_JOB_URL: job/delete
   GET_JOB_URL: job/getByName
 
-  # 极光推送
+  # 极光推送ls
 jpush:
     MasterSecret: 76f29adc246022dbf4d782dc
     AppKey: 542c3a2607779c10e6c40178
