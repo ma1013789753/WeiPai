@@ -57,7 +57,7 @@
           ],
           memo: [
             { required: true, message: '请输入商品描述', trigger: 'blur' },
-            { min: 1, max: 200, message: '长度在 2 到 200 个字符', trigger: 'blur' }
+            { min: 1, max: 10, message: '长度在 2 到 200 个字符', trigger: 'blur' }
           ],
           picUrl: [
             { required: true, message: '请选择图片', trigger: 'blur' },
@@ -89,7 +89,7 @@
         });
       },
       handleAvatarSuccess(res, file) {
-        this.form.picUrl = "http://39.105.97.119/"+res.datas
+        this.form.picUrl = res.datas
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';

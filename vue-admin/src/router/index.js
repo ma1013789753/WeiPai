@@ -654,6 +654,7 @@ export const asyncRouterMap = [
     path: '/shop',
     component: Layout,
     name: 'shop',
+    redirect:"/pre/perm/index",
     meta: {
       resources: 'shop',
       title: '商品管理'
@@ -662,8 +663,9 @@ export const asyncRouterMap = [
       path: '/shoplist',
       component: Common,
       redirect: {name:'shoplist'},
-      name: 'list',
+      name: 'shoplist',
       meta: {
+        title: '商品列表',
         resources: 'list'
       },
       children: [
@@ -693,7 +695,45 @@ export const asyncRouterMap = [
         }
 
       ]
-    }]
+    },
+      {
+        path: '/recordlist',
+        component: Common,
+        redirect: {name:'recordlist'},
+        name: 'recordlist',
+        meta: {
+          title: '兑换列表',
+          resources: 'record'
+        },
+        children: [
+          {
+            path: 'list',
+            hidden: true,
+            component: () => import('@/views/shop/record/index'),
+            name: 'recordlist',
+          },
+          {
+            path: 'add',
+            hidden: true,
+            component: () => import('@/views/shop/record/add'),
+            name: 'addrecord',
+            meta: {
+              resources: 'add'
+            }
+          },
+          {
+            path: 'edit',
+            hidden: true,
+            component: () => import('@/views/shop/record/edit'),
+            name: 'editrecord',
+            meta: {
+              resources: 'edit'
+            }
+          }
+
+        ]
+      }
+    ]
   },
 
 
